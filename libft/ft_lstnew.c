@@ -1,5 +1,5 @@
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 t_token	*ft_lstnew(void *content)
 {
