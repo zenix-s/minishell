@@ -43,4 +43,5 @@ int	main(int argc, char *argv[], char **env)
 {
 	head();
 	main_loop(env);
+	printf("Terinado");
 }
