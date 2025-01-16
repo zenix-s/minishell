@@ -1,5 +1,5 @@
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 void	ft_bzero(void *s, unsigned int n)
 {
