@@ -16,14 +16,17 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-void				main_loop(char **env);
-void				ft_init(char *line);
-void				use_build(char *line, char **new_env);
 
-char				**ft_new_env(char **env);
-int					ft_size_env(char **env);
-void				use_env(char **new_env);
-void				use_pwd(char **n_env);
+void				ft_init(char *line);
+
+void				main_loop(t_token *list_env);
+void				use_build(char *line, t_token *list_env);
+//void				use_unset(char **env, char *line);
+
+
+t_token				*new_env(t_token *list_env, char **env);
+void				use_env(t_token *list_env);
+void				use_pwd(t_token *list_env);
 
 t_token				*ft_lstnew(void *content);
 int					ft_strcmp(const char *s1, const char *s2);

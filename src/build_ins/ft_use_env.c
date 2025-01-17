@@ -1,49 +1,37 @@
 
 #include "../../include/minishell.h"
 
-//actualmente solo printea el enviroment
-void	use_env(char **new_env)
+void	use_env(t_token *list_env)
 {
-	int	count;
+	char	*aux;
 
-	count = 0;
-	while (new_env[count])
+	while (list_env)
 	{
-		printf("%s\n", new_env[count]);
-		count++;
+		printf ("%s\n",(char*) (list_env->content));
+		list_env = list_env->next;
 	}
 }
-//cuenta lo largo que es el env
-int	ft_size_env(char **env)
-{
-	int	count;
-
-	count = 0;
-	while (env[count])
-	{
-		count++;
-	}
-	return (count);
-}
-
 //como env es un arraid he preferido dejarlo como arraid...
-//esta función te crea un env propio para no tener complicaciones en el futuro
-char	**ft_new_env(char **env)
+//esta función te crea un env propio  como lista para no tener complicaciones en el futuro
+
+t_token	*new_env(t_token *list_env, char **env)
 {
 	int		count;
-	char	**new_env;
+	t_token	*aux;
 
-	count = ft_size_env(env);
-	new_env = (char **)ft_calloc (count, sizeof(char *));
-	if (!new_env)
-		return (0);
-	// TO DO: esto ahora mismo esta sin liberar
-	//tiene que liberarse al final de todo
-	count = 0;
+	list_env = ft_lstnew(env[0]);
+	if (!list_env)
+		return NULL;
+					// TO DO: esto ahora mismo esta sin liberar
+					//tiene que liberarse al final de todo
+	count = 1;
 	while (env[count])
 	{
-		new_env[count] = ft_strdup(env[count]);
+		aux = ft_lstnew(env[count]);
+		if (!aux)
+			return NULL;
+		ft_lstadd_back(&list_env, aux);
 		count++;
 	}
-	return (new_env);
+	return (list_env);
 }
