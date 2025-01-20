@@ -21,7 +21,7 @@ void				ft_init(char *line);
 
 void				main_loop(t_token *list_env);
 void				use_build(char *line, t_token *list_env);
-//void				use_unset(char **env, char *line);
+void				use_unset(t_token **list_env, char **line_arraid);
 
 
 t_token				*new_env(t_token *list_env, char **env);
@@ -37,5 +37,8 @@ t_token				*ft_lstlast(t_token *lst);
 char				*ft_strdup(char *src);
 size_t				ft_strlen(const char *s);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+char				**ft_split(char const *s, char c);
+char				*ft_substr(char const *s, unsigned int start, size_t len);
+void				ft_lstdelone(t_token *lst, void (*del)(void*));
 
 #endif
