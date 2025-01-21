@@ -6,7 +6,7 @@ static t_token	*prev(t_token **list_env, char *line)
 	t_token	*l_aux;
 
 	l_aux = *list_env;
-	while (l_aux->next != NULL)
+	while (l_aux)
 	{
 		if (ft_strcmp ((char *)l_aux->next->content, line) != 0)
 			l_aux = l_aux->next;
@@ -14,17 +14,6 @@ static t_token	*prev(t_token **list_env, char *line)
 			return (l_aux);
 	}
 	return (NULL);
-}
-
-//esta funcion entrega el env hasta el = para que se tenga que escribir igual
-static int	size_env(char *line_env)
-{
-	int	count;
-
-	count = 0;
-	while (line_env[count] != '=')
-		count++;
-	return (count);
 }
 
 //me da el nodo que estoy buscando para procesar su eliminación
@@ -35,7 +24,7 @@ static t_token	*search(t_token **list_env, char *line)
 
 	l_aux = *list_env;
 
-	while (l_aux->next != NULL) 
+	while (l_aux) 
 	{
 		char_env = (char *)l_aux->content;
 		if (ft_strncmp(line, char_env, size_env(char_env)) == 0)
@@ -52,7 +41,6 @@ void	use_unset(t_token **list_env, char **line_arraid)
 	int		count;
 	t_token	*list_aux;
 	t_token	*prev_aux;
-	int		foo;
 
 	count = 1;
 	while (line_arraid[count] != NULL)
@@ -63,6 +51,8 @@ void	use_unset(t_token **list_env, char **line_arraid)
 			prev_aux = prev(list_env, (char *)list_aux->content);
 			if (prev_aux->next != NULL)
 				prev_aux->next = prev_aux->next->next;
+			else
+				prev_aux->next = NULL;
 		}
 		free(list_aux);
 		list_aux = *list_env;

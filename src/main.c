@@ -15,6 +15,13 @@ void	head(void)
 	printf("                                      by serferna and lortega-\n");
 }
 
+void	ft_error(char *texto)
+{
+	perror(texto);
+	exit(0);
+}
+
+
 
 //por ahora lo he puesto aqui porque no se donde ponerlo al estar asi a lo bruto
 void	use_build(char *line, t_token *list_env)
@@ -22,22 +29,22 @@ void	use_build(char *line, t_token *list_env)
 	char	**line_arraid;
 
 	line_arraid = ft_split(line, ' ');
-//	if (line && ft_strcmp(line, "echo") == 0)
-//		use_();
-//	if (line && ft_strcmp(line, "cd") == 0)
-//		use_();
-	if (line && ft_strcmp(line, "pwd") == 0)
+	if (line && ft_strncmp(line, "echo", 3) == 0)
+		use_echo(list_env, line_arraid);
+	if (line && ft_strncmp(line, "cd", 2) == 0)
+		use_cd(&list_env, line_arraid);
+	else if (line && ft_strcmp(line, "pwd") == 0)
 		use_pwd(list_env);
-//	else if (line && ft_strcmp(line, "export") == 0)
-//		use_export();
+	else if (line && ft_strncmp(line, "export", 5) == 0)
+		use_export(&list_env, line_arraid);
 	else if (line && ft_strncmp(line, "unset", 4) == 0)
 		use_unset(&list_env, line_arraid);
 	else if (line && ft_strcmp(line, "env") == 0)
 		use_env(list_env);
 	else if (line && ft_strcmp(line, "exit") == 0)
-		exit(0); //seguramente no sea tan facil
+		exit(0); //no sea tan facil...
 	else
-		printf("%s: commmand not found\n", line);
+		exe(line_arraid[0], list_env);
 	free (line_arraid);
 }
 
