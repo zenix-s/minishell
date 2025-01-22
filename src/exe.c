@@ -6,19 +6,27 @@ static char	*search(char *object, char *command)
 	char	**path;
 	int		cont;
 	char	*finish;
+	char	*temp;
 
 	path = ft_split(object + 5, ':');
 	cont = 0;
 	while (path[cont])
 	{
 		finish = ft_strjoin(path[cont], "/");
+		temp = finish;
 		finish = ft_strjoin(finish, command);
+		free (temp);
 		if (access(finish, F_OK) == 0)
+		{
+			ft_free(path);
 			return (finish);
+		}
+		free(finish);
 		cont++;
 	}
-	perror("error cmd");
-//	exit(errno);
+	ft_free(path);
+	perror("error on function search");
+	return (NULL);
 }
 
 void	exe(char *command, t_token *list_env)
@@ -36,7 +44,7 @@ void	exe(char *command, t_token *list_env)
 	{
 		env_now[count] = ft_strdup((char *)list_env->content);
 		if (ft_strncmp((char *) list_env->content, "PATH=", 5) == 0)
-			path = (char *) list_env->content;
+			path = list_env->content;
 		//si no encontrara esto tendriamos que ir a rutas
 		// absolutas que estan sin hacer
 		list_env = list_env->next;
@@ -44,10 +52,7 @@ void	exe(char *command, t_token *list_env)
 	}
 	path = search(path, command);
 	execve(path, a_command, env_now);
-/*
-	perror(command);
-	free(env_now);
-	free(a_command);
-	exit(0);
-*/
+	free(path);
+	ft_free(a_command);
+	ft_free(env_now);
 }

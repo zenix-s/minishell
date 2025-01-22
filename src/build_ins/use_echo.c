@@ -13,8 +13,6 @@ static void	putvar(char *content)
 
 	count = 0;
 	othercount = 0;
-	if (linewrite == NULL)
-		return ;
 	while (content[count] != '=')
 		count++;
 	count++;

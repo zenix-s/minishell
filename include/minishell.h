@@ -16,22 +16,45 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+//EnvStruckt
+//  head
+typedef struct s_env
+{
+	void			*data;
+	struct s_env	*next;
+}					t_env;
 
+//  data
+typedef struct s_data
+{
+	char			*key;
+	char			*value;
+}					t_data;
+
+//not today
 void				ft_init(char *line);
 
+//commond ()
 void				main_loop(t_token *list_env);
-void				use_build(char *line, t_token *list_env);
-void				use_unset(t_token **list_env, char **line_arraid);
 t_token				*new_env(t_token *list_env, char **env);
-int					size_env(char *line_env);
+
+//Builds 
+//  select
+void				select_build(char *line, t_token *list_env);
+//expecific comand
+void				use_unset(t_token **list_env, char **line_arraid);
 void				use_env(t_token *list_env);
 void				use_pwd(t_token *list_env);
 void				use_export(t_token **list_env, char **line_arraid);
 void				use_echo(t_token *list_env, char **line_arraid);
-void				exe(char *line, t_token *list_env);
+//except
 void				exe(char *command, t_token *list_env);
+//utils
+void				ft_free(char **lst);
+int					size_env(char *line_env);
 
 
+//library
 t_token				*ft_lstnew(void *content);
 int					ft_strcmp(const char *s1, const char *s2);
 void				*ft_calloc(size_t count, size_t size);

@@ -13,7 +13,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	k = 0;
 	lens1 = ft_strlen(s1);
 	lens2 = ft_strlen(s2);
-	newstr = malloc(lens1 + lens2 + 1);
+	newstr = calloc(1, lens1 + lens2 + 1);
 	if (!newstr)
 		return (NULL);
 	while (s1[i])

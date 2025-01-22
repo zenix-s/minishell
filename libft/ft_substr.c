@@ -19,7 +19,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = lens - start;
 	dst = (char *)malloc(sizeof(char) * (len +1));
 	if (!dst)
-		return (0);
+		return (NULL);
 	while ((start < ft_strlen(s)) && (x < len))
 	{
 		dst[x] = s[start];
