@@ -1,6 +1,12 @@
 
 #include "../../include/minishell.h"
 
+void	ft_error(char *texto)
+{
+	perror(texto);
+	exit(0);
+}
+
 t_token	*new_env(t_token *list_env, char **env)
 {
 	int		count;

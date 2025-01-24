@@ -15,11 +15,6 @@ void	head(void)
 	printf("                                      by serferna and lortega-\n");
 }
 
-void	ft_error(char *texto)
-{
-	perror(texto);
-	exit(0);
-}
 
 void	main_loop(t_token *list_env)
 {

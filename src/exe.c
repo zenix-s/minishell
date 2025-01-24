@@ -1,7 +1,7 @@
 
 #include "../include/minishell.h"
 
-static char	*search(char *object, char *command)
+static char	*search(char *object, char **command)
 {
 	char	**path;
 	int		cont;
@@ -14,7 +14,7 @@ static char	*search(char *object, char *command)
 	{
 		finish = ft_strjoin(path[cont], "/");
 		temp = finish;
-		finish = ft_strjoin(finish, command);
+		finish = ft_strjoin(finish, command[0]);
 		free (temp);
 		if (access(finish, F_OK) == 0)
 		{
@@ -26,19 +26,19 @@ static char	*search(char *object, char *command)
 	}
 	ft_free(path);
 	perror("error on function search");
+	exit(1);
 	return (NULL);
 }
 
-void	exe(char *command, t_token *list_env)
+
+void	exe_all(char **command, t_token *list_env)
 {
 	char	*path;
-	char	**a_command;
 	char	**env_now;
 	int		count;
 
 	count = ft_lstsize(list_env);
 	env_now = ft_calloc(count + 1, sizeof(char *));
-	a_command = ft_split(command, ' ');
 	count = 0;
 	while (list_env)
 	{
@@ -51,8 +51,7 @@ void	exe(char *command, t_token *list_env)
 		count++;
 	}
 	path = search(path, command);
-	execve(path, a_command, env_now);
+	execve(path, command, env_now);
 	free(path);
-	ft_free(a_command);
 	ft_free(env_now);
 }

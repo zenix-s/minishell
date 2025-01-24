@@ -9,6 +9,12 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <errno.h>
+# include <sys/wait.h>
+
+# define READ_END	0
+# define WRITE_END	1
+
 
 typedef struct s_token
 {
@@ -41,17 +47,25 @@ t_token				*new_env(t_token *list_env, char **env);
 //Builds 
 //  select
 void				select_build(char *line, t_token *list_env);
+void				execute_comman(char **line_arraid, t_token *list_env);
+
 //expecific comand
 void				use_unset(t_token **list_env, char **line_arraid);
 void				use_env(t_token *list_env);
 void				use_pwd(t_token *list_env);
 void				use_export(t_token **list_env, char **line_arraid);
 void				use_echo(t_token *list_env, char **line_arraid);
+void				use_cd(t_token **list_env, char **line_arraid);
 //except
-void				exe(char *command, t_token *list_env);
+void				exe_all(char **command, t_token *list_env);
 //utils
 void				ft_free(char **lst);
 int					size_env(char *line_env);
+void				ft_error(char *texto);
+
+//pipex part
+void				pipex(char **line_arraid, t_token *list_env);
+void				first_children(int *fd, int pid1, char **arriad, t_token list_env);
 
 
 //library
