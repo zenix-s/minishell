@@ -29,7 +29,13 @@ static char	*search(char *object, char **command)
 	exit(1);
 	return (NULL);
 }
+/*
+* si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
+ * @path -> En esta funcion es un (char *) con todas las rutas 
+ * @command -> Es un (char **) con los comandos ingresados
+ * @env_now es un (char **) sacado con el contenido de las listas 
 
+*/
 
 void	exe_all(char **command, t_token *list_env)
 {
@@ -37,20 +43,24 @@ void	exe_all(char **command, t_token *list_env)
 	char	**env_now;
 	int		count;
 
-	count = ft_lstsize(list_env);
-	env_now = ft_calloc(count + 1, sizeof(char *));
+	env_now = obtain_env(list_env);
 	count = 0;
-	while (list_env)
+	if (env_is_absolute(command) == 1)
 	{
-		env_now[count] = ft_strdup((char *)list_env->content);
-		if (ft_strncmp((char *) list_env->content, "PATH=", 5) == 0)
-			path = list_env->content;
-		//si no encontrara esto tendriamos que ir a rutas
-		// absolutas que estan sin hacer
-		list_env = list_env->next;
-		count++;
+		path = command[0];
+		if (access(path, F_OK) == -1)
+			ft_error("No such file or directory");
 	}
-	path = search(path, command);
+	else
+	{
+		while (list_env)
+		{
+			if (ft_strncmp((char *) list_env->content, "PATH=", 5) == 0)
+				path = list_env->content;
+			list_env = list_env->next;
+		}
+		path = search(path, command);
+	}
 	execve(path, command, env_now);
 	free(path);
 	ft_free(env_now);

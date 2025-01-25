@@ -1,12 +1,30 @@
 
 #include "../../include/minishell.h"
-
-void	ft_error(char *texto)
+/*
+char	*control(char *var)
 {
-	perror(texto);
-	exit(0);
-}
+	char	*result;
+	int		x;
+	char	number;
+	char	*text;
 
+	text = "SHLVL=";
+	number = '1';
+	x = 1;
+	result = text + number;
+	while (x <= 9 && ft_strncmp(var, result, 5) != 0)
+	{
+		x++;
+		number++;
+		result = text + number;
+		if (ft_strcmp(var, result) == 0)
+			return (result);
+	}
+	return (var);
+}
+*/
+
+//line 43, 44 is a baby of this function
 t_token	*new_env(t_token *list_env, char **env)
 {
 	int		count;
@@ -21,10 +39,34 @@ t_token	*new_env(t_token *list_env, char **env)
 		aux = ft_lstnew(env[count]);
 		if (!aux)
 			return (NULL);
+		if (ft_strcmp((char *)aux->content, "SHLVL=1") == 0)
+			aux->content = "SHLVL=2";
 		ft_lstadd_back(&list_env, aux);
 		count++;
 	}
 	return (list_env);
+}
+/*
+Esta funcion devuelve el env despues
+de todas las ejecuciones hasta el momento como arraid
+*/
+
+char	**obtain_env(t_token *list_env)
+{
+	int		aux;
+	int		x;
+	char	**env_now;
+
+	x = 0;
+	aux = ft_lstsize(list_env);
+	env_now = ft_calloc(aux + 1, sizeof(char *));
+	while (list_env)
+	{
+		env_now[x] = ft_strdup((char *)list_env->content);
+		list_env = list_env->next;
+		x++;
+	}
+	return (env_now);
 }
 
 //esta funcion entrega el env hasta el = para que se tenga que escribir igual
@@ -38,12 +80,13 @@ int	size_env(char *line_env)
 	return (count);
 }
 
-void	ft_free(char **lst)
+int	env_is_absolute(char **cmd)
 {
-	int	i;
-
-	i = 0;
-	while (lst[i])
-		free(lst[i++]);
-	free(lst);
+	if (ft_strncmp("/", cmd[0], 1) == 0)
+		return (1);
+	if (ft_strncmp("./", cmd[0], 2) == 0)
+		return (1);
+	if (ft_strncmp("../", cmd[0], 3) == 0)
+		return (1);
+	return (0);
 }

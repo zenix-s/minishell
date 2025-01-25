@@ -14,7 +14,7 @@
 
 # define READ_END	0
 # define WRITE_END	1
-
+#define MAX_INPUT_LENGTH 1024
 
 typedef struct s_token
 {
@@ -42,7 +42,6 @@ void				ft_init(char *line);
 
 //commond ()
 void				main_loop(t_token *list_env);
-t_token				*new_env(t_token *list_env, char **env);
 
 //Builds 
 //  select
@@ -56,17 +55,24 @@ void				use_pwd(t_token *list_env);
 void				use_export(t_token **list_env, char **line_arraid);
 void				use_echo(t_token *list_env, char **line_arraid);
 void				use_cd(t_token **list_env, char **line_arraid);
+
 //except
 void				exe_all(char **command, t_token *list_env);
+
 //utils
 void				ft_free(char **lst);
-int					size_env(char *line_env);
 void				ft_error(char *texto);
+void				head(void);
+
+//utils_build
+t_token				*new_env(t_token *list_env, char **env);
+char				**obtain_env(t_token *list_env);
+int					size_env(char *line_env);
+int					env_is_absolute(char **cmd);
 
 //pipex part
 void				pipex(char **line_arraid, t_token *list_env);
 void				first_children(int *fd, int pid1, char **arriad, t_token list_env);
-
 
 //library
 t_token				*ft_lstnew(void *content);

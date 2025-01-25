@@ -17,8 +17,7 @@ CCLANG = -lreadline
 SOURCE = $(shell find . -iname "*.c")
 
 %.o: %.c
-#				@echo "${BLUE} ◎ $(YELLOW)Compiling   ${RED}→   $(GREEN)$< $(DEF_COLOR)"
-#	$(CFLAGS) -------->lo he sacado de la linea de abajo para hacer pruebas, pero no se esta usando ahora mismo
+				@echo "${BLUE} ◎ $(YELLOW)Compiling   ${RED}→   $(GREEN)$< $(DEF_COLOR)"
 				${CC} ${CFLAGS} -c $< -o $@ ${HEADERS}
 
 
@@ -27,12 +26,11 @@ OBJS = ${SOURCE:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-#	$(CFLAGS) -------->lo he sacado de la linea de abajo para hacer pruebas, pero no se esta usando ahora mismo
 				$(CC) ${CFLAGS} $^ -o  $@ ${CCLANG}
-#				@echo "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
-#				@echo "$(YELLOW)    _       _       _$(DEF_COLOR)"
-#				@echo "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
-#				@echo "$(YELLOW) \___)   \___)   \___)$(DEF_COLOR)"
+				@echo "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
+				@echo "$(YELLOW)    _       _       _$(DEF_COLOR)"
+				@echo "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
+				@echo "$(YELLOW) \___)   \___)   \___)$(DEF_COLOR)"
 
 clean:
 				@${RM} ${OBJS}
