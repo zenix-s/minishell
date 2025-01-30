@@ -9,7 +9,7 @@ void	main_loop(t_token *list_env)
 	cont = 0;
 	while (1)
 	{
-		line = readline("minishell ▸");
+		line = readline("minishell :");
 		//line = readline("\033[1;34mminishell \033[0m \033[1;32m▸\033[0m ");
 		if (line && *line != '\0')
 		{
@@ -27,7 +27,9 @@ void	main_loop(t_token *list_env)
 int	main(int argc, char *argv[], char **env)
 {
 	t_token	*list_env;
+	//char	*str;
 
+	//str = ft_strdup("hola");
 	(void)argc;
 	(void)argv;
 	list_env = NULL;

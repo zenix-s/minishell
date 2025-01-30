@@ -54,13 +54,9 @@ void	use_unset(t_token **list_env, char **line_arraid)
 			else
 				prev_aux->next = NULL;
 		}
+		free(list_aux->content);
 		free(list_aux);
 		list_aux = *list_env;
 		count++;
 	}
 }
-
-/* TO DO 
-hay que liberar bien el list_aux
-
-*/

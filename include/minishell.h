@@ -18,7 +18,7 @@
 
 typedef struct s_token
 {
-	void			*content;
+	char			*content;
 	struct s_token	*next;
 }					t_token;
 
@@ -70,6 +70,8 @@ char				**obtain_env(t_token *list_env);
 int					size_env(char *line_env);
 int					env_is_absolute(char **cmd);
 
+char				*obtain_content(char *search, t_token *list_env);
+void				change_content(t_token **list_env, char *oldcont, char *newcont);
 //pipex part
 void				pipex(char **line_arraid, t_token *list_env);
 void				first_children(int *fd, int pid1, char **arriad, t_token list_env);
@@ -90,5 +92,6 @@ void				ft_lstdelone(t_token *lst, void (*del)(void*));
 int					ft_lstsize(t_token *lst);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strjoin(char const *s1, char const *s2);
-
+int					ft_atoi(const char *str);
+char				*ft_itoa(int n);
 #endif

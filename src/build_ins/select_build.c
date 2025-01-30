@@ -73,7 +73,7 @@ void	select_build(char *line, t_token *list_env)
 	line_arraid = ft_split(line, ' ');
 	if (line && line_arraid[1] && ft_strcmp(line_arraid[0], "echo") == 0)
 		use_echo(list_env, line_arraid);
-	else if (line && line_arraid[1] && ft_strcmp(line_arraid[0], "cd") == 0)
+	else if (line && ft_strcmp(line_arraid[0], "cd") == 0)
 		use_cd(&list_env, line_arraid);
 	else if (line && ft_strcmp(line_arraid[0], "pwd") == 0)
 		use_pwd(list_env);

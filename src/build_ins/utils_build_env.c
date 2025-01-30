@@ -1,46 +1,51 @@
 
 #include "../../include/minishell.h"
-/*
-char	*control(char *var)
-{
-	char	*result;
-	int		x;
-	char	number;
-	char	*text;
 
-	text = "SHLVL=";
-	number = '1';
-	x = 1;
-	result = text + number;
-	while (x <= 9 && ft_strncmp(var, result, 5) != 0)
-	{
-		x++;
-		number++;
-		result = text + number;
-		if (ft_strcmp(var, result) == 0)
-			return (result);
-	}
-	return (var);
+char	*shell_level(char *var)
+{
+	char	**level;
+	int		number;
+	char	*aux_n;
+	char	*result;
+	char	*foo;
+
+	level = ft_split(var, '=');
+	number = ft_atoi(level[1]);
+	number++;
+
+	aux_n = ft_itoa(number);
+	foo = ft_strjoin(level[0], "=");
+	result = ft_strjoin(foo, aux_n);
+	free(foo);
+	free(aux_n);
+	ft_free(level);
+	return (result);
 }
-*/
+
 
 //line 43, 44 is a baby of this function
 t_token	*new_env(t_token *list_env, char **env)
 {
 	int		count;
 	t_token	*aux;
+	char	*shell_aux;
 
-	list_env = ft_lstnew(env[0]);
+	list_env = ft_lstnew(ft_strdup(env[0]));
 	if (!list_env)
 		return (NULL);
 	count = 1;
 	while (env[count])
 	{
-		aux = ft_lstnew(env[count]);
+		aux = ft_lstnew(ft_strdup(env[count]));
 		if (!aux)
 			return (NULL);
-		if (ft_strcmp((char *)aux->content, "SHLVL=1") == 0)
-			aux->content = "SHLVL=2";
+		if (ft_strncmp(aux->content, "SHLVL=", 5) == 0)
+		{
+			shell_aux = aux->content;
+			aux->content = shell_level(shell_aux);
+			free(shell_aux);
+			//aux->content = ft_strdup("SHLVL=2");
+		}
 		ft_lstadd_back(&list_env, aux);
 		count++;
 	}
