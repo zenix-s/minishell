@@ -11,15 +11,14 @@ HEADERS	= -I ./include
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g3 -fsanitize=address,leak
 CCLANG = -lreadline
 
 SOURCE = $(shell find . -iname "*.c")
 
 %.o: %.c
 				@echo "${BLUE} ◎ $(YELLOW)Compiling   ${RED}→   $(GREEN)$< $(DEF_COLOR)"
-#	$(CFLAGS) -------->lo he sacado de la linea de abajo para hacer pruebas, pero no se esta usando ahora mismo
-				@${CC} -c $< -o $@ ${HEADERS}
+				${CC} ${CFLAGS} -c $< -o $@ ${HEADERS}
 
 
 OBJS = ${SOURCE:.c=.o}
@@ -28,20 +27,20 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 #	$(CFLAGS) -------->lo he sacado de la linea de abajo para hacer pruebas, pero no se esta usando ahora mismo
-				@$(CC) $(OBJS) -o $(NAME) ${CCLANG}
-				@echo "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
-				@echo "$(YELLOW)    _       _       _$(DEF_COLOR)"
-				@echo "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
-				@echo "$(YELLOW) \___)   \___)   \___)$(DEF_COLOR)"
+				@$(CC) ${CFLAGS} $(OBJS) -o $(NAME) ${CCLANG}
+				@echo -e "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
+				@echo -e "$(YELLOW)    _       _       _$(DEF_COLOR)"
+				@echo -e "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
+				@echo -e "$(YELLOW) \___)   \___)   \___)$(DEF_COLOR)"
 
 clean:
 				@${RM} ${OBJS}
-				@echo "\n${GRAY} ◎ $(RED)All objects cleaned successfully ${GRAY}◎$(DEF_COLOR)\n"
+				@echo -e "\n${GRAY} ◎ $(RED)All objects cleaned successfully ${GRAY}◎$(DEF_COLOR)\n"
 
 fclean:
 				@${RM} ${NAME}
 				@${RM} ${OBJS}
-				@echo "\n${GRAY} ◎ $(RED)All objects and executable cleaned successfully${GRAY} ◎$(DEF_COLOR)\n"
+				@echo -e "\n${GRAY} ◎ $(RED)All objects and executable cleaned successfully${GRAY} ◎$(DEF_COLOR)\n"
 
 re: fclean all
 

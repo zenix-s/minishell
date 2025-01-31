@@ -4,25 +4,38 @@
 # define MINISHELL_H
 
 # include <limits.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
 typedef struct s_token
 {
-	void			*content;
+	char			*content;
 	struct s_token	*next;
 }					t_token;
 
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}					t_bool;
 
+// Parser in the middle of the header
+//----------------------------------------------------------------------------//
+//                                   PARSER                                   //
+//----------------------------------------------------------------------------//
 void				ft_init(char *line);
+
+t_token				*create_token(char *content);
+t_token				*add_token(t_token **head, char *content);
+int					is_separator(const char *line, size_t *sep_len);
+t_token				*tokenize_line(char *line);
 
 void				main_loop(t_token *list_env);
 void				use_build(char *line, t_token *list_env);
-//void				use_unset(char **env, char *line);
-
+// void				use_unset(char **env, char *line);
 
 t_token				*new_env(t_token *list_env, char **env);
 void				use_env(t_token *list_env);
@@ -37,5 +50,7 @@ t_token				*ft_lstlast(t_token *lst);
 char				*ft_strdup(char *src);
 size_t				ft_strlen(const char *s);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+char				*ft_strncpy(char *dst, const char *src, size_t len);
+char				*ft_strduptrim(char *src);
 
 #endif

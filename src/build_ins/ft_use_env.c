@@ -3,7 +3,7 @@
 
 void	use_env(t_token *list_env)
 {
-	char	*aux;
+	// char	*aux;
 
 	while (list_env)
 	{

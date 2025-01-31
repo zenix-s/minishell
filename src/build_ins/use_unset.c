@@ -7,4 +7,6 @@ void	use_unset(char** env, char* line)
 
 	cont = 1;
 	cont++;
+	(void)env;
+	(void)line;
 }
