@@ -53,9 +53,9 @@ void	use_unset(t_token **list_env, char **line_arraid)
 				prev_aux->next = prev_aux->next->next;
 			else
 				prev_aux->next = NULL;
+			free(list_aux->content);
+			free(list_aux);
 		}
-		free(list_aux->content);
-		free(list_aux);
 		list_aux = *list_env;
 		count++;
 	}

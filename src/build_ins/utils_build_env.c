@@ -44,7 +44,6 @@ t_token	*new_env(t_token *list_env, char **env)
 			shell_aux = aux->content;
 			aux->content = shell_level(shell_aux);
 			free(shell_aux);
-			//aux->content = ft_strdup("SHLVL=2");
 		}
 		ft_lstadd_back(&list_env, aux);
 		count++;

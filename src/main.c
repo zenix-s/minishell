@@ -27,9 +27,7 @@ void	main_loop(t_token *list_env)
 int	main(int argc, char *argv[], char **env)
 {
 	t_token	*list_env;
-	//char	*str;
 
-	//str = ft_strdup("hola");
 	(void)argc;
 	(void)argv;
 	list_env = NULL;

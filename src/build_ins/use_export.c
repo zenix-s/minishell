@@ -26,7 +26,7 @@ static int	remplace(t_token **list_env, char *line)
 	}
 	return (1);
 }
-
+//cuando sergio te pase esto, este comando tiene que quitar las comillas...
 static void	create_var(t_token **list_env, char *line)
 {
 	t_token	*new_node;

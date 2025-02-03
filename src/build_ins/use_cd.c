@@ -56,39 +56,61 @@ static char	*search_rute(char *before, char *tip)
 	return (rute);
 }
 
-static char	*obtain_new_oldpwd(char *pwd)
+static void	obtain_new_oldpwd(t_token **list_env)
 {
 	char	*new_oldpwd;
+	char	**aux;
+	char	*pwd;
+	t_token	*l_aux;
 
+	l_aux = *list_env;
+	pwd = obtain_content("PWD=", l_aux);
+	aux = ft_split("FOO OLDPWD FOO", ' ');
 	if (pwd)
+	{
 		new_oldpwd = ft_strjoin("OLD", pwd);
+		change_content(&l_aux, "OLDPWD=", new_oldpwd);
+		free(new_oldpwd);
+	}
 	else
-		new_oldpwd = ft_strdup("OLDPWD=");
-	return (new_oldpwd);
+	{
+		new_oldpwd = NULL;
+		use_unset (list_env, aux);
+	}
+	ft_free(aux);
 }
 
 static void	go_home(t_token **list_env)
 {
 	t_token	*l_aux;
+	char	*home;
+	char	*aux;
 
 	l_aux = *list_env;
-	chdir("/home");
-	change_content(&l_aux, "PWD=", "PWD=/home");
+	home = obtain_content("HOME=", l_aux);
+	if (!home)
+		printf("HOME not set\n");
+	else
+	{
+		home = ft_substr(home, 5, ft_strlen(home));
+		chdir(home);
+		aux = ft_strjoin("PWD=", home);
+		change_content(&l_aux, "PWD=", aux);
+		free(home);
+		free(aux);
+	}
 }
 
 void	use_cd(t_token **list_env, char **line_arraid)
 {
 	char	*new_pwd;
 	char	*pwd;
-	char	*new_oldpwd;
 	t_token	*l_aux;
 	char	*rute;
 
 	l_aux = *list_env;
 	pwd = obtain_content("PWD=", l_aux);
-	new_oldpwd = obtain_new_oldpwd(pwd);
-	change_content(&l_aux, "OLDPWD=", new_oldpwd);
-	free(new_oldpwd);
+	obtain_new_oldpwd(&l_aux);
 	if (!line_arraid[1])
 		go_home(&l_aux);
 	else
@@ -101,24 +123,3 @@ void	use_cd(t_token **list_env, char **line_arraid)
 		free(rute);
 	}
 }
-
-		/*
-		while (l_aux)
-		{
-			if (ft_strncmp((char *)l_aux->content, "PWD", 2) == 0)
-			{
-				new_pwd = ft_strjoin("PWD=", rute);
-				l_aux->content = ft_strdup(new_pwd);
-				free(new_pwd);
-			}
-
-			if (ft_strncmp((char *)l_aux->content, "OLDPWD", 5) == 0)
-			{
-				new_oldpwd = ft_strjoin("OLD", pwd);
-				l_aux->content = ft_strdup(new_oldpwd);
-				free(new_oldpwd);
-			}
-
-			l_aux = l_aux->next;
-		}
-		*/
