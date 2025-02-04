@@ -94,4 +94,5 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strjoin(char const *s1, char const *s2);
 int					ft_atoi(const char *str);
 char				*ft_itoa(int n);
+int					ft_strrint(const char *s, int c);
 #endif

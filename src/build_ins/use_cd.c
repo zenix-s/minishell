@@ -13,47 +13,56 @@
 	- 
 */
 
-/*
+static int	create_new_rute(char *rute, char *step)
+{
+	char	*aux;
 
-TO DO ---> Cambiar el home y añadir usuario
-	@ beffore es un char * con PWD= + LA RUTA
-	@ tip es hacia donde vas...
-*/
-static char	*search_rute(char *before, char *tip)
+	if (strcmp(step, "..") == 0)
+		rute = ft_substr(rute, 0, ft_strrint(rute, '/'));
+	else
+	{
+		aux = ft_strjoin(rute, "/");
+		rute = ft_strjoin(aux, step);
+		free(aux);
+	}
+	if (chdir(rute) == -1)
+	{
+		free(rute);
+		return (-1);
+	}
+	free(rute);
+	return (1);
+}
+
+static int	search_rute(char *line_arraid)
 {
 	char	*rute;
-	char	*aux_rute;
-	int		aux;
-	int		count;
+	char	*aux;
+	char	*cwd;
 	char	**step;
-
-	aux = ft_strlen(before);
-	aux_rute = ft_substr(before, 4, aux);
-//	free(aux_rute);
-	rute = ft_strtrim(aux_rute, "/");
+	int		count;
 
 	count = 0;
-	step = ft_split(tip, '/');
+	cwd = (char *)ft_calloc(1024, sizeof(char));
+	if (!cwd)
+		return (-1);
+	step = ft_split(line_arraid, '/');
 	while (step[count])
 	{
-		if (strcmp(step[count], "..") == 0)
+		rute = getcwd(cwd, 1024);
+		aux = rute;
+		if (create_new_rute(rute, step[count]) == -1)
 		{
-			aux = ft_strlen(rute);
-			while (before[aux] != '/' && aux > 0)
-				aux--;
-			rute = ft_substr(rute, 0, aux - 3);
-		}
-		else
-		{
-			aux_rute = ft_strjoin(rute, "/");
-			free(rute);
-			rute = ft_strjoin(aux_rute, step[count]);
-			free (aux_rute);
+			printf("cd: no such file or directory: %s\n", line_arraid);
+			free(cwd);
+			ft_free(step);
+			return (-1);
 		}
 		count++;
 	}
+	free(cwd);
 	ft_free(step);
-	return (rute);
+	return (1);
 }
 
 static void	obtain_new_oldpwd(t_token **list_env)
@@ -107,6 +116,7 @@ void	use_cd(t_token **list_env, char **line_arraid)
 	char	*pwd;
 	t_token	*l_aux;
 	char	*rute;
+	char	*aux;
 
 	l_aux = *list_env;
 	pwd = obtain_content("PWD=", l_aux);
@@ -115,11 +125,14 @@ void	use_cd(t_token **list_env, char **line_arraid)
 		go_home(&l_aux);
 	else
 	{
-		rute = search_rute(pwd, line_arraid[1]);
-		chdir(rute);
+		if (search_rute(line_arraid[1]) == -1)
+		{
+			aux = ft_substr(pwd, 4, ft_strlen(pwd));
+			chdir(aux);
+			free(aux);
+		}
 		new_pwd = ft_strjoin("PWD=", rute);
 		change_content(&l_aux, "PWD=", new_pwd);
 		free(new_pwd);
-		free(rute);
 	}
 }
