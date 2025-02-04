@@ -54,18 +54,30 @@ void	print_tokens(t_token *tokens)
 
 int	has_unclosed_quotes(const char *line)
 {
-	int		in_quotes;
 	size_t	i;
+	t_quote	quote_state;
 
-	in_quotes = 0;
 	i = 0;
+	quote_state = NONE;
 	while (line[i])
 	{
-		if (line[i] == '\"')
-			in_quotes = !in_quotes;
+		if (line[i] == '\"' && quote_state != SINGLE)
+		{
+			if (quote_state == DOUBLE)
+				quote_state = NONE;
+			else
+				quote_state = DOUBLE;
+		}
+		else if (line[i] == '\'' && quote_state != DOUBLE)
+		{
+			if (quote_state == SINGLE)
+				quote_state = NONE;
+			else
+				quote_state = SINGLE;
+		}
 		i++;
 	}
-	return (in_quotes);
+	return (quote_state != NONE);
 }
 
 int	ft_strcpy(char *dest, const char *src)
