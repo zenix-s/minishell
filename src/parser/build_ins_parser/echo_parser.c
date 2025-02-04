@@ -1,11 +1,10 @@
 
 #include "../../../include/minishell.h"
-#include <stdio.h>
 
 char	*echo_parser(char *line)
 {
 	char	*new_line;
-	int		in_quotes;
+	t_quote	in_quotes;
 	size_t	i;
 	size_t	j;
 
@@ -17,18 +16,25 @@ char	*echo_parser(char *line)
 		return (NULL);
 	while (line[i])
 	{
-		if (line[i] == '"' && in_quotes != 2)
+		if (line[i] == '"' && in_quotes != SINGLE)
 		{
-			if (in_quotes == 0)
-				in_quotes = 1;
+			if (in_quotes == NONE)
+				in_quotes = DOUBLE;
 			else
-				in_quotes = 0;
+				in_quotes = NONE;
 		}
-		else if (line[i] == '\'' && in_quotes != 1)
-			if (in_quotes == 0)
-				in_quotes = 2;
+		else if (line[i] == '\'' && in_quotes != DOUBLE)
+		{
+			if (in_quotes == NONE)
+				in_quotes = SINGLE;
 			else
-				in_quotes = 0;
+				in_quotes = NONE;
+		}
+		else if (line[i] == ' ' && in_quotes == NONE)
+		{
+			if (i > 0 && line[i - 1] != ' ')
+				new_line[j++] = ' ';
+		}
 		else
 			new_line[j++] = line[i];
 		i++;

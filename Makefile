@@ -11,7 +11,8 @@ HEADERS	= -I ./include
 
 CC = gcc
 
-CFLAGS = -g3 -fsanitize=address,leak
+# CFLAGS = -g3 -fsanitize=address,leak
+CFLAGS = -g3
 CCLANG = -lreadline
 
 SOURCE = $(shell find . -iname "*.c")
