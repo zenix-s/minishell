@@ -17,19 +17,9 @@ char	*echo_parser(char *line)
 	while (line[i])
 	{
 		if (line[i] == '"' && in_quotes != SINGLE)
-		{
-			if (in_quotes == NONE)
-				in_quotes = DOUBLE;
-			else
-				in_quotes = NONE;
-		}
+			in_quotes = get_quote_type(in_quotes, line[i]);
 		else if (line[i] == '\'' && in_quotes != DOUBLE)
-		{
-			if (in_quotes == NONE)
-				in_quotes = SINGLE;
-			else
-				in_quotes = NONE;
-		}
+			in_quotes = get_quote_type(in_quotes, line[i]);
 		else if (line[i] == ' ' && in_quotes == NONE)
 		{
 			if (i > 0 && line[i - 1] != ' ')

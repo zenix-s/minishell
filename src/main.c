@@ -61,56 +61,10 @@ int	has_unclosed_quotes(const char *line)
 	quote_state = NONE;
 	while (line[i])
 	{
-		if (line[i] == '\"' && quote_state != SINGLE)
-		{
-			if (quote_state == DOUBLE)
-				quote_state = NONE;
-			else
-				quote_state = DOUBLE;
-		}
-		else if (line[i] == '\'' && quote_state != DOUBLE)
-		{
-			if (quote_state == SINGLE)
-				quote_state = NONE;
-			else
-				quote_state = SINGLE;
-		}
+		quote_state = get_quote_type(quote_state, line[i]);
 		i++;
 	}
 	return (quote_state != NONE);
-}
-
-int	ft_strcpy(char *dest, const char *src)
-{
-	size_t	i;
-
-	i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (i);
-}
-
-int	ft_strcat(char *dest, const char *src)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (dest[i])
-		i++;
-	while (src[j])
-	{
-		dest[i] = src[j];
-		i++;
-		j++;
-	}
-	dest[i] = '\0';
-	return (i);
 }
 
 int	manage_unclosed_quotes(char **line)
@@ -172,7 +126,7 @@ void	print_env(t_env_token *list_env)
 	}
 }
 
-t_bool	end_list_add_back(t_env_token **head, t_env_token *new)
+t_bool	env_list_add_back(t_env_token **head, t_env_token *new)
 {
 	t_env_token	*temp;
 
@@ -188,8 +142,6 @@ t_bool	end_list_add_back(t_env_token **head, t_env_token *new)
 	return (TRUE);
 }
 
-// content is in the form "key=value" value can contain '=' characters so we need to split it just once
-// we will use the first '=' character to split the string in two
 char	**split_env(char *env)
 {
 	char	**split;
@@ -258,7 +210,7 @@ t_bool	create_list_env(char **env, t_env_token **list_env)
 		new_token = new_env_token(env[count]);
 		if (!new_token)
 			return (FALSE);
-		if (!end_list_add_back(list_env, new_token))
+		if (!env_list_add_back(list_env, new_token))
 			return (FALSE);
 		count++;
 	}

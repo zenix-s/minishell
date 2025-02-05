@@ -49,6 +49,7 @@ t_token					*create_token(char *content);
 t_token					*add_token(t_token **head, char *content);
 int						is_separator(const char *line, size_t *sep_len);
 t_token					*tokenize_line(char *line, t_env_token *env);
+t_quote					get_quote_type(t_quote quote_state, char c);
 
 void					main_loop(t_env_token *list_env);
 void					use_build(char *line, t_token *list_env);
@@ -69,5 +70,7 @@ size_t					ft_strlen(const char *s);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 char					*ft_strncpy(char *dst, const char *src, size_t len);
 char					*ft_strduptrim(char *src);
+int						ft_strcat(char *dest, const char *src);
+int						ft_strcpy(char *dest, const char *src);
 
 #endif
