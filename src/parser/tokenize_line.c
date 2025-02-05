@@ -12,49 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	ft_isalnum(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
-
-int	ft_isalpha(int c)
-{
-	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
-}
-
-char	*ft_strndup(const char *s, size_t n)
-{
-	char	*new_str;
-	size_t	i;
-
-	new_str = (char *)malloc(sizeof(char) * (n + 1));
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	while (i < n)
-	{
-		new_str[i] = s[i];
-		i++;
-	}
-	new_str[i] = '\0';
-	return (new_str);
-}
-
-char	*get_env_value(const t_env_token *env, const char *key)
-{
-	while (env)
-	{
-		if (ft_strcmp(env->key, key) == 0)
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
-}
-
 char	*expand_env_var(const char *line, uint64_t *i, const t_env_token *env)
 {
 	int		len;
@@ -73,7 +30,7 @@ char	*expand_env_var(const char *line, uint64_t *i, const t_env_token *env)
 		return (NULL);
 	value = get_env_value(env, var_name);
 	free(var_name);
-	*i = start + len - 1;
+	*i = start + len;
 	return (value);
 }
 
@@ -98,18 +55,12 @@ t_token	*tokenize_line(char *line, t_env_token *env)
 	{
 		if (line[i] == '"' && quote_state != SINGLE)
 		{
-			if (quote_state == DOUBLE)
-				quote_state = NONE;
-			else
-				quote_state = DOUBLE;
+			quote_state = get_quote_type(quote_state, line[i]);
 			buffer[buf_index++] = line[i++];
 		}
 		else if (line[i] == '\'' && quote_state != DOUBLE)
 		{
-			if (quote_state == SINGLE)
-				quote_state = NONE;
-			else
-				quote_state = SINGLE;
+			quote_state = get_quote_type(quote_state, line[i]);
 			buffer[buf_index++] = line[i++];
 		}
 		else if (line[i] == '$' && quote_state != SINGLE)

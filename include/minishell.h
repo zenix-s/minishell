@@ -55,6 +55,13 @@ void					main_loop(t_env_token *list_env);
 void					use_build(char *line, t_token *list_env);
 // void				use_unset(char **env, char *line);
 
+// ENV
+char					*get_env_value(const t_env_token *env, const char *key);
+t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
+char					**split_env(char *env);
+t_env_token				*new_env_token(char *content);
+t_bool					create_list_env(char **env, t_env_token **list_env);
+
 t_token					*new_env(t_token *list_env, char **env);
 void					use_env(t_token *list_env);
 void					use_pwd(t_token *list_env);
@@ -72,5 +79,8 @@ char					*ft_strncpy(char *dst, const char *src, size_t len);
 char					*ft_strduptrim(char *src);
 int						ft_strcat(char *dest, const char *src);
 int						ft_strcpy(char *dest, const char *src);
+char					*ft_strndup(const char *s, size_t n);
+int						ft_isalnum(int c);
+int						ft_isalpha(int c);
 
 #endif
