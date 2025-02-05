@@ -1,18 +1,6 @@
 
 #include "../../include/minishell.h"
 
-//int chdir(const char *path);
-
-/*
-	- Diferentes formas dE USAR CD :
-		- cd  ->clear.
-		- cd ..
-		- cd nombre de carpeta
-		- cd con diferentes nombres de carpeta 
-	- porque si hago dos veces cd .. aparecen leaks pero con una sola vez no..
-	- 
-*/
-
 static int	create_new_rute(char *rute, char *step)
 {
 	char	*aux;
@@ -34,15 +22,13 @@ static int	create_new_rute(char *rute, char *step)
 	return (1);
 }
 
-static int	search_rute(char *line_arraid)
+static int	search_rute(char *line_arraid, int count)
 {
 	char	*rute;
 	char	*aux;
 	char	*cwd;
 	char	**step;
-	int		count;
 
-	count = 0;
 	cwd = (char *)ft_calloc(1024, sizeof(char));
 	if (!cwd)
 		return (-1);
@@ -74,7 +60,6 @@ static void	obtain_new_oldpwd(t_token **list_env)
 
 	l_aux = *list_env;
 	pwd = obtain_content("PWD=", l_aux);
-	aux = ft_split("FOO OLDPWD FOO", ' ');
 	if (pwd)
 	{
 		new_oldpwd = ft_strjoin("OLD", pwd);
@@ -83,10 +68,10 @@ static void	obtain_new_oldpwd(t_token **list_env)
 	}
 	else
 	{
-		new_oldpwd = NULL;
+		aux = ft_split("FOO OLDPWD FOO", ' ');
 		use_unset (list_env, aux);
+		ft_free(aux);
 	}
-	ft_free(aux);
 }
 
 static void	go_home(t_token **list_env)
@@ -112,27 +97,33 @@ static void	go_home(t_token **list_env)
 
 void	use_cd(t_token **list_env, char **line_arraid)
 {
-	char	*new_pwd;
 	char	*pwd;
 	t_token	*l_aux;
-	char	*rute;
 	char	*aux;
+	char	*new_pwd;
+	char	*cwd;
 
 	l_aux = *list_env;
 	pwd = obtain_content("PWD=", l_aux);
-	obtain_new_oldpwd(&l_aux);
+	cwd = (char *)ft_calloc(1024, sizeof(char));
 	if (!line_arraid[1])
 		go_home(&l_aux);
 	else
 	{
-		if (search_rute(line_arraid[1]) == -1)
+		if (search_rute(line_arraid[1], 0) == -1)
 		{
 			aux = ft_substr(pwd, 4, ft_strlen(pwd));
 			chdir(aux);
 			free(aux);
 		}
-		new_pwd = ft_strjoin("PWD=", rute);
-		change_content(&l_aux, "PWD=", new_pwd);
-		free(new_pwd);
+		else
+		{
+			obtain_new_oldpwd(&l_aux);
+			new_pwd = getcwd(cwd, 1024);
+			pwd = ft_strjoin("PWD=", new_pwd);
+			change_content(&l_aux, "PWD=", pwd);
+			free(pwd);
+			free(new_pwd);
+		}
 	}
 }

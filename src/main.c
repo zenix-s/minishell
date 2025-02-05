@@ -10,15 +10,13 @@ void	main_loop(t_token *list_env)
 	while (1)
 	{
 		line = readline("minishell :");
-		//line = readline("\033[1;34mminishell \033[0m \033[1;32m▸\033[0m ");
 		if (line && *line != '\0')
 		{
 			if (strlen(line) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
-			select_build(line, list_env);
+			select_all(line, list_env, 0);
 			add_history(line);
 			//ft_init(line); 
-			//comento init qe me he dejado un par de semegtation por aqui
 		}
 		free(line);
 	}

@@ -50,49 +50,47 @@ void	pipex(char **line_arraid, t_token *list_env)
 *it attempts to execute the command as an external program.
 */
 
-void	execute_command(char **line_arraid, t_token *list_env)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork failed");
-		return ;
-	}
-	if (pid == 0)
-		exe_all(line_arraid, list_env);
-	else
-		waitpid(pid, NULL, 0);
-}
-
-void	select_build(char *line, t_token *list_env)
+void	select_all(char *line, t_token *list_env, int count)
 {
 	char	**line_arraid;
 
+	count++;
 	line_arraid = ft_split(line, ' ');
-	if (line && line_arraid[1] && ft_strcmp(line_arraid[0], "echo") == 0)
+	if (line_arraid)
+	{
+		if (ft_strcmp(line_arraid[0], "<<") == 0)
+			here_doc(line_arraid, line);
+		else
+			select_build(line_arraid, list_env);
+		ft_free(line_arraid);
+	}
+}
+
+//el exit seguramente tenga que hacer mas cosas
+
+void	select_build(char **line_arraid, t_token *list_env)
+{
+	if (line_arraid[1] && ft_strcmp(line_arraid[0], "echo") == 0)
 		use_echo(list_env, line_arraid);
-	else if (line && ft_strcmp(line_arraid[0], "cd") == 0)
+	else if (ft_strcmp(line_arraid[0], "cd") == 0)
 		use_cd(&list_env, line_arraid);
-	else if (line && ft_strcmp(line_arraid[0], "pwd") == 0)
+	else if (ft_strcmp(line_arraid[0], "pwd") == 0)
 		use_pwd(list_env);
-	else if (line && ft_strcmp(line_arraid[0], "export") == 0)
+	else if (ft_strcmp(line_arraid[0], "export") == 0)
 	{
 		if (!line_arraid[1])
 			use_env(list_env);
 		else
 			use_export(&list_env, line_arraid);
 	}
-	else if (line && ft_strcmp(line_arraid[0], "unset") == 0)
+	else if (ft_strcmp(line_arraid[0], "unset") == 0)
 		use_unset(&list_env, line_arraid);
-	else if (line && ft_strcmp(line_arraid[0], "env") == 0)
+	else if (ft_strcmp(line_arraid[0], "env") == 0)
 		use_env(list_env);
-	else if (line && ft_strcmp(line_arraid[0], "exit") == 0)
-		exit(0); //no sea tan facil...
+	else if (ft_strcmp(line_arraid[0], "exit") == 0)
+		exit(0);
 	else
 		execute_command(line_arraid, list_env);
-	ft_free(line_arraid);
 }
 
 

@@ -11,6 +11,9 @@
 # include <unistd.h>
 # include <errno.h>
 # include <sys/wait.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 # define READ_END	0
 # define WRITE_END	1
@@ -45,9 +48,12 @@ void				main_loop(t_token *list_env);
 
 //Builds 
 //  select
-void				select_build(char *line, t_token *list_env);
-void				execute_comman(char **line_arraid, t_token *list_env);
+void				select_all(char *line, t_token *list_env, int count);
+void				select_build(char **line_arraid, t_token *list_env);
+void				execute_command(char **line_arraid, t_token *list_env);
 
+//redirect
+void				here_doc(char **line_arraid, char *oldline);
 //expecific comand
 void				use_unset(t_token **list_env, char **line_arraid);
 void				use_env(t_token *list_env);
