@@ -29,20 +29,25 @@ void	select_all(t_shell **shell)
 		ft_free(line_arraid);
 	}
 */
-//	select_build(&aux, line_arraid);
-	select_build(line_arraid);
+	select_build(&aux, line_arraid);
+	ft_free(line_arraid);
 }
 
 //el exit seguramente tenga que hacer mas cosas
-//void	select_build(t_shell **shell, char **line_arraid)
-void	select_build(char **line_arraid)
+//void	select_build(char **line_arraid)
+void	select_build(t_shell **shell, char **line_arraid)
 {
+	t_shell	*aux;
+
+	aux = *shell;
+	if (ft_strcmp(line_arraid[0], "pwd") == 0)
+		use_pwd();
+	else if (ft_strcmp(line_arraid[0], "env") == 0)
+		print_env(aux->env);
 //	if (ft_strcmp(line_arraid[x], "echo") == 0)
 //		use_echo(list_env, line_arraid);
 //	else if (ft_strcmp(line_arraid[x], "cd") == 0)
 //		use_cd(&list_env, line_arraid);
-	 if (ft_strcmp(line_arraid[0], "pwd") == 0)
-		use_pwd();
 //	else if (ft_strcmp(line_arraid[x], "export") == 0)
 //	{
 //		if (!line_arraid[x + 1])
@@ -52,10 +57,8 @@ void	select_build(char **line_arraid)
 //	}
 //	else if (ft_strcmp(line_arraid[x], "unset") == 0)
 //		use_unset(&list_env, line_arraid);
-	//else if (ft_strcmp(line_arraid[x], "env") == 0)
-	//	use_env(list_env);
-//	else if (ft_strcmp(line_arraid[x], "exit") == 0)
-//		exit(0);
+	else if (ft_strcmp(line_arraid[0], "exit") == 0)
+		exit(0);
 //	else
 //		execute_command(line_arraid, list_env);
 }

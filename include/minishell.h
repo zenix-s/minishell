@@ -81,8 +81,8 @@ void					use_build(char *line, t_token *list_env);
 //Builds 
 //  select
 void				select_all(t_shell **shell);
-//void				select_build(t_shell **shell, char **line_arraid);
-void				select_build(char **line_arraid);
+void				select_build(t_shell **shell, char **line_arraid);
+//void				select_build(char **line_arraid);
 
 void				execute_command(char **line_arraid, t_token *list_env);
 
@@ -90,7 +90,6 @@ void				execute_command(char **line_arraid, t_token *list_env);
 void				foo_here_doc(char **line_arraid);
 //expecific comand
 void				use_unset(t_token **list_env, char **line_arraid);
-void				use_env(t_token *list_env);
 void				use_pwd(void);
 void				use_export(t_token **list_env, char **line_arraid);
 void				use_echo(t_token *list_env, char **line_arraid);
@@ -122,7 +121,7 @@ t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
 char					**split_env(char *env);
 t_env_token				*new_env_token(char *content);
 t_bool					create_list_env(char **env, t_env_token **list_env);
-
+void					print_env(t_env_token *list_env);
 
 //library
 t_token				*ft_lstnew(void *content);

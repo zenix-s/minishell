@@ -2,14 +2,22 @@
 
 De Lucas para Sergi:
 
+--> en seleccionadores o como lo llamemos necesito
+			-comands
+			-cosas que no se ejecuten?
+			-pipex
+			-redirecciones
+
+
+
 TO DO LUCAS empezados
 
 -pipex para las redirecciones que esta medio hecho
+-redirecciones
 
 TO DO de cosas sin empezar 
 
 -señales
--redirecciones
 -here docks
 
 - TO DO DUDA sobre crear
