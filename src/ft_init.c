@@ -4,7 +4,7 @@
 void	ft_init(char *line)
 {
     t_token *token;
-    t_token *tokenaux;
+    t_token *tokenaux = NULL;
 	char	*aux;
 	int	    cont;
 	int	    auxcont;

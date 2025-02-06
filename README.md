@@ -2,15 +2,21 @@
 
 De Lucas para Sergi:
 
+TO DO LUCAS empezados
 
+-pipex para las redirecciones que esta medio hecho
 
- - mas cosas de hablar, te parece que hagamos comentarios paras las funciones para luego poder tener un mejor portfolio aunque luego las tengamos que borrar antes de las correcciones?
+TO DO de cosas sin empezar 
 
-TO DO para lucas:
+-señales
+-redirecciones
+-here docks
 
-- crear lista de env y cuando se cierre todo hay que liberar espacio.
+- TO DO DUDA sobre crear
 
-- 
+- funciones de sistema creadas a partir de export sin iguales que ademas se tienen que ver 
+	cuando haces export sin nada mas ....
+
 
 
 # minishell

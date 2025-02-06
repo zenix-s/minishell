@@ -9,10 +9,9 @@ NAME = minishell
 
 HEADERS	= -I ./include
 
-CC = gcc
+CC = cc
 
-# CFLAGS = -g3 -fsanitize=address,leak
-CFLAGS = -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address,leak
 CCLANG = -lreadline
 
 SOURCE = $(shell find . -iname "*.c")
@@ -27,12 +26,11 @@ OBJS = ${SOURCE:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-#	$(CFLAGS) -------->lo he sacado de la linea de abajo para hacer pruebas, pero no se esta usando ahora mismo
-				@$(CC) ${CFLAGS} $(OBJS) -o $(NAME) ${CCLANG}
-				@echo -e "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
-				@echo -e "$(YELLOW)    _       _       _$(DEF_COLOR)"
-				@echo -e "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
-				@echo -e "$(YELLOW) \___)   \___)   \___)$(DEF_COLOR)"
+				$(CC) ${CFLAGS} $^ -o  $@ ${CCLANG}
+				@echo "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
+				@echo "$(YELLOW)    _       _       _$(DEF_COLOR)"
+				@echo "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
+				@echo "$(YELLOW) \___)   \___)   \___)$(DEF_COLOR)"
 
 clean:
 				@${RM} ${OBJS}

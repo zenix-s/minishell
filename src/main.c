@@ -112,6 +112,15 @@ void	main_loop(t_shell *shell)
 		// add_history(line);
 		// ft_init(line);
 		// comento init qe me he dejado un par de semegtation por aqui
+
+		if (line && *line != '\0')
+		{
+			if (strlen(line) > MAX_INPUT_LENGTH)
+				ft_error("Error: line so long.\n");
+			select_all(line, list_env);
+			add_history(line);
+			//ft_init(line); 
+		}
 		free(line);
 	}
 }
@@ -130,6 +139,8 @@ int	main(int argc, char *argv[], char **env)
 	t_env_token	*env_token;
 	t_shell	*shell;
 
+	(void)argc;
+	(void)argv;
 	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
 
 	// t_token	*list_env;
