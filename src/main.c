@@ -91,7 +91,7 @@ int	manage_unclosed_quotes(char **line)
 	return (1);
 }
 
-void	main_loop(t_env_token *list_env)
+void	main_loop(t_shell *shell)
 {
 	char	*line;
 	t_token	*tokens;
@@ -106,7 +106,7 @@ void	main_loop(t_env_token *list_env)
 			if (!manage_unclosed_quotes(&line))
 				break ;
 		}
-		tokens = tokenize_line(line, list_env);
+		tokens = tokenize_line(line, shell->env);
 		print_tokens(tokens);
 		// use_build(line, list_env);
 		// add_history(line);
@@ -128,15 +128,18 @@ void	print_env(t_env_token *list_env)
 int	main(int argc, char *argv[], char **env)
 {
 	t_env_token	*env_token;
+	t_shell	*shell;
+
+	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
 
 	// t_token	*list_env;
 	// list_env = NULL;
 	// list_env = new_env(list_env, env);
 	// if (!new_env)
 	// 	return (0);
-	if (!create_list_env(env, &env_token))
+	if (!create_list_env(env, &(shell->env)))
 		return (0);
-	print_env(env_token);
+	print_env(shell->env);
 	head();
-	main_loop(env_token);
+	main_loop(shell);
 }

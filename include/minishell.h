@@ -26,6 +26,12 @@ typedef struct s_env_token
 	struct s_env_token	*next;
 }						t_env_token;
 
+typedef struct s_shell
+{
+	t_token *tokens;
+	t_env_token *env;
+} t_shell;
+
 typedef enum e_bool
 {
 	FALSE,
@@ -51,7 +57,7 @@ int						is_separator(const char *line, size_t *sep_len);
 t_token					*tokenize_line(char *line, t_env_token *env);
 t_quote					get_quote_type(t_quote quote_state, char c);
 
-void					main_loop(t_env_token *list_env);
+void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);
 // void				use_unset(char **env, char *line);
 
