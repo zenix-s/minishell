@@ -89,7 +89,7 @@ void				foo_here_doc(char **line_arraid);
 //expecific comand
 void				use_unset(t_token **list_env, char **line_arraid);
 void				use_env(t_token *list_env);
-void				use_pwd(t_token *list_env);
+void				use_pwd(void);
 void				use_export(t_token **list_env, char **line_arraid);
 void				use_echo(t_token *list_env, char **line_arraid);
 void				use_cd(t_token **list_env, char **line_arraid);
@@ -114,6 +114,14 @@ void				change_content(t_token **list_env, char *oldcont, char *newcont);
 void				pipex(char **line_arraid, t_token *l_env);
 void				f_child(int *fd, int pid1, char **l_arriad, t_token *l_env);
 void				s_child(int *fd, int pid2, char **l_arraid, t_token *l_env);
+// ENV
+char					*get_env_value(const t_env_token *env, const char *key);
+t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
+char					**split_env(char *env);
+t_env_token				*new_env_token(char *content);
+t_bool					create_list_env(char **env, t_env_token **list_env);
+
+
 //library
 t_token				*ft_lstnew(void *content);
 int					ft_strcmp(const char *s1, const char *s2);
@@ -133,26 +141,6 @@ char				*ft_strjoin(char const *s1, char const *s2);
 int					ft_atoi(const char *str);
 char				*ft_itoa(int n);
 int					ft_strrint(const char *s, int c);
-// ENV
-char					*get_env_value(const t_env_token *env, const char *key);
-t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
-char					**split_env(char *env);
-t_env_token				*new_env_token(char *content);
-t_bool					create_list_env(char **env, t_env_token **list_env);
-
-t_token					*new_env(t_token *list_env, char **env);
-void					use_env(t_token *list_env);
-void					use_pwd(t_token *list_env);
-
-t_token					*ft_lstnew(void *content);
-int						ft_strcmp(const char *s1, const char *s2);
-void					*ft_calloc(size_t count, size_t size);
-void					ft_bzero(void *s, unsigned int n);
-void					ft_lstadd_back(t_token **lst, t_token *new);
-t_token					*ft_lstlast(t_token *lst);
-char					*ft_strdup(char *src);
-size_t					ft_strlen(const char *s);
-int						ft_strncmp(const char *s1, const char *s2, size_t n);
 char					*ft_strncpy(char *dst, const char *src, size_t len);
 char					*ft_strduptrim(char *src);
 int						ft_strcat(char *dest, const char *src);

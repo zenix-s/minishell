@@ -34,7 +34,7 @@ void	select_build(char **line_arraid, t_token *list_env, int x)
 	else if (ft_strcmp(line_arraid[x], "cd") == 0)
 		use_cd(&list_env, line_arraid);
 	else if (ft_strcmp(line_arraid[x], "pwd") == 0)
-		use_pwd(list_env);
+		use_pwd();
 	else if (ft_strcmp(line_arraid[x], "export") == 0)
 	{
 		if (!line_arraid[x + 1])
