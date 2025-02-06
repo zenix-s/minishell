@@ -22,25 +22,6 @@
 # define WRITE_END	1
 #define MAX_INPUT_LENGTH 1024
 
-typedef struct s_token
-{
-	char				*content;
-	struct s_token		*next;
-}						t_token;
-
-typedef struct s_env_token
-{
-	char				*key;
-	char				*value;
-	struct s_env_token	*next;
-}						t_env_token;
-
-typedef struct s_shell
-{
-	t_token *tokens;
-	t_env_token *env;
-} t_shell;
-
 typedef enum e_bool
 {
 	FALSE,
@@ -53,6 +34,33 @@ typedef enum e_quote
 	DOUBLE, // Inside double quotes "" $var is expanded
 	SINGLE  // Inside single quotes '' $var is not expanded
 }						t_quote;
+
+typedef enum e_cmd_type
+{
+	BUILT_IN
+} t_cmd_type; 
+
+typedef struct s_token
+{
+	char				*content;
+	t_cmd_type			type;
+	struct s_token		*next;
+}						t_token;
+
+typedef struct s_env_token
+{
+	char				*key;
+	char				*value;
+	struct s_env_token	*next;
+}						t_env_token;
+
+typedef struct s_shell
+{
+	t_token *tokens; //line 
+	t_env_token *env; //enviroment
+} t_shell;
+
+
 
 // Parser in the middle of the header
 //----------------------------------------------------------------------------//
