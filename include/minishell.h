@@ -80,8 +80,10 @@ void					use_build(char *line, t_token *list_env);
 
 //Builds 
 //  select
-void				select_all(char *line, t_token *list_env);
-void				select_build(char **line_arraid, t_token *list_env, int x);
+void				select_all(t_shell **shell);
+//void				select_build(t_shell **shell, char **line_arraid);
+void				select_build(char **line_arraid);
+
 void				execute_command(char **line_arraid, t_token *list_env);
 
 //redirect
