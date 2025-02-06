@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-void	here_doc(char **line_arraid, char *oldline)
+void	foo_here_doc(char **line_arraid)
 {
 	int		x;
 	char	*line;

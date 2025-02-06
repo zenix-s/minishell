@@ -14,7 +14,7 @@ void	main_loop(t_token *list_env)
 		{
 			if (strlen(line) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
-			select_all(line, list_env, 0);
+			select_all(line, list_env);
 			add_history(line);
 			//ft_init(line); 
 		}

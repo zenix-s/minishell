@@ -1,48 +1,6 @@
 
 #include "../../include/minishell.h"
 
-/*
-void	first_children(int *fd, int pid1, char **arriad, t_token list_env)
-{
-	int	texto;
-
-	if (pid < 0)
-		ft_error("fork:");
-	if (pid1 == 0)
-	{
-		close(fd[READ_END]);
-		texto = ft_open(argv[1], 1);
-
-
-	}
-}
-*/
-
-/**
- @ fd[2] ->contiene dos enteros ( READ_END and WRITE_END)
- @ pidx  ->almacena identificadores de proceso PID
-*/
-/*
-void	pipex(char **line_arraid, t_token *list_env)
-{
-	int		fd[2];
-	pid_t	pid1;
-	pid_t	pid2;
-
-	if (pipe(fd) == -1)
-		ft_error("pipe");
-	pid1 = fork();
-	ft_first_children(fd, pid1, argv, envp);
-	pid2 = fork();
-	//ft_second_children(fd, pid2, argv, envp);
-	close(fd[READ_END]);
-	close(fd[WRITE_END]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-	//exit(1);
-	exe(line_arraid[0], list_env);
-}
-*/
 
 /*
 *used to parse a command line and execute the corresponding built-in function.
@@ -50,44 +8,45 @@ void	pipex(char **line_arraid, t_token *list_env)
 *it attempts to execute the command as an external program.
 */
 
-void	select_all(char *line, t_token *list_env, int count)
+//esto bien, pero necesitas que sea el comando como tal 
+void	select_all(char *line, t_token *list_env)
 {
 	char	**line_arraid;
 
-	count++;
 	line_arraid = ft_split(line, ' ');
-	if (line_arraid)
+	if (line_arraid[0])
 	{
 		if (ft_strcmp(line_arraid[0], "<<") == 0)
-			here_doc(line_arraid, line);
+			foo_here_doc(line_arraid);
+		else if (line_arraid[1] && ft_strcmp(line_arraid[1], "|") == 0)
+			pipex(line_arraid, list_env);
 		else
-			select_build(line_arraid, list_env);
+			select_build(line_arraid, list_env, 0);
 		ft_free(line_arraid);
 	}
 }
 
 //el exit seguramente tenga que hacer mas cosas
-
-void	select_build(char **line_arraid, t_token *list_env)
+void	select_build(char **line_arraid, t_token *list_env, int x)
 {
-	if (line_arraid[1] && ft_strcmp(line_arraid[0], "echo") == 0)
+	if (ft_strcmp(line_arraid[x], "echo") == 0)
 		use_echo(list_env, line_arraid);
-	else if (ft_strcmp(line_arraid[0], "cd") == 0)
+	else if (ft_strcmp(line_arraid[x], "cd") == 0)
 		use_cd(&list_env, line_arraid);
-	else if (ft_strcmp(line_arraid[0], "pwd") == 0)
+	else if (ft_strcmp(line_arraid[x], "pwd") == 0)
 		use_pwd(list_env);
-	else if (ft_strcmp(line_arraid[0], "export") == 0)
+	else if (ft_strcmp(line_arraid[x], "export") == 0)
 	{
-		if (!line_arraid[1])
+		if (!line_arraid[x + 1])
 			use_env(list_env);
 		else
 			use_export(&list_env, line_arraid);
 	}
-	else if (ft_strcmp(line_arraid[0], "unset") == 0)
+	else if (ft_strcmp(line_arraid[x], "unset") == 0)
 		use_unset(&list_env, line_arraid);
-	else if (ft_strcmp(line_arraid[0], "env") == 0)
+	else if (ft_strcmp(line_arraid[x], "env") == 0)
 		use_env(list_env);
-	else if (ft_strcmp(line_arraid[0], "exit") == 0)
+	else if (ft_strcmp(line_arraid[x], "exit") == 0)
 		exit(0);
 	else
 		execute_command(line_arraid, list_env);

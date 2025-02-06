@@ -48,12 +48,12 @@ void				main_loop(t_token *list_env);
 
 //Builds 
 //  select
-void				select_all(char *line, t_token *list_env, int count);
-void				select_build(char **line_arraid, t_token *list_env);
+void				select_all(char *line, t_token *list_env);
+void				select_build(char **line_arraid, t_token *list_env, int x);
 void				execute_command(char **line_arraid, t_token *list_env);
 
 //redirect
-void				here_doc(char **line_arraid, char *oldline);
+void				foo_here_doc(char **line_arraid);
 //expecific comand
 void				use_unset(t_token **list_env, char **line_arraid);
 void				use_env(t_token *list_env);
@@ -79,9 +79,9 @@ int					env_is_absolute(char **cmd);
 char				*obtain_content(char *search, t_token *list_env);
 void				change_content(t_token **list_env, char *oldcont, char *newcont);
 //pipex part
-void				pipex(char **line_arraid, t_token *list_env);
-void				first_children(int *fd, int pid1, char **arriad, t_token list_env);
-
+void				pipex(char **line_arraid, t_token *l_env);
+void				f_child(int *fd, int pid1, char **l_arriad, t_token *l_env);
+void				s_child(int *fd, int pid2, char **l_arraid, t_token *l_env);
 //library
 t_token				*ft_lstnew(void *content);
 int					ft_strcmp(const char *s1, const char *s2);
