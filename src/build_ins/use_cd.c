@@ -25,7 +25,6 @@ static int	create_new_rute(char *rute, char *step)
 static int	search_rute(char *line_arraid, int count)
 {
 	char	*rute;
-	char	*aux;
 	char	*cwd;
 	char	**step;
 
@@ -36,7 +35,6 @@ static int	search_rute(char *line_arraid, int count)
 	while (step[count])
 	{
 		rute = getcwd(cwd, 1024);
-		aux = rute;
 		if (create_new_rute(rute, step[count]) == -1)
 		{
 			printf("cd: no such file or directory: %s\n", line_arraid);

@@ -55,7 +55,6 @@ int	manage_unclosed_quotes(char **line)
 void	main_loop(t_shell *shell)
 {
 	char	*line;
-	t_token	*tokens;
 
 	while (1)
 	{
@@ -67,28 +66,29 @@ void	main_loop(t_shell *shell)
 			if (!manage_unclosed_quotes(&line))
 				break ;
 		}
+		shell->tokens = tokenize_line(line, shell->env);
+		print_tokens(shell->tokens);
 		if (line && *line != '\0')
 		{
 			if (strlen(line) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
-//			select_all(line, list_env); shell->tokens
+			select_all(&shell);
 			add_history(line);
 		}
-		tokens = tokenize_line(line, shell->env);
-		print_tokens(tokens);
 //		use_build(shell); //va a explotar
 		free(line);
 	}
 }
-
+/*
 void	print_env(t_env_token *list_env)
 {
 	while (list_env)
 	{
-		printf("[%s]=[%s]\n", list_env->key, list_env->value);
+		printf("%s=%s\n", list_env->key, list_env->value);
 		list_env = list_env->next;
 	}
 }
+*/
 
 int	main(int argc, char *argv[], char **env)
 {
