@@ -78,20 +78,20 @@ void					use_build(char *line, t_token *list_env);
 
 // Builds
 //  select
-void					select_all(t_shell **shell);
-void					select_build(t_shell **shell, char **line_arraid);
-// void				select_build(char **line_arraid);
+void				select_all(t_shell **shell);
+void				select_build(t_shell **shell, char **line_arraid);
 
-void					execute_command(char **line_arraid, t_token *list_env);
 
-// redirect
-void					foo_here_doc(char **line_arraid);
-// expecific comand
-void					use_unset(t_token **list_env, char **line_arraid);
-void					use_pwd(void);
-void					use_export(t_token **list_env, char **line_arraid);
-void					use_echo(t_token *list_env, char **line_arraid);
-void					use_cd(t_token **list_env, char **line_arraid);
+void				execute_command(char **line_arraid, t_token *list_env);
+
+//redirect
+void				foo_here_doc(char **line_arraid);
+//expecific comand
+void				use_unset(t_token **list_env, char **line_arraid);
+void				use_pwd(void);
+void				use_export(t_shell **shell, char **line_arraid);
+void				use_echo(char **line_arraid);
+void				use_cd(t_token **list_env, char **line_arraid);
 
 // except
 void					exe_all(char **command, t_token *list_env);
@@ -101,11 +101,11 @@ void					ft_free(char **lst);
 void					ft_error(char *texto);
 void					head(void);
 
-// utils_build
-t_token					*new_env(t_token *list_env, char **env);
-char					**obtain_env(t_token *list_env);
-int						size_env(char *line_env);
-int						env_is_absolute(char **cmd);
+//utils_build
+t_token				*new_env(t_token *list_env, char **env);
+char				**obtain_env(t_token *list_env);
+//int					size_env(char *line_env);
+int					env_is_absolute(char **cmd);
 
 char					*obtain_content(char *search, t_token *list_env);
 void					change_content(t_token **list_env, char *oldcont,

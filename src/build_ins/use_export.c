@@ -1,53 +1,112 @@
 
 #include "../../include/minishell.h"
 
-//idealmente aqui va a entrar VAR=valor
-//es decir que no coge lo que le des
-//no hace nada si hay comillas sin cerrar, en bash se queda como a la espera por decirlo asi
-						// y luego mete todo a capon
-
-
-static int	remplace(t_token **list_env, char *line)
+static int	remplace(t_env_token **list_env, char *line)
 {
-	t_token	*l_aux;
-	char	*content;
+	t_env_token	*l_aux;
+	char		*aux_line_k;
+	char		*aux_line_v;
 
+	aux_line_k = ft_substr(line, 0, ft_strrint(line, '='));
+	aux_line_v = ft_substr(line, ft_strrint(line, '=') + 1, ft_strlen(line));
 	l_aux = *list_env;
 	while (l_aux)
 	{
-		content = (char *)l_aux->content;
-		if (ft_strncmp(content, line, size_env(content)) == 0)
+		if (ft_strncmp(l_aux->key, aux_line_k, ft_strlen(l_aux->key)) == 0)
 		{
-			free(l_aux->content);
-			l_aux->content = ft_strdup(line);
+			free(l_aux->key);
+			free(l_aux->value);
+			l_aux->key = ft_strdup(aux_line_k);
+			l_aux->value = ft_strdup(aux_line_v);
+			free(aux_line_k);
+			free(aux_line_v);
 			return (0);
 		}
 		l_aux = l_aux->next;
 	}
+	free(aux_line_k);
+	free(aux_line_v);
 	return (1);
 }
-//cuando sergio te pase esto, este comando tiene que quitar las comillas...
-static void	create_var(t_token **list_env, char *line)
-{
-	t_token	*new_node;
 
-	new_node = ft_lstnew(ft_strdup(line));
-	ft_lstadd_back(list_env, new_node);
+static void	create_var(t_env_token **list_env, char *line)
+{
+	t_env_token	*new_node;
+	int			x;
+	int			bool;
+
+	x = 0;
+	bool = 0;
+	while (line[x] && bool == 0)
+	{
+		if (line[x] == '=')
+			bool = 1;
+		x++;
+	}
+	if (bool == 1)
+	{
+		new_node = new_env_token(line);
+		if (!new_node)
+			return ;
+		if (!env_list_add_back(list_env, new_node))
+			return ;
+	}
 }
 
-void	use_export(t_token **list_env, char **line_arraid)
+static char	*prepared(char *line)
+{
+	int		i;
+	int		j;
+	int		length;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	length = ft_strlen(line);
+	result = malloc(length + 1);
+	if (result == NULL)
+	{
+		return (NULL);
+	}
+	while (i < length)
+	{
+		if (line[i] == '\"')
+		{
+			i++;
+		}
+		result[j] = line[i];
+		i++;
+		j++;
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+void	use_export(t_shell **shell, char **line_arraid)
 {
 	int		count;
-	int		value;
+	int		mode;
+	t_shell	*t_aux;
+	char	*real_value;
 
+	t_aux = *shell;
 	count = 1;
 	while (line_arraid[count])
 	{
-		value = remplace(list_env, line_arraid[count]);
-		if (value == 1)
-			create_var(list_env, line_arraid[count]);
+		real_value = prepared(line_arraid[count]);
+		if (real_value != NULL)
+		{
+			mode = remplace(&t_aux->env, real_value);
+			if (mode == 1)
+				create_var(&t_aux->env, real_value);
+			free(real_value);
+		}
+		else
+		{
+			mode = remplace(&t_aux->env, line_arraid[count]);
+			if (mode == 1)
+				create_var(&t_aux->env, line_arraid[count]);
+		}
 		count++;
 	}
-
-//lo de arriba no es del todo asi, tiene el añadido de las funciones de sistema
 }

@@ -10,10 +10,15 @@ De Lucas para Sergi:
 
 
 
+
+
 TO DO LUCAS empezados
 
 -pipex para las redirecciones que esta medio hecho
 -redirecciones
+
+
+-borrar comentarios que no he borrado por pena de use_echo
 
 TO DO de cosas sin empezar 
 

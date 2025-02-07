@@ -67,7 +67,7 @@ static void	obtain_new_oldpwd(t_token **list_env)
 	else
 	{
 		aux = ft_split("FOO OLDPWD FOO", ' ');
-		use_unset (list_env, aux);
+//		use_unset (list_env, aux);
 		ft_free(aux);
 	}
 }
