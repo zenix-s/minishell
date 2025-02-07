@@ -14,8 +14,6 @@
 
 t_env_token	*new_env_token(char *content)
 {
-	char		*key;
-	char		*value;
 	t_env_token	*new_token;
 	char		**split;
 

@@ -2,15 +2,29 @@
 
 De Lucas para Sergi:
 
+--> en seleccionadores o como lo llamemos necesito
+			-comands
+			-cosas que no se ejecuten?
+			-pipex
+			-redirecciones
 
 
- - mas cosas de hablar, te parece que hagamos comentarios paras las funciones para luego poder tener un mejor portfolio aunque luego las tengamos que borrar antes de las correcciones?
 
-TO DO para lucas:
+TO DO LUCAS empezados
 
-- crear lista de env y cuando se cierre todo hay que liberar espacio.
+-pipex para las redirecciones que esta medio hecho
+-redirecciones
 
-- 
+TO DO de cosas sin empezar 
+
+-señales
+-here docks
+
+- TO DO DUDA sobre crear
+
+- funciones de sistema creadas a partir de export sin iguales que ademas se tienen que ver 
+	cuando haces export sin nada mas ....
+
 
 
 # minishell

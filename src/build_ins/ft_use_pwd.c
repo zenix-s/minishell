@@ -1,18 +1,14 @@
 
 #include "../../include/minishell.h"
 
-void	use_pwd(t_token *list_env)
+void	use_pwd(void)
 {
-	char	*aux;
+	char	*result;
+	char	*cwd;
 
-	aux = list_env -> content;
-
-	while (list_env && (ft_strncmp ("PWD", (char*) (aux), 2) != 0))
-	{
-		list_env = list_env->next;
-		aux = list_env -> content;
-	}
-	if (list_env != NULL && ft_strncmp ((char*) (aux), "PWD", 2) == 0)
-		printf ("%s\n",(char*) (list_env->content));
+	cwd = (char *)ft_calloc(1024, sizeof(char));
+	result = getcwd(cwd, 1024);
+	printf ("%s\n", result);
+	free(result);
 }
 
