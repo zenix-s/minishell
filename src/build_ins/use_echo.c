@@ -1,9 +1,7 @@
 
 #include "../../include/minishell.h"
-//TO DO
 
-//los $ encanden el PID la variable, funciona como si no hubiese espacios...
-
+/*
 static void	putvar(char *content)
 {
 	int		count;
@@ -43,25 +41,23 @@ static void	onedolar(t_token *l_aux, char *line)
 		l_aux = l_aux->next;
 	}
 }
-
-void	use_echo(t_token *list_env, char **line_arraid)
+*/
+void	use_echo(char **line_arraid)
 {
-	t_token	*l_aux;
 	int		arg;
+	char	*aux;
 
 	if (ft_strncmp(line_arraid[1], "-n", 1) == 0)
 		arg = 2;
 	else
 		arg = 1;
-	while (line_arraid[arg])
-	{
-		l_aux = list_env;
-		if (line_arraid[arg][0] == '$' && line_arraid[arg][1] != '$')
-			onedolar(l_aux, line_arraid[arg]);
-		else
-			printf("%s ", line_arraid[arg]);
-		arg++;
-	}
+		//l_aux = list_env;
+		//if (line_arraid[arg][0] == '$' && line_arraid[arg][1] != '$')
+		//	onedolar(l_aux, line_arraid[arg]);
+		//else
+	aux = (ft_strtrim(line_arraid[arg], "\""));
+	printf("%s ", aux);
+	free(aux);
 	if (ft_strncmp(line_arraid[1], "-n", 1) != 0)
 		printf("\n");
 }

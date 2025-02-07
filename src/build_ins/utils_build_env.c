@@ -72,7 +72,7 @@ char	**obtain_env(t_token *list_env)
 	}
 	return (env_now);
 }
-
+/*
 //esta funcion entrega el env hasta el = para que se tenga que escribir igual
 int	size_env(char *line_env)
 {
@@ -83,6 +83,7 @@ int	size_env(char *line_env)
 		count++;
 	return (count);
 }
+*/
 
 int	env_is_absolute(char **cmd)
 {

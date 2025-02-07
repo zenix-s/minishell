@@ -1,5 +1,6 @@
 
 #include "../../include/minishell.h"
+/*
 
 static t_token	*prev(t_token **list_env, char *line)
 {
@@ -15,7 +16,6 @@ static t_token	*prev(t_token **list_env, char *line)
 	}
 	return (NULL);
 }
-
 //me da el nodo que estoy buscando para procesar su eliminación
 static t_token	*search(t_token **list_env, char *line)
 {
@@ -60,3 +60,5 @@ void	use_unset(t_token **list_env, char **line_arraid)
 		count++;
 	}
 }
+
+*/
