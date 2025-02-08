@@ -1,5 +1,6 @@
 
 #include "../include/minishell.h"
+#include <stdio.h>
 
 void	print_tokens(t_token *tokens)
 {
@@ -66,7 +67,7 @@ void	main_loop(t_shell *shell)
 			if (!manage_unclosed_quotes(&line))
 				break ;
 		}
-		shell->tokens = tokenize_line(line, shell->env);
+		shell->tokens = tokenize_line(line, shell);
 		print_tokens(shell->tokens);
 		if (line && *line != '\0')
 		{
@@ -76,6 +77,8 @@ void	main_loop(t_shell *shell)
 			add_history(line);
 		}
 		free(line);
+		// free_tokens(shell->tokens); // Hay que liberar la lista de tokens
+		shell->tokens = NULL; // TODO: Liberar la lista de tokens, va a dar leaks
 	}
 }
 

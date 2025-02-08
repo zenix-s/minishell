@@ -11,6 +11,7 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <sys/stat.h>
@@ -60,17 +61,17 @@ typedef struct s_shell
 	t_env_token *env; // enviroment
 }						t_shell;
 
-// Parser in the middle of the header
 //----------------------------------------------------------------------------//
 //                                   PARSER                                   //
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
 
 t_token					*create_token(char *content);
-t_token					*add_token(t_token **head, char *content);
+t_bool					add_token(t_token **head, char *content);
 int						is_separator(const char *line, size_t *sep_len);
-t_token					*tokenize_line(char *line, t_env_token *env);
+t_token					*tokenize_line(char *line, t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
+void					print_tokens(t_token *tokens);
 
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);
@@ -78,20 +79,19 @@ void					use_build(char *line, t_token *list_env);
 
 // Builds
 //  select
-void				select_all(t_shell **shell);
-void				select_build(t_shell **shell, char **line_arraid);
+void					select_all(t_shell **shell);
+void					select_build(t_shell **shell, char **line_arraid);
 
+void					execute_command(char **line_arraid, t_token *list_env);
 
-void				execute_command(char **line_arraid, t_token *list_env);
-
-//redirect
-void				foo_here_doc(char **line_arraid);
-//expecific comand
-void				use_unset(t_token **list_env, char **line_arraid);
-void				use_pwd(void);
-void				use_export(t_shell **shell, char **line_arraid);
-void				use_echo(char **line_arraid);
-void				use_cd(t_token **list_env, char **line_arraid);
+// redirect
+void					foo_here_doc(char **line_arraid);
+// expecific comand
+void					use_unset(t_token **list_env, char **line_arraid);
+void					use_pwd(void);
+void					use_export(t_shell **shell, char **line_arraid);
+void					use_echo(char **line_arraid);
+void					use_cd(t_token **list_env, char **line_arraid);
 
 // except
 void					exe_all(char **command, t_token *list_env);
@@ -101,11 +101,11 @@ void					ft_free(char **lst);
 void					ft_error(char *texto);
 void					head(void);
 
-//utils_build
-t_token				*new_env(t_token *list_env, char **env);
-char				**obtain_env(t_token *list_env);
-//int					size_env(char *line_env);
-int					env_is_absolute(char **cmd);
+// utils_build
+t_token					*new_env(t_token *list_env, char **env);
+char					**obtain_env(t_token *list_env);
+// int					size_env(char *line_env);
+int						env_is_absolute(char **cmd);
 
 char					*obtain_content(char *search, t_token *list_env);
 void					change_content(t_token **list_env, char *oldcont,

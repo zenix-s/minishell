@@ -11,13 +11,69 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+
+// This function is used to trim the leading and trailing spaces from nodes
+// -- echo   "hello   world"  hello -- Should be converted to --echo "hello   world" hello--
+// since i dont want to realloc the memory just move the content to the start of the node and turn the rest of the node to NULL
+
+t_bool	is_parse_space(char c)
+{
+	return (c == ' ' || c == '\t' || c == '\n');
+}
+
+t_bool	trim_node(t_token *token)
+{
+	t_quote	quote_state;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	quote_state = NONE;
+	while (is_parse_space(token->content[i]) && token->content[i] != '\0')
+		i++;
+	while (token->content[i] != '\0')
+	{
+		quote_state = get_quote_type(quote_state, token->content[i]);
+		if (quote_state == NONE && is_parse_space(token->content[i]))
+		{
+			if (j > 0 && token->content[j - 1] != ' ')
+				token->content[j++] = ' ';
+			while (is_parse_space(token->content[i]))
+				i++;
+		}
+		else
+			token->content[j++] = token->content[i++];
+	}
+	while (j > 0 && is_parse_space(token->content[j - 1]))
+		j--;
+	token->content[j] = '\0';
+	return (TRUE);
+}
+
+t_bool	trim_nodes(t_shell *shell)
+{
+	t_token	*current;
+
+	current = shell->tokens;
+	while (current)
+	{
+		if (!trim_node(current))
+			return (FALSE);
+		current = current->next;
+	}
+	return (TRUE);
+}
 
 char	*expand_env_var(const char *line, uint64_t *i, const t_env_token *env)
 {
-	int		len;
-	char	*var_name;
-	char	*value;
-	int		start;
+	uint64_t	len;
+	char		*var_name;
+	char		*value;
+	uint64_t	start;
 
 	start = *i + 1;
 	len = 0;
@@ -34,81 +90,143 @@ char	*expand_env_var(const char *line, uint64_t *i, const t_env_token *env)
 	return (value);
 }
 
-t_token	*tokenize_line(char *line, t_env_token *env)
+typedef struct s_expand_env_state
 {
-	t_token		*tokens;
-	uint64_t	i;
-	char		buffer[1024];
-	uint64_t	buf_index;
-	t_quote		quote_state;
-	int			consecutive_space;
 	uint64_t	len;
-	char		*env_value;
+	char		*var_name;
+	char		*value;
+	uint64_t	start;
+	char		new_content[1024];
+	uint64_t	i;
+	t_quote		quote_state;
+}				t_expand_env_state;
 
-	tokens = NULL;
-	i = 0;
-	buf_index = 0;
-	quote_state = NONE;
-	consecutive_space = 0;
-	len = 0;
-	while (line[i])
+t_bool	expand_env_token(t_token *token, t_env_token *env)
+{
+	t_expand_env_state	state;
+
+	state.start = 0;
+	state.len = 0;
+	state.i = 0;
+	state.quote_state = NONE;
+	while (token->content[state.start])
 	{
-		if (line[i] == '"' && quote_state != SINGLE)
+		state.quote_state = get_quote_type(state.quote_state,
+				token->content[state.start]);
+		if (token->content[state.start] == '$' && state.quote_state != SINGLE)
 		{
-			quote_state = get_quote_type(quote_state, line[i]);
-			buffer[buf_index++] = line[i++];
-		}
-		else if (line[i] == '\'' && quote_state != DOUBLE)
-		{
-			quote_state = get_quote_type(quote_state, line[i]);
-			buffer[buf_index++] = line[i++];
-		}
-		else if (line[i] == '$' && quote_state != SINGLE)
-		{
-			env_value = expand_env_var(line, &i, env);
-			if (env_value)
+			state.start++;
+			if (!ft_isalpha(token->content[state.start])
+				&& token->content[state.start] != '_')
 			{
-				while (*env_value)
-					buffer[buf_index++] = *env_value++;
-			}
-			else
-			{
-				buffer[buf_index++] = line[i++];
-			}
-		}
-		else if (quote_state == NONE && is_separator(&line[i], &len))
-		{
-			if (buf_index > 0)
-			{
-				buffer[buf_index] = '\0';
-				add_token(&tokens, buffer);
-				buf_index = 0;
-			}
-			ft_strncpy(buffer, &line[i], len);
-			buffer[len] = '\0';
-			add_token(&tokens, buffer);
-			i += len;
-		}
-		else
-		{
-			if ((line[i] == ' ' || line[i] == '\t') && quote_state == NONE)
-			{
-				if (consecutive_space == 0)
-				{
-					buffer[buf_index++] = ' ';
-					consecutive_space = 1;
-				}
-				i++;
+				state.new_content[state.i++] = '$';
 				continue ;
 			}
-			consecutive_space = 0;
-			buffer[buf_index++] = line[i++];
+			while (ft_isalnum(token->content[state.start + state.len])
+				|| token->content[state.start + state.len] == '_')
+				state.len++;
+			state.var_name = ft_strndup(&token->content[state.start],
+					state.len);
+			if (!state.var_name)
+				return (FALSE);
+			state.value = get_env_value(env, state.var_name);
+			free(state.var_name);
+			if (state.value)
+				while (*state.value)
+					state.new_content[state.i++] = *state.value++;
+			state.start += state.len;
+			state.len = 0;
 		}
+		else
+			state.new_content[state.i++] = token->content[state.start++];
 	}
-	if (buf_index > 0)
+	state.new_content[state.i] = '\0';
+	free(token->content);
+	token->content = ft_strdup(state.new_content);
+	if (!token->content)
+		return (FALSE);
+	return (TRUE);
+}
+
+t_bool	expand_env_tokens(t_shell *shell)
+{
+	t_token		*current;
+	t_env_token	*env;
+
+	current = shell->tokens;
+	env = shell->env;
+	while (current)
 	{
-		buffer[buf_index] = '\0';
-		add_token(&tokens, buffer);
+		if (!expand_env_token(current, env))
+			return (FALSE);
+		current = current->next;
 	}
-	return (tokens);
+	return (TRUE);
+}
+
+typedef struct s_parse_state
+{
+	t_quote		quote_state;
+	uint64_t	i;
+	uint64_t	buf_index;
+	char		buffer[1024];
+	uint64_t	len;
+}				t_parse_state;
+
+t_parse_state	*init_parse_state(void)
+{
+	t_parse_state	*state;
+
+	state = (t_parse_state *)malloc(sizeof(t_parse_state));
+	if (!state)
+		return (NULL);
+	state->quote_state = NONE;
+	state->i = 0;
+	state->buf_index = 0;
+	state->len = 0;
+	return (state);
+}
+
+t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
+{
+	state->quote_state = get_quote_type(state->quote_state, line[state->i]);
+	if (state->quote_state == NONE && is_separator(&line[state->i],
+			&state->len))
+	{
+		if (state->buf_index > 0)
+		{
+			state->buffer[state->buf_index] = '\0';
+			if (!add_token(&(shell->tokens), state->buffer))
+				return (FALSE);
+			state->buf_index = 0;
+		}
+		ft_strncpy(state->buffer, &line[state->i], state->len);
+		state->buffer[state->len] = '\0';
+		if (!add_token(&(shell->tokens), state->buffer))
+			return (FALSE);
+		state->i += state->len;
+	}
+	else
+		state->buffer[state->buf_index++] = line[state->i++];
+	return (TRUE);
+}
+
+t_token	*tokenize_line(char *line, t_shell *shell)
+{
+	t_parse_state	*state;
+
+	state = init_parse_state();
+	while (line[state->i])
+	{
+		if (!sub_tokenize(state, line, shell))
+			return (NULL);
+	}
+	if (state->buf_index > 0)
+	{
+		state->buffer[state->buf_index] = '\0';
+		add_token(&(shell->tokens), state->buffer);
+	}
+	expand_env_tokens(shell);
+	trim_nodes(shell);
+	return (shell->tokens);
 }

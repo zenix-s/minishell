@@ -19,7 +19,12 @@ t_token	*create_token(char *content)
 	new_token = (t_token *)malloc(sizeof(t_token));
 	if (!new_token)
 		return (NULL);
-	new_token->content = ft_strduptrim(content);
+	new_token->content = ft_strdup(content);
+	if (!new_token->content)
+	{
+		free(new_token);
+		return (NULL);
+	}
 	new_token->next = NULL;
 	return (new_token);
 }
