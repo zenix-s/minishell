@@ -8,7 +8,7 @@ static char	*search(char *object, char **command)
 	char	*finish;
 	char	*temp;
 
-	path = ft_split(object + 5, ':');
+	path = ft_split(object, ':');
 	cont = 0;
 	while (path[cont])
 	{
@@ -29,6 +29,7 @@ static char	*search(char *object, char **command)
 	exit(1);
 	return (NULL);
 }
+
 char	**obtain_env(t_env_token *list_env)
 {
 	int		aux;
@@ -77,7 +78,7 @@ void	exe_all(char **command, t_env_token *list_env)
 				path = list_env->value;
 			list_env = list_env->next;
 		}
-		path = search(path, command); //
+		path = search(path, command);
 	}
 	execve(path, command, env_now);
 	free(path);

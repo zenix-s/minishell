@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
+/*
 static int	create_new_rute(char *rute, char *step)
 {
 	char	*aux;
@@ -32,7 +32,8 @@ static int	create_new_rute(char *rute, char *step)
 	free(rute);
 	return (1);
 }
-
+*/
+/*
 static int	search_rute(char *line_arraid, int count)
 {
 	char	*rute;
@@ -59,7 +60,8 @@ static int	search_rute(char *line_arraid, int count)
 	ft_free(step);
 	return (1);
 }
-
+*/
+/*
 static void	obtain_new_oldpwd(t_token **list_env)
 {
 	char	*new_oldpwd;
@@ -82,41 +84,45 @@ static void	obtain_new_oldpwd(t_token **list_env)
 		ft_free(aux);
 	}
 }
+*/
 
-static void	go_home(t_token **list_env)
+static void	go_home(t_env_token **list_env)
 {
-	t_token	*l_aux;
-	char	*home;
-	char	*aux;
+	t_env_token	*l_aux;
+	char		*home;
 
 	l_aux = *list_env;
-	home = obtain_content("HOME=", l_aux);
+	home = NULL;
+	while (l_aux)
+	{
+		if (ft_strcmp(l_aux->key, "HOME") == 0)
+			home = l_aux->value;
+		l_aux = l_aux->next;
+	}
 	if (!home)
 		printf("HOME not set\n");
 	else
 	{
-		home = ft_substr(home, 5, ft_strlen(home));
+		l_aux = *list_env;
 		chdir(home);
-		aux = ft_strjoin("PWD=", home);
-		change_content(&l_aux, "PWD=", aux);
-		free(home);
-		free(aux);
+		change_content(&l_aux, "PWD=", home);
 	}
 }
 
-void	use_cd(t_token **list_env, char **line_arraid)
+void	use_cd(t_env_token **list_env, char **line_arraid)
 {
-	char	*pwd;
-	t_token	*l_aux;
-	char	*aux;
-	char	*new_pwd;
-	char	*cwd;
+	char		*pwd;
+	t_env_token	*l_aux;
+//	char		*aux;
+//	char		*new_pwd;
+	char		*cwd;
 
 	l_aux = *list_env;
 	pwd = obtain_content("PWD=", l_aux);
 	cwd = (char *)ft_calloc(1024, sizeof(char));
 	if (!line_arraid[1])
 		go_home(&l_aux);
+	/*
 	else
 	{
 		if (search_rute(line_arraid[1], 0) == -1)
@@ -135,4 +141,6 @@ void	use_cd(t_token **list_env, char **line_arraid)
 			free(new_pwd);
 		}
 	}
+	*/
+	free(cwd);
 }
