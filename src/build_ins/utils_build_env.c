@@ -1,29 +1,8 @@
 
 #include "../../include/minishell.h"
 
-char	*shell_level(char *var)
-{
-	char	**level;
-	int		number;
-	char	*aux_n;
-	char	*result;
-	char	*foo;
 
-	level = ft_split(var, '=');
-	number = ft_atoi(level[1]);
-	number++;
-
-	aux_n = ft_itoa(number);
-	foo = ft_strjoin(level[0], "=");
-	result = ft_strjoin(foo, aux_n);
-	free(foo);
-	free(aux_n);
-	ft_free(level);
-	return (result);
-}
-
-
-//line 43, 44 is a baby of this function
+/*
 t_token	*new_env(t_token *list_env, char **env)
 {
 	int		count;
@@ -50,11 +29,11 @@ t_token	*new_env(t_token *list_env, char **env)
 	}
 	return (list_env);
 }
+*/
 /*
 Esta funcion devuelve el env despues
 de todas las ejecuciones hasta el momento como arraid
 */
-
 char	**obtain_env(t_token *list_env)
 {
 	int		aux;

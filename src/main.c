@@ -79,16 +79,6 @@ void	main_loop(t_shell *shell)
 		free(line);
 	}
 }
-/*
-void	print_env(t_env_token *list_env)
-{
-	while (list_env)
-	{
-		printf("%s=%s\n", list_env->key, list_env->value);
-		list_env = list_env->next;
-	}
-}
-*/
 
 int	main(int argc, char *argv[], char **env)
 {
