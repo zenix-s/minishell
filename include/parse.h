@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_parser.c                                      :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,29 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#ifndef PARSE_H
+# define PARSE_H
 
-char	*echo_parser(char *line)
+# include "minishell.h"
+
+typedef struct s_parse_state
 {
-	char	*new_line;
-	t_quote	in_quotes;
-	size_t	i;
-	size_t	j;
+	t_quote		quote_state;
+	uint64_t	i;
+	uint64_t	buf_index;
+	char		buffer[1024];
+	uint64_t	len;
+}				t_parse_state;
 
-	in_quotes = 0;
-	i = 0;
-	j = 0;
-	new_line = (char *)malloc(sizeof(char) * (ft_strlen(line) + 1));
-	if (!new_line)
-		return (NULL);
-	while (line[i])
-	{
-		in_quotes = get_quote_type(in_quotes, line[i]);
-		if (line[i] == ' ' && in_quotes == NONE && i > 0 && line[i - 1] != ' ')
-			new_line[j++] = ' ';
-		else
-			new_line[j++] = line[i];
-	}
-	new_line[j] = '\0';
-	return (new_line);
-}
+typedef struct s_expand_env_state
+{
+	uint64_t	len;
+	char		*var_name;
+	char		*value;
+	uint64_t	start;
+	char		new_content[1024];
+	uint64_t	i;
+	t_quote		quote_state;
+}				t_expand_env_state;
+
+t_bool			is_parse_space(char c);
+t_bool			expand_env_tokens(t_shell *shell);
+t_bool			trim_nodes(t_shell *shell);
+t_token			*create_token(char *content);
+t_bool			add_token(t_token **head, char *content);
+int				is_separator(const char *line, size_t *sep_len);
+
+#endif

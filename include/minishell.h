@@ -66,9 +66,6 @@ typedef struct s_shell
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
 
-t_token					*create_token(char *content);
-t_bool					add_token(t_token **head, char *content);
-int						is_separator(const char *line, size_t *sep_len);
 t_token					*tokenize_line(char *line, t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);

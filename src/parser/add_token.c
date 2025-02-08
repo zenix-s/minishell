@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../include/parse.h"
 
 t_bool	add_token(t_token **head, char *content)
 {

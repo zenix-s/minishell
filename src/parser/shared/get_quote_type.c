@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_parser.c                                      :+:      :+:    :+:   */
+/*   get_quote_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,27 +12,21 @@
 
 #include "../../../include/minishell.h"
 
-char	*echo_parser(char *line)
+t_quote	get_quote_type(t_quote quote_state, char c)
 {
-	char	*new_line;
-	t_quote	in_quotes;
-	size_t	i;
-	size_t	j;
-
-	in_quotes = 0;
-	i = 0;
-	j = 0;
-	new_line = (char *)malloc(sizeof(char) * (ft_strlen(line) + 1));
-	if (!new_line)
-		return (NULL);
-	while (line[i])
+	if (c == '"' && quote_state != SINGLE)
 	{
-		in_quotes = get_quote_type(in_quotes, line[i]);
-		if (line[i] == ' ' && in_quotes == NONE && i > 0 && line[i - 1] != ' ')
-			new_line[j++] = ' ';
+		if (quote_state == DOUBLE)
+			quote_state = NONE;
 		else
-			new_line[j++] = line[i];
+			quote_state = DOUBLE;
 	}
-	new_line[j] = '\0';
-	return (new_line);
+	else if (c == '\'' && quote_state != DOUBLE)
+	{
+		if (quote_state == SINGLE)
+			quote_state = NONE;
+		else
+			quote_state = SINGLE;
+	}
+	return (quote_state);
 }
