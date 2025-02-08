@@ -72,23 +72,34 @@ void	main_loop(t_shell *shell)
 		{
 			if (strlen(line) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
-			select_all(&shell);
+			// select_all(&shell);
 			add_history(line);
 		}
-//		use_build(shell); //va a explotar
 		free(line);
 	}
 }
-/*
-void	print_env(t_env_token *list_env)
+
+static void	signal_handler(int sig, siginfo_t *info, void *context)
 {
-	while (list_env)
-	{
-		printf("%s=%s\n", list_env->key, list_env->value);
-		list_env = list_env->next;
-	}
+	if (sig == SIGQUIT)
+		printf("Sigquit received: %d\n", sig);
+	if (sig == SIGINT)
+		printf("Sigint received: %d\n", sig);
+	(void)context;
+	(void)info;
 }
-*/
+
+static void	init_sigaction(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_sigaction = &signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaction(SIGQUIT, &sa, 0);
+	sigaction(SIGINT, &sa, 0);
+}
 
 int	main(int argc, char *argv[], char **env)
 {
@@ -96,6 +107,7 @@ int	main(int argc, char *argv[], char **env)
 
 	(void)argc;
 	(void)argv;
+	init_sigaction();
 	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
