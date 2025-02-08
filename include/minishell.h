@@ -84,7 +84,7 @@ void				select_all(t_shell **shell);
 void				select_build(t_shell **shell, char **line_arraid);
 
 
-void				execute_command(char **line_arraid, t_token *list_env);
+void				execute_command(char **line_arraid, t_env_token *list_env);
 
 //redirect
 void				foo_here_doc(char **line_arraid);
@@ -96,7 +96,7 @@ void				use_echo(char **line_arraid);
 void				use_cd(t_token **list_env, char **line_arraid);
 
 //except
-void				exe_all(char **command, t_token *list_env);
+void				exe_all(char **command, t_env_token *list_env);
 
 //utils
 void				ft_free(char **lst);
@@ -105,7 +105,7 @@ void				head(void);
 
 //utils_build
 t_token				*new_env(t_token *list_env, char **env);
-char				**obtain_env(t_token *list_env);
+char				**obtain_env(t_env_token *list_env);
 //int					size_env(char *line_env);
 int					env_is_absolute(char **cmd);
 
@@ -136,7 +136,7 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				**ft_split(char const *s, char c);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 void				ft_lstdelone(t_token *lst, void (*del)(void*));
-int					ft_lstsize(t_token *lst);
+int					ft_lstsize(t_env_token *lst);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strjoin(char const *s1, char const *s2);
 int					ft_atoi(const char *str);

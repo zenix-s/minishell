@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   select_build.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/08 19:27:34 by lortega-          #+#    #+#             */
+/*   Updated: 2025/02/08 19:27:44 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -59,8 +70,8 @@ void	select_build(t_shell **shell, char **line_arraid)
 //		use_cd(&list_env, line_arraid);
 	else if (ft_strcmp(line_arraid[0], "exit") == 0)
 		exit(0);
-//	else
-//		execute_command(line_arraid, list_env);
+	else
+		execute_command(line_arraid, aux->env);
 }
 
 

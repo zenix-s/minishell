@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_build_env.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/08 19:33:35 by lortega-          #+#    #+#             */
+/*   Updated: 2025/02/08 19:33:36 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../../include/minishell.h"
-
 
 /*
 t_token	*new_env(t_token *list_env, char **env)
@@ -34,23 +45,7 @@ t_token	*new_env(t_token *list_env, char **env)
 Esta funcion devuelve el env despues
 de todas las ejecuciones hasta el momento como arraid
 */
-char	**obtain_env(t_token *list_env)
-{
-	int		aux;
-	int		x;
-	char	**env_now;
 
-	x = 0;
-	aux = ft_lstsize(list_env);
-	env_now = ft_calloc(aux + 1, sizeof(char *));
-	while (list_env)
-	{
-		env_now[x] = ft_strdup((char *)list_env->content);
-		list_env = list_env->next;
-		x++;
-	}
-	return (env_now);
-}
 /*
 //esta funcion entrega el env hasta el = para que se tenga que escribir igual
 int	size_env(char *line_env)
