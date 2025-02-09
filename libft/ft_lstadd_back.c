@@ -1,7 +1,7 @@
 
 #include "../include/minishell.h"
 
-void	ft_lstadd_back(t_token **lst, t_token *new)
+void	ft_lstadd_back(t_token **lst, t_token *new_token)
 {
 	t_token	*temp;
 

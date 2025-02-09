@@ -65,7 +65,6 @@ typedef struct s_shell
 //                                   PARSER                                   //
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
-
 t_token					*tokenize_line(char *line, t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
@@ -113,20 +112,26 @@ void					f_child(int *fd, int pid1, char **l_arriad,
 							t_token *l_env);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_token *l_env);
-// ENV
+
+//----------------------------------------------------------------------------//
+//                                   ENV                                      //
+//----------------------------------------------------------------------------//
 char					*get_env_value(const t_env_token *env, const char *key);
-t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
+t_bool					env_list_add_back(t_env_token **head,
+							t_env_token *new_env);
 char					**split_env(char *env);
 t_env_token				*new_env_token(char *content);
 t_bool					create_list_env(char **env, t_env_token **list_env);
 void					print_env(t_env_token *list_env);
 
-// library
+//----------------------------------------------------------------------------//
+//                                   LIBFT                                    //
+//----------------------------------------------------------------------------//
 t_token					*ft_lstnew(void *content);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t count, size_t size);
 void					ft_bzero(void *s, unsigned int n);
-void					ft_lstadd_back(t_token **lst, t_token *new);
+void					ft_lstadd_back(t_token **lst, t_token *new_token);
 t_token					*ft_lstlast(t_token *lst);
 char					*ft_strdup(char *src);
 size_t					ft_strlen(const char *s);
