@@ -13,7 +13,7 @@
 #include "../../include/minishell.h"
 #include "../../include/parse.h"
 
-t_parse_state	*init_parse_state(void)
+static t_parse_state	*init_parse_state(void)
 {
 	t_parse_state	*state;
 
@@ -27,7 +27,7 @@ t_parse_state	*init_parse_state(void)
 	return (state);
 }
 
-t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
+static t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
 {
 	state->quote_state = get_quote_type(state->quote_state, line[state->i]);
 	if (state->quote_state == NONE && is_separator(&line[state->i],
@@ -66,6 +66,7 @@ t_token	*tokenize_line(char *line, t_shell *shell)
 		state->buffer[state->buf_index] = '\0';
 		add_token(&(shell->tokens), state->buffer);
 	}
+	free(state);
 	expand_env_tokens(shell);
 	trim_nodes(shell);
 	return (shell->tokens);

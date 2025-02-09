@@ -12,6 +12,12 @@
 
 #include "../../../include/parse.h"
 
+static void	skip_spaces(const char *content, int *i)
+{
+	while (is_parse_space(content[*i]) && content[*i] != '\0')
+		(*i)++;
+}
+
 static t_bool	trim_node(t_token *token)
 {
 	t_quote	quote_state;
@@ -21,8 +27,7 @@ static t_bool	trim_node(t_token *token)
 	i = 0;
 	j = 0;
 	quote_state = NONE;
-	while (is_parse_space(token->content[i]) && token->content[i] != '\0')
-		i++;
+	skip_spaces(token->content, &i);
 	while (token->content[i] != '\0')
 	{
 		quote_state = get_quote_type(quote_state, token->content[i]);
@@ -30,8 +35,7 @@ static t_bool	trim_node(t_token *token)
 		{
 			if (j > 0 && token->content[j - 1] != ' ')
 				token->content[j++] = ' ';
-			while (is_parse_space(token->content[i]))
-				i++;
+			skip_spaces(token->content, &i);
 		}
 		else
 			token->content[j++] = token->content[i++];

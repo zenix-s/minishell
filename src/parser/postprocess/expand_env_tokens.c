@@ -14,46 +14,44 @@
 
 static t_bool	expand_env_token(t_token *token, t_env_token *env)
 {
-	t_expand_env_state	state;
+	t_expand_env_state	st;
 
-	state.start = 0;
-	state.len = 0;
-	state.i = 0;
-	state.quote_state = NONE;
-	while (token->content[state.start])
+	st.start = 0;
+	st.len = 0;
+	st.i = 0;
+	st.quote = NONE;
+	while (token->content[st.start] != '\0')
 	{
-		state.quote_state = get_quote_type(state.quote_state,
-				token->content[state.start]);
-		if (token->content[state.start] == '$' && state.quote_state != SINGLE)
+		st.quote = get_quote_type(st.quote, token->content[st.start]);
+		if (token->content[st.start] == '$' && st.quote != SINGLE)
 		{
-			state.start++;
-			if (!ft_isalpha(token->content[state.start])
-				&& token->content[state.start] != '_')
+			st.start++;
+			if (!ft_isalpha(token->content[st.start])
+				&& token->content[st.start] != '_')
 			{
-				state.new_content[state.i++] = '$';
+				st.new_content[st.i++] = '$';
 				continue ;
 			}
-			while (ft_isalnum(token->content[state.start + state.len])
-				|| token->content[state.start + state.len] == '_')
-				state.len++;
-			state.var_name = ft_strndup(&token->content[state.start],
-					state.len);
-			if (!state.var_name)
+			while (ft_isalnum(token->content[st.start + st.len])
+				|| token->content[st.start + st.len] == '_')
+				st.len++;
+			st.var_name = ft_strndup(&token->content[st.start], st.len);
+			if (!st.var_name)
 				return (FALSE);
-			state.value = get_env_value(env, state.var_name);
-			free(state.var_name);
-			if (state.value)
-				while (*state.value)
-					state.new_content[state.i++] = *state.value++;
-			state.start += state.len;
-			state.len = 0;
+			st.value = get_env_value(env, st.var_name);
+			free(st.var_name);
+			if (st.value)
+				while (*st.value)
+					st.new_content[st.i++] = *st.value++;
+			st.start += st.len;
+			st.len = 0;
 		}
 		else
-			state.new_content[state.i++] = token->content[state.start++];
+			st.new_content[st.i++] = token->content[st.start++];
 	}
-	state.new_content[state.i] = '\0';
+	st.new_content[st.i] = '\0';
 	free(token->content);
-	token->content = ft_strdup(state.new_content);
+	token->content = ft_strdup(st.new_content);
 	if (!token->content)
 		return (FALSE);
 	return (TRUE);

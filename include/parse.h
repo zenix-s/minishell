@@ -32,7 +32,7 @@ typedef struct s_expand_env_state
 	uint64_t	start;
 	char		new_content[1024];
 	uint64_t	i;
-	t_quote		quote_state;
+	t_quote		quote;
 }				t_expand_env_state;
 
 t_bool			is_parse_space(char c);
