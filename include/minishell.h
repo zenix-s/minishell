@@ -38,7 +38,10 @@ typedef enum e_quote
 
 typedef enum e_cmd_type
 {
-	BUILT_IN
+	BUILT_IN,
+	REDIRECT,
+	PIPE,
+	EXE
 }						t_cmd_type;
 
 typedef struct s_token
@@ -62,12 +65,20 @@ typedef struct s_shell
 }						t_shell;
 
 //----------------------------------------------------------------------------//
-//                                   PARSER                                   //
+//									CLEAN
+//----------------------------------------------------------------------------//
+void					free_tokens(t_token *tokens);
+void					free_env_tokens(t_env_token *env);
+void					free_shell(t_shell *shell);
+
+//----------------------------------------------------------------------------//
+//                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
 t_token					*tokenize_line(char *line, t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
+void					free_tokens(t_token *tokens);
 
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);

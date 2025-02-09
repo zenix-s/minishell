@@ -10,7 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/parse.h"
+#include "../../../../include/parse.h"
+
+static t_bool	is_valid_init_char(char c)
+{
+	return (ft_isalpha(c) || c == '_');
+}
+
+static t_bool	process_variable_expansion(
+	t_expand_env_state *st,
+	t_token *token,
+	t_env_token *env)
+{
+	st->start++;
+	if (!is_valid_init_char(token->content[st->start]))
+	{
+		st->new_content[st->i++] = '$';
+		return (TRUE);
+	}
+	st->var_name = get_var_name(token->content, &st->start);
+	if (!st->var_name)
+		return (FALSE);
+	st->value = get_env_value(env, st->var_name);
+	free(st->var_name);
+	st->i = expand_variale(st->new_content, st->i, st->value);
+	return (TRUE);
+}
 
 static t_bool	expand_env_token(t_token *token, t_env_token *env)
 {
@@ -25,29 +50,11 @@ static t_bool	expand_env_token(t_token *token, t_env_token *env)
 		st.quote = get_quote_type(st.quote, token->content[st.start]);
 		if (token->content[st.start] == '$' && st.quote != SINGLE)
 		{
-			st.start++;
-			if (!ft_isalpha(token->content[st.start])
-				&& token->content[st.start] != '_')
-			{
-				st.new_content[st.i++] = '$';
-				continue ;
-			}
-			while (ft_isalnum(token->content[st.start + st.len])
-				|| token->content[st.start + st.len] == '_')
-				st.len++;
-			st.var_name = ft_strndup(&token->content[st.start], st.len);
-			if (!st.var_name)
+			if (!process_variable_expansion(&st, token, env))
 				return (FALSE);
-			st.value = get_env_value(env, st.var_name);
-			free(st.var_name);
-			if (st.value)
-				while (*st.value)
-					st.new_content[st.i++] = *st.value++;
-			st.start += st.len;
-			st.len = 0;
+			continue ;
 		}
-		else
-			st.new_content[st.i++] = token->content[st.start++];
+		st.new_content[st.i++] = token->content[st.start++];
 	}
 	st.new_content[st.i] = '\0';
 	free(token->content);

@@ -1,6 +1,9 @@
 
 #include "../include/minishell.h"
 #include <stdio.h>
+#include <stdlib.h>
+
+int			g_signal = 0;
 
 void	print_tokens(t_token *tokens)
 {
@@ -61,7 +64,13 @@ void	main_loop(t_shell *shell)
 	{
 		line = readline("minishell: ");
 		if (!line)
-			break ;
+		{
+			free(line);
+			free_shell(shell);
+			printf("Ctrl + D pressed.\n");
+			// continue ;
+			exit (EXIT_SUCCESS);
+		}
 		while (has_unclosed_quotes(line))
 		{
 			if (!manage_unclosed_quotes(&line))
@@ -77,17 +86,21 @@ void	main_loop(t_shell *shell)
 			add_history(line);
 		}
 		free(line);
-		// free_tokens(shell->tokens); // Hay que liberar la lista de tokens
-		shell->tokens = NULL; // TODO: Liberar la lista de tokens, va a dar leaks
+		free_tokens(shell->tokens); // Hay que liberar la lista de tokens
+		shell->tokens = NULL;
 	}
 }
 
 static void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	if (sig == SIGQUIT)
-		printf("Sigquit received: %d\n", sig);
+	{
+		printf("Ctrl + \\.\n");
+	}
 	if (sig == SIGINT)
-		printf("Sigint received: %d\n", sig);
+	{
+		printf("Ctrl + C.\n");
+	}
 	(void)context;
 	(void)info;
 }
