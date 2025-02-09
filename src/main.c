@@ -1,9 +1,5 @@
 
 #include "../include/minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-int			g_signal = 0;
 
 void	print_tokens(t_token *tokens)
 {
@@ -65,11 +61,8 @@ void	main_loop(t_shell *shell)
 		line = readline("minishell: ");
 		if (!line)
 		{
-			free(line);
 			free_shell(shell);
-			printf("Ctrl + D pressed.\n");
-			// continue ;
-			exit (EXIT_SUCCESS);
+			exit(EXIT_SUCCESS);
 		}
 		while (has_unclosed_quotes(line))
 		{
@@ -86,7 +79,7 @@ void	main_loop(t_shell *shell)
 			add_history(line);
 		}
 		free(line);
-		free_tokens(shell->tokens); // Hay que liberar la lista de tokens
+		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}
 }
@@ -130,4 +123,5 @@ int	main(int argc, char *argv[], char **env)
 	print_env(shell->env);
 	head();
 	main_loop(shell);
+	free_shell(shell);
 }
