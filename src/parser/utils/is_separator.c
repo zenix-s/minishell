@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token.c                                     :+:      :+:    :+:   */
+/*   is_separator.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:03 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:04 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:06 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:06 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parse.h"
+#include "../../../include/parse.h"
 
-t_token	*create_token(char *content)
+int	is_separator(const char *line, size_t *sep_len)
 {
-	t_token	*new_token;
+	const char	*separators[] = {"<<", ">>", "<", ">", "|", NULL};
+	size_t		len;
+	int			i;
 
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (!new_token)
-		return (NULL);
-	new_token->content = ft_strdup(content);
-	if (!new_token->content)
+	i = 0;
+	while (separators[i])
 	{
-		free(new_token);
-		return (NULL);
+		len = ft_strlen(separators[i]);
+		if (ft_strncmp(line, separators[i], len) == 0)
+		{
+			*sep_len = len;
+			return (1);
+		}
+		i++;
 	}
-	new_token->next = NULL;
-	return (new_token);
+	return (0);
 }

@@ -11,6 +11,7 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdint.h>
 # include <stdlib.h>
 # include <sys/stat.h>
@@ -37,7 +38,10 @@ typedef enum e_quote
 
 typedef enum e_cmd_type
 {
-	BUILT_IN
+	BUILT_IN,
+	REDIRECT,
+	PIPE,
+	EXE
 }						t_cmd_type;
 
 typedef struct s_token
@@ -60,17 +64,21 @@ typedef struct s_shell
 	t_env_token *env; // enviroment
 }						t_shell;
 
-// Parser in the middle of the header
 //----------------------------------------------------------------------------//
-//                                   PARSER                                   //
+//									CLEAN
+//----------------------------------------------------------------------------//
+void					free_tokens(t_token *tokens);
+void					free_env_tokens(t_env_token *env);
+void					free_shell(t_shell *shell);
+
+//----------------------------------------------------------------------------//
+//                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
-
-t_token					*create_token(char *content);
-t_token					*add_token(t_token **head, char *content);
-int						is_separator(const char *line, size_t *sep_len);
-t_token					*tokenize_line(char *line, t_env_token *env);
+t_token					*tokenize_line(char *line, t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
+void					print_tokens(t_token *tokens);
+void					free_tokens(t_token *tokens);
 
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);
@@ -78,20 +86,19 @@ void					use_build(char *line, t_token *list_env);
 
 // Builds
 //  select
-void				select_all(t_shell **shell);
-void				select_build(t_shell **shell, char **line_arraid);
+void					select_all(t_shell **shell);
+void					select_build(t_shell **shell, char **line_arraid);
 
+void					execute_command(char **line_arraid, t_token *list_env);
 
-void				execute_command(char **line_arraid, t_token *list_env);
-
-//redirect
-void				foo_here_doc(char **line_arraid);
-//expecific comand
-void				use_unset(t_token **list_env, char **line_arraid);
-void				use_pwd(void);
-void				use_export(t_shell **shell, char **line_arraid);
-void				use_echo(char **line_arraid);
-void				use_cd(t_token **list_env, char **line_arraid);
+// redirect
+void					foo_here_doc(char **line_arraid);
+// expecific comand
+void					use_unset(t_token **list_env, char **line_arraid);
+void					use_pwd(void);
+void					use_export(t_shell **shell, char **line_arraid);
+void					use_echo(char **line_arraid);
+void					use_cd(t_token **list_env, char **line_arraid);
 
 // except
 void					exe_all(char **command, t_token *list_env);
@@ -101,11 +108,11 @@ void					ft_free(char **lst);
 void					ft_error(char *texto);
 void					head(void);
 
-//utils_build
-t_token				*new_env(t_token *list_env, char **env);
-char				**obtain_env(t_token *list_env);
-//int					size_env(char *line_env);
-int					env_is_absolute(char **cmd);
+// utils_build
+t_token					*new_env(t_token *list_env, char **env);
+char					**obtain_env(t_token *list_env);
+// int					size_env(char *line_env);
+int						env_is_absolute(char **cmd);
 
 char					*obtain_content(char *search, t_token *list_env);
 void					change_content(t_token **list_env, char *oldcont,
@@ -116,20 +123,26 @@ void					f_child(int *fd, int pid1, char **l_arriad,
 							t_token *l_env);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_token *l_env);
-// ENV
+
+//----------------------------------------------------------------------------//
+//                                   ENV                                      //
+//----------------------------------------------------------------------------//
 char					*get_env_value(const t_env_token *env, const char *key);
-t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
+t_bool					env_list_add_back(t_env_token **head,
+							t_env_token *new_env);
 char					**split_env(char *env);
 t_env_token				*new_env_token(char *content);
 t_bool					create_list_env(char **env, t_env_token **list_env);
 void					print_env(t_env_token *list_env);
 
-// library
+//----------------------------------------------------------------------------//
+//                                   LIBFT                                    //
+//----------------------------------------------------------------------------//
 t_token					*ft_lstnew(void *content);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t count, size_t size);
 void					ft_bzero(void *s, unsigned int n);
-void					ft_lstadd_back(t_token **lst, t_token *new);
+void					ft_lstadd_back(t_token **lst, t_token *new_token);
 t_token					*ft_lstlast(t_token *lst);
 char					*ft_strdup(char *src);
 size_t					ft_strlen(const char *s);
