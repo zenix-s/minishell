@@ -63,7 +63,7 @@ void	select_build(t_shell **shell, char **line_arraid)
 	else if (ft_strcmp(line_arraid[0], "unset") == 0)
 		use_unset(shell, line_arraid);
 	else if (ft_strcmp(line_arraid[0], "cd") == 0)
-		use_cd(&(*shell)->env, line_arraid);
+		use_cd(&(*shell)->env, line_arraid, shell);
 	else if (ft_strcmp(line_arraid[0], "exit") == 0)
 		exit(0);
 	else

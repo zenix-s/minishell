@@ -93,7 +93,7 @@ void				use_unset(t_shell **shell, char **line_arraid);
 void				use_pwd(void);
 void				use_export(t_shell **shell, char **line_arraid);
 void				use_echo(char **line_arraid);
-void				use_cd(t_env_token **list_env, char **line_arraid);
+void				use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell);
 
 //except
 void				exe_all(char **command, t_env_token *list_env);

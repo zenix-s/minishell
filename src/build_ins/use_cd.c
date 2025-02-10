@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-/*
+
 static int	create_new_rute(char *rute, char *step)
 {
 	char	*aux;
@@ -32,8 +32,8 @@ static int	create_new_rute(char *rute, char *step)
 	free(rute);
 	return (1);
 }
-*/
-/*
+
+
 static int	search_rute(char *line_arraid, int count)
 {
 	char	*rute;
@@ -60,33 +60,26 @@ static int	search_rute(char *line_arraid, int count)
 	ft_free(step);
 	return (1);
 }
-*/
-/*
-static void	obtain_new_oldpwd(t_token **list_env)
+
+static void	obtain_new_oldpwd(t_env_token **list_env, t_shell **shell)
 {
-	char	*new_oldpwd;
-	char	**aux;
-	char	*pwd;
-	t_token	*l_aux;
+	char		**aux;
+	char		*pwd;
+	t_env_token	*l_aux;
 
 	l_aux = *list_env;
-	pwd = obtain_content("PWD=", l_aux);
+	pwd = obtain_content("PWD", l_aux);
 	if (pwd)
-	{
-		new_oldpwd = ft_strjoin("OLD", pwd);
-		change_content(&l_aux, "OLDPWD=", new_oldpwd);
-		free(new_oldpwd);
-	}
+		change_content(list_env, "OLDPWD", pwd);
 	else
 	{
 		aux = ft_split("FOO OLDPWD FOO", ' ');
-//		use_unset (list_env, aux);
+		use_unset (shell, aux);
 		ft_free(aux);
 	}
 }
-*/
 
-static void	go_home(t_env_token **list_env)
+static void	go_home(t_env_token **list_env, t_shell **shell, char *cwd)
 {
 	t_env_token	*l_aux;
 	char		*home;
@@ -105,42 +98,36 @@ static void	go_home(t_env_token **list_env)
 	{
 		l_aux = *list_env;
 		chdir(home);
-		change_content(&l_aux, "PWD=", home);
+		obtain_new_oldpwd(&l_aux, shell);
+		change_content(&l_aux, "PWD", home);
 	}
+	free(cwd);
 }
 
-void	use_cd(t_env_token **list_env, char **line_arraid)
+void	use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell)
 {
 	char		*pwd;
 	t_env_token	*l_aux;
-//	char		*aux;
-//	char		*new_pwd;
 	char		*cwd;
+	char		*new_pwd;
 
-	l_aux = *list_env;
-	pwd = obtain_content("PWD=", l_aux);
+	l_aux = *l_env;
+	pwd = obtain_content("PWD", *l_env);
 	cwd = (char *)ft_calloc(1024, sizeof(char));
 	if (!line_arraid[1])
-		go_home(&l_aux);
-	/*
+		go_home(l_env, shell, cwd);
 	else
 	{
 		if (search_rute(line_arraid[1], 0) == -1)
-		{
-			aux = ft_substr(pwd, 4, ft_strlen(pwd));
-			chdir(aux);
-			free(aux);
-		}
+			chdir(pwd);
 		else
 		{
-			obtain_new_oldpwd(&l_aux);
+			obtain_new_oldpwd(&l_aux, shell);
 			new_pwd = getcwd(cwd, 1024);
-			pwd = ft_strjoin("PWD=", new_pwd);
-			change_content(&l_aux, "PWD=", pwd);
+			pwd = ft_strdup(new_pwd);
+			change_content(&l_aux, "PWD", pwd);
 			free(pwd);
 			free(new_pwd);
 		}
 	}
-	*/
-	free(cwd);
 }

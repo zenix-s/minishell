@@ -29,6 +29,7 @@ char	*obtain_content(char *search, t_env_token *list_env)
 	return (NULL);
 }
 
+//REMEMBER, this function need remove "=" On the call
 void	change_content(t_env_token **list_env, char *key, char *newcont)
 {
 	t_env_token	*l_aux;
