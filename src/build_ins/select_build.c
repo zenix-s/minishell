@@ -26,22 +26,19 @@ void	select_all(t_shell **shell)
 	char	**line_arraid;
 
 	aux = *shell;
-	line_arraid = ft_split(aux->tokens->content, ' ');
-//	printf("%s\n", aux->tokens->content);
-/*
-	if (line_arraid[0])
+	while (aux->tokens)
 	{
+		line_arraid = ft_split(aux->tokens->content, ' ');
+//	printf("%s\n", aux->tokens->content);
 		if (ft_strcmp(line_arraid[0], "<<") == 0)
 			foo_here_doc(line_arraid);
-		else if (line_arraid[1] && ft_strcmp(line_arraid[1], "|") == 0)
-			pipex(line_arraid, list_env);
+		else if (ft_strcmp(line_arraid[0], "|") == 0)
+			pipex(shell);
 		else
-			select_build(line_arraid, list_env, 0);
+			select_build(&aux, line_arraid);
 		ft_free(line_arraid);
+		aux->tokens = aux->tokens->next;
 	}
-*/
-	select_build(&aux, line_arraid);
-	ft_free(line_arraid);
 }
 
 //el exit seguramente tenga que hacer mas cosas

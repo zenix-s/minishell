@@ -112,9 +112,9 @@ int					env_is_absolute(char **cmd);
 char				*obtain_content(char *search, t_env_token *list_env);
 void				change_content(t_env_token **list_env, char *oldcont, char *newcont);
 //pipex part
-void				pipex(char **line_arraid, t_token *l_env);
-void				f_child(int *fd, int pid1, char **l_arriad, t_token *l_env);
-void				s_child(int *fd, int pid2, char **l_arraid, t_token *l_env);
+void				pipex(t_shell **shell);
+void				f_child(int *fd, int pid1, char **l_arraid, t_shell **shell);
+void				s_child(int *fd, int pid2, char **l_arraid, t_shell **shell);
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);
 t_bool					env_list_add_back(t_env_token **head, t_env_token *new);
