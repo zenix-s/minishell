@@ -67,6 +67,7 @@ t_token	*tokenize_line(char *line, t_shell *shell)
 		add_token(&(shell->tokens), state->buffer);
 	}
 	free(state);
+	assign_token_type(shell);
 	expand_env_tokens(shell);
 	trim_nodes(shell);
 	return (shell->tokens);

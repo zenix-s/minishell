@@ -8,7 +8,7 @@ void	print_tokens(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
-		printf("[%s]\n", current->content);
+		printf("[[%d] - [%s]]\n", current->type, current->content);
 		current = current->next;
 	}
 }
