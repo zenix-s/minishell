@@ -10,24 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../include/parse.h"
 
-t_token	*add_token(t_token **head, char *content)
+t_bool	add_token(t_token **head, char *content)
 {
 	t_token	*new_token;
 	t_token	*temp;
 
 	new_token = create_token(content);
 	if (!new_token)
-		return (NULL);
+		return (FALSE);
 	if (!*head)
 	{
 		*head = new_token;
-		return (new_token);
+		return (TRUE);
 	}
 	temp = *head;
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new_token;
-	return (new_token);
+	return (TRUE);
 }
