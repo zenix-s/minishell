@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_nodes_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:43:36 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,16 @@ int	is_in_array(const char *str, const char *array[])
 	return (0);
 }
 
-void	assign_token_type(t_shell *shell)
+void	assign_token_type(t_state_machine *machine)
 {
+	t_shell		*shell;
 	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
 		"exit", NULL};
 	const char	*separators[] = {"<<", ">>", "<", ">", NULL};
 	t_token		*token;
 	char		*first_word;
 
+	shell = (t_shell *)machine->context;
 	token = shell->tokens;
 	while (token)
 	{
@@ -78,4 +80,5 @@ void	assign_token_type(t_shell *shell)
 		free(first_word);
 		token = token->next;
 	}
+	machine->execute = expand_env_tokens;
 }

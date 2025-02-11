@@ -40,9 +40,9 @@ t_token			*create_token(char *content);
 t_bool			add_token(t_token **head, char *content);
 int				is_separator(const char *line, size_t *sep_len);
 
-t_bool			expand_env_tokens(t_shell *shell);
-t_bool			trim_nodes(t_shell *shell);
-void			assign_token_type(t_shell *shell);
+void			expand_env_tokens(t_state_machine *machine);
+void			trim_nodes(t_state_machine *machine);
+void			assign_token_type(t_state_machine *machine);
 
 char			*get_var_name(const char *content, uint64_t *start);
 uint64_t		expand_variale(char *new_content, uint64_t i, char *value);
