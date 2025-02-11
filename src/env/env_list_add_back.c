@@ -12,18 +12,18 @@
 
 #include "../../include/minishell.h"
 
-t_bool	env_list_add_back(t_env_token **head, t_env_token *new)
+t_bool	env_list_add_back(t_env_token **head, t_env_token *new_env)
 {
 	t_env_token	*temp;
 
 	if (!*head)
 	{
-		*head = new;
+		*head = new_env;
 		return (TRUE);
 	}
 	temp = *head;
 	while (temp->next)
 		temp = temp->next;
-	temp->next = new;
+	temp->next = new_env;
 	return (TRUE);
 }
