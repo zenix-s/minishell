@@ -3,7 +3,6 @@
 
 void	s_child(int *fd, int pid2, char **l_arraid, t_shell **shell)
 {
-	int	fd_dest;
 	t_shell	*aux;
 
 	aux = *shell;
@@ -14,18 +13,15 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell **shell)
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
-		fd_dest = open("file.txt", O_CREAT | O_WRONLY |O_APPEND, 0644);
-		dup2(fd_dest, STDOUT_FILENO);
-		close(fd_dest);
 		select_build(&aux, l_arraid);
-		ft_error("exe");
+		//ft_error("exe");
+		exit(-1);
 	}
 }
 
 
 void	f_child(int *fd, int pid1, char **l_arraid, t_shell **shell)
 {
-	int		texto;
 	t_shell	*aux;
 
 	aux = *shell;
@@ -34,55 +30,12 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell **shell)
 	if (pid1 == 0)
 	{
 		close(fd[READ_END]);
-		texto = open("file.txt", O_CREAT | O_WRONLY |O_APPEND, 0644);
-		dup2(texto, STDIN_FILENO);
-		close(texto);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
 		select_build(&aux, l_arraid);
-		ft_error("exe");
+		//ft_error("exe");
+		exit(-1);
 	}
-}
-
-static char	**preline(t_shell **shell)
-{
-	t_token	*aux;
-	t_token	*prev;
-	char	**result;
-
-	aux = (*shell)->tokens;
-	prev = aux;
-	while (aux)
-	{
-		if (ft_strcmp(aux->content, "|") == 0)
-		{
-			result = (ft_split(prev->content, ' '));
-			return (result);
-		}
-		prev = aux;
-		aux = aux->next;
-	}
-	return (NULL);
-}
-
-static char	**postline(t_shell **shell)
-{
-	t_token	*aux;
-	t_token	*prev;
-	char	**result;
-
-	aux = (*shell)->tokens;
-	while (aux)
-	{
-		if (ft_strcmp(aux->content, "|") == 0)
-		{
-			prev = aux->next;
-			result = (ft_split(prev->content, ' '));
-			return (result);
-		}
-		aux = aux->next;
-	}
-	return (NULL);
 }
 
 /*
@@ -110,5 +63,5 @@ void	pipex(t_shell **shell)
 	close(fd[WRITE_END]);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
+//	unlink("file.txt");
 }
-

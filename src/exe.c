@@ -63,6 +63,7 @@ void	exe_all(char **command, t_env_token *list_env)
 	char	*path;
 	char	**env_now;
 
+
 	env_now = obtain_env(list_env);
 	if (env_is_absolute(command) == 1)
 	{

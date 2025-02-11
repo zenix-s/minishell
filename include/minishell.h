@@ -70,7 +70,8 @@ typedef struct s_shell
 void					free_tokens(t_token *tokens);
 void					free_env_tokens(t_env_token *env);
 void					free_shell(t_shell *shell);
-
+void					ft_free(char **lst);
+void					ft_error(char *texto);
 //----------------------------------------------------------------------------//
 //                                   PARSER
 //----------------------------------------------------------------------------//
@@ -82,19 +83,17 @@ void					free_tokens(t_token *tokens);
 
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);
+void					head(void);
 // void				use_unset(char **env, char *line);
 
 // Builds
 //  select
 void					select_all(t_shell **shell);
 void					select_build(t_shell **shell, char **line_arraid);
-
-void					execute_command(char **line_arraid, t_token *list_env);
-
-void				execute_command(char **line_arraid, t_env_token *list_env);
+void					execute_command(char **line_arraid, t_env_token *list_env);
 
 //redirect
-void				foo_here_doc(char **line_arraid);
+void					foo_here_doc(char **line_arraid);
 //expecific comand
 void				use_unset(t_shell **shell, char **line_arraid);
 void				use_pwd(void);
@@ -105,24 +104,25 @@ void				use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell);
 //except
 void				exe_all(char **command, t_env_token *list_env);
 
-// utils_build
-t_token					*new_env(t_token *list_env, char **env);
-char					**obtain_env(t_token *list_env);
-// int					size_env(char *line_env);
-int						env_is_absolute(char **cmd);
-
 //utils_build
 t_token				*new_env(t_token *list_env, char **env);
 char				**obtain_env(t_env_token *list_env);
-//int					size_env(char *line_env);
 int					env_is_absolute(char **cmd);
 
 char				*obtain_content(char *search, t_env_token *list_env);
 void				change_content(t_env_token **list_env, char *oldcont, char *newcont);
+//----------------------------------------------------------------------------//
 //pipex part
+//----------------------------------------------------------------------------//
 void				pipex(t_shell **shell);
 void				f_child(int *fd, int pid1, char **l_arraid, t_shell **shell);
 void				s_child(int *fd, int pid2, char **l_arraid, t_shell **shell);
+char				**preline(t_shell **shell);
+char				**postline(t_shell **shell);
+int					pre_line_int(t_shell **shell);
+int					post_line_int(t_shell **shell);
+
+
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);
 t_bool					env_list_add_back(t_env_token **head,
@@ -151,12 +151,12 @@ char				*ft_strjoin(char const *s1, char const *s2);
 int					ft_atoi(const char *str);
 char				*ft_itoa(int n);
 int					ft_strrint(const char *s, int c);
-char					*ft_strncpy(char *dst, const char *src, size_t len);
-char					*ft_strduptrim(char *src);
-int						ft_strcat(char *dest, const char *src);
-int						ft_strcpy(char *dest, const char *src);
-char					*ft_strndup(const char *s, size_t n);
-int						ft_isalnum(int c);
-int						ft_isalpha(int c);
+char				*ft_strncpy(char *dst, const char *src, size_t len);
+char				*ft_strduptrim(char *src);
+int					ft_strcat(char *dest, const char *src);
+int					ft_strcpy(char *dest, const char *src);
+char				*ft_strndup(const char *s, size_t n);
+int					ft_isalnum(int c);
+int					ft_isalpha(int c);
 
 #endif

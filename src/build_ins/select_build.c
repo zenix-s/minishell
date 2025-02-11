@@ -12,33 +12,36 @@
 
 #include "../../include/minishell.h"
 
-
 /*
 *used to parse a command line and execute the corresponding built-in function.
 *"echo", "pwd", "export", "unset", "env", and "exit" commands.
 *it attempts to execute the command as an external program.
 */
 
-//esto bien, pero necesitas que sea el comando como tal 
+
 void	select_all(t_shell **shell)
 {
 	t_shell	*aux;
+	t_token	*env_aux;
 	char	**line_arraid;
 
-	aux = *shell;
-	while (aux->tokens)
+	env_aux = (*shell)->tokens;
+	while (env_aux)
 	{
-		line_arraid = ft_split(aux->tokens->content, ' ');
-//	printf("%s\n", aux->tokens->content);
-		if (ft_strcmp(line_arraid[0], "<<") == 0)
-			foo_here_doc(line_arraid);
-		else if (ft_strcmp(line_arraid[0], "|") == 0)
-			pipex(shell);
-		else
-			select_build(&aux, line_arraid);
-		ft_free(line_arraid);
-		aux->tokens = aux->tokens->next;
+		if (env_aux->type == PIPE)
+		{
+			if (pre_line_int(shell) == 1 && post_line_int(shell) == 1) //si esto falla tendria que esperar
+				pipex(shell);
+			return ;
+		}
+		env_aux = env_aux->next;
 	}
+	aux = *shell;
+	line_arraid = ft_split(aux->tokens->content, ' ');
+//		if (ft_strcmp(line_arraid[0], "<<") == 0)
+//			foo_here_doc(line_arraid);
+	select_build(&aux, line_arraid);
+	ft_free(line_arraid);
 }
 
 //el exit seguramente tenga que hacer mas cosas
