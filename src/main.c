@@ -70,12 +70,12 @@ void	main_loop(t_shell *shell)
 				break ;
 		}
 		shell->tokens = tokenize_line(line, shell);
-		print_tokens(shell->tokens);
+		//print_tokens(shell->tokens);
 		if (line && *line != '\0')
 		{
 			if (strlen(line) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
-			// select_all(&shell);
+			select_all(&shell);
 			add_history(line);
 		}
 		free(line);
@@ -120,7 +120,7 @@ int	main(int argc, char *argv[], char **env)
 	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
-	print_env(shell->env);
+	//print_env(shell->env);
 	head();
 	main_loop(shell);
 	free_shell(shell);

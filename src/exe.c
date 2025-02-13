@@ -83,4 +83,5 @@ void	exe_all(char **command, t_env_token *list_env)
 	execve(path, command, env_now);
 	free(path);
 	ft_free(env_now);
+	ft_error("exe");
 }
