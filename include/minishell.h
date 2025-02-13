@@ -114,7 +114,9 @@ void				change_content(t_env_token **list_env, char *oldcont, char *newcont);
 //----------------------------------------------------------------------------//
 //pipex part
 //----------------------------------------------------------------------------//
+void				select_pipex(t_shell **shell, int mode);
 void				pipex(t_shell **shell);
+void				big_pipex(t_shell **shell);
 void				f_child(int *fd, int pid1, char **l_arraid, t_shell **shell);
 void				s_child(int *fd, int pid2, char **l_arraid, t_shell **shell);
 char				**preline(t_shell **shell);

@@ -24,17 +24,20 @@ void	select_all(t_shell **shell)
 	t_shell	*aux;
 	t_token	*env_aux;
 	char	**line_arraid;
+	int		mode;
 
+	mode = 0;
 	env_aux = (*shell)->tokens;
 	while (env_aux)
 	{
 		if (env_aux->type == PIPE)
-		{
-			if (pre_line_int(shell) == 1 && post_line_int(shell) == 1) //si esto falla tendria que esperar
-				pipex(shell);
-			return ;
-		}
+			mode++;
 		env_aux = env_aux->next;
+	}
+	if (mode != 0)
+	{
+		select_pipex(shell, mode);
+		return ;
 	}
 	aux = *shell;
 	line_arraid = ft_split(aux->tokens->content, ' ');

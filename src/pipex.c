@@ -14,8 +14,7 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell **shell)
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		select_build(&aux, l_arraid);
-		//ft_error("exe");
-		exit(-1);
+		exit(0);
 	}
 }
 
@@ -33,8 +32,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell **shell)
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		close(fd[WRITE_END]);
 		select_build(&aux, l_arraid);
-		//ft_error("exe");
-		exit(-1);
+		exit (0);
 	}
 }
 
@@ -63,5 +61,16 @@ void	pipex(t_shell **shell)
 	close(fd[WRITE_END]);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
-//	unlink("file.txt");
+}
+
+
+void	select_pipex(t_shell **shell, int mode)
+{
+//	if (pre_line_int(shell) == 1 && post_line_int(shell) == 1) //si esto falla tendria que esperar
+//	{
+	if (mode == 1)
+		pipex(shell);
+//	}
+	if (mode != 1)
+		big_pipex(shell);
 }
