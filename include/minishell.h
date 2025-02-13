@@ -39,10 +39,22 @@ typedef enum e_cmd_type
 	EXE
 }						t_cmd_type;
 
+typedef enum e_built_in_type
+{
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}						t_built_in_type;
+
 typedef struct s_token
 {
 	char				*content;
 	t_cmd_type			type;
+	t_built_in_type		built_in;
 	struct s_token		*next;
 }						t_token;
 

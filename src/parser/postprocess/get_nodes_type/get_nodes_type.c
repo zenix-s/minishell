@@ -55,6 +55,25 @@ int	is_in_array(const char *str, const char *array[])
 	return (0);
 }
 
+t_built_in_type	get_built_in_type(const char *str)
+{
+	if (strcmp(str, "echo") == 0)
+		return (ECHO);
+	else if (strcmp(str, "cd") == 0)
+		return (CD);
+	else if (strcmp(str, "pwd") == 0)
+		return (PWD);
+	else if (strcmp(str, "export") == 0)
+		return (EXPORT);
+	else if (strcmp(str, "unset") == 0)
+		return (UNSET);
+	else if (strcmp(str, "env") == 0)
+		return (ENV);
+	else if (strcmp(str, "exit") == 0)
+		return (EXIT);
+	return (-1);
+}
+
 void	assign_token_type(t_state_machine *machine)
 {
 	t_shell		*shell;
@@ -70,7 +89,10 @@ void	assign_token_type(t_state_machine *machine)
 	{
 		first_word = get_first_word(token->content);
 		if (first_word && is_in_array(first_word, builtins))
+		{
 			token->type = BUILT_IN;
+			token->built_in = get_built_in_type(first_word);
+		}
 		else if (is_in_array(token->content, separators))
 			token->type = REDIRECT;
 		else if (strcmp(token->content, "|") == 0)
