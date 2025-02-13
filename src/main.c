@@ -8,7 +8,7 @@ void	print_tokens(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
-		printf("[%s]\n", current->content);
+		printf("[[%d] - [%s]]\n", current->type, current->content);
 		current = current->next;
 	}
 }
@@ -54,41 +54,59 @@ int	manage_unclosed_quotes(char **line)
 
 void	main_loop(t_shell *shell)
 {
-	char	*line;
-
 	while (1)
 	{
-		line = readline("minishell: ");
-		if (!line)
-			break ;
-		while (has_unclosed_quotes(line))
+		shell->input = readline("minishell: ");
+		if (!shell->input)
 		{
-			if (!manage_unclosed_quotes(&line))
+			free_shell(shell);
+			exit(EXIT_SUCCESS);
+		}
+		while (has_unclosed_quotes(shell->input))
+		{
+			if (!manage_unclosed_quotes(&shell->input))
 				break ;
 		}
-		shell->tokens = tokenize_line(line, shell->env);
+		tokenize_line(shell);
 		print_tokens(shell->tokens);
-		if (line && *line != '\0')
+		if (shell->input && *shell->input != '\0')
 		{
-			if (strlen(line) > MAX_INPUT_LENGTH)
+			if (strlen(shell->input) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
+			add_history(shell->input);
 			select_all(&shell);
-			add_history(line);
 		}
-//		use_build(shell); //va a explotar
-		free(line);
+		free(shell->input);
+		free_tokens(shell->tokens);
+		shell->tokens = NULL;
 	}
 }
-/*
-void	print_env(t_env_token *list_env)
+
+static void	signal_handler(int sig, siginfo_t *info, void *context)
 {
-	while (list_env)
+	if (sig == SIGQUIT)
 	{
-		printf("%s=%s\n", list_env->key, list_env->value);
-		list_env = list_env->next;
+		printf("Ctrl + \\.\n");
 	}
+	if (sig == SIGINT)
+	{
+		printf("Ctrl + C.\n");
+	}
+	(void)context;
+	(void)info;
 }
-*/
+
+static void	init_sigaction(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_sigaction = &signal_handler;
+	sigemptyset(&sa.sa_mask);
+	sigaddset(&sa.sa_mask, SIGQUIT);
+	sigaddset(&sa.sa_mask, SIGINT);
+	sigaction(SIGQUIT, &sa, 0);
+	sigaction(SIGINT, &sa, 0);
+}
 
 int	main(int argc, char *argv[], char **env)
 {
@@ -96,10 +114,12 @@ int	main(int argc, char *argv[], char **env)
 
 	(void)argc;
 	(void)argv;
+	init_sigaction();
 	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
-	print_env(shell->env);
+	//print_env(shell->env);
 	head();
 	main_loop(shell);
+	free_shell(shell);
 }

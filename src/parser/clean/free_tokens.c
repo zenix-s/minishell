@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_separator.c                                     :+:      :+:    :+:   */
+/*   free_tokens.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:06 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:06 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
-int	is_separator(const char *line, size_t *sep_len)
+void	free_tokens(t_token *tokens)
 {
-	const char	*separators[] = {"<<", ">>", "<", ">", "|", NULL};
-	size_t		len;
-	int			i;
+	t_token	*current;
+	t_token	*temp;
 
-	i = 0;
-	while (separators[i])
+	current = tokens;
+	while (current)
 	{
-		len = ft_strlen(separators[i]);
-		if (ft_strncmp(line, separators[i], len) == 0)
-		{
-			*sep_len = len;
-			return (1);
-		}
-		i++;
+		temp = current;
+		current = current->next;
+		free(temp->content);
+		free(temp);
 	}
-	return (0);
 }

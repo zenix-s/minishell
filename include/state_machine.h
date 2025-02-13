@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_parser.c                                      :+:      :+:    :+:   */
+/*   state_machine.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,29 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#ifndef STATE_MACHINE_H
 
-char	*echo_parser(char *line)
+# define STATE_MACHINE_H
+
+# include <stdlib.h>
+
+typedef enum e_bool
 {
-	char	*new_line;
-	t_quote	in_quotes;
-	size_t	i;
-	size_t	j;
+	FALSE,
+	TRUE
+}				t_bool;
 
-	in_quotes = 0;
-	i = 0;
-	j = 0;
-	new_line = (char *)malloc(sizeof(char) * (ft_strlen(line) + 1));
-	if (!new_line)
-		return (NULL);
-	while (line[i])
-	{
-		in_quotes = get_quote_type(in_quotes, line[i]);
-		if (line[i] == ' ' && in_quotes == NONE && i > 0 && line[i - 1] != ' ')
-			new_line[j++] = ' ';
-		else
-			new_line[j++] = line[i];
-	}
-	new_line[j] = '\0';
-	return (new_line);
-}
+typedef struct s_state_machine
+{
+	t_bool		is_done;
+	void		*context;
+	void		(*execute)(struct s_state_machine *);
+}				t_state_machine;
+
+t_state_machine	*create_state_machine(void);
+
+#endif

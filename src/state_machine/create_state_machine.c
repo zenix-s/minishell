@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token.c                                     :+:      :+:    :+:   */
+/*   create_state_machine.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:03 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:04 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:08 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 12:05:19 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parse.h"
+#include "../../include/state_machine.h"
 
-t_token	*create_token(char *content)
+t_state_machine	*create_state_machine(void)
 {
-	t_token	*new_token;
+	t_state_machine	*state_machine;
 
-	new_token = (t_token *)malloc(sizeof(t_token));
-	if (!new_token)
+	state_machine = (t_state_machine *)malloc(sizeof(t_state_machine));
+	if (!state_machine)
 		return (NULL);
-	new_token->content = ft_strdup(content);
-	if (!new_token->content)
-	{
-		free(new_token);
-		return (NULL);
-	}
-	new_token->next = NULL;
-	return (new_token);
+	state_machine->context = NULL;
+	state_machine->execute = NULL;
+	state_machine->is_done = FALSE;
+	return (state_machine);
 }

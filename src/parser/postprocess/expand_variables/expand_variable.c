@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_parser.c                                      :+:      :+:    :+:   */
+/*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,29 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#include "../../../../include/parse.h"
 
-char	*echo_parser(char *line)
+uint64_t	expand_variale(char *new_content, uint64_t i, char *value)
 {
-	char	*new_line;
-	t_quote	in_quotes;
-	size_t	i;
-	size_t	j;
+	uint64_t	j;
 
-	in_quotes = 0;
-	i = 0;
 	j = 0;
-	new_line = (char *)malloc(sizeof(char) * (ft_strlen(line) + 1));
-	if (!new_line)
-		return (NULL);
-	while (line[i])
-	{
-		in_quotes = get_quote_type(in_quotes, line[i]);
-		if (line[i] == ' ' && in_quotes == NONE && i > 0 && line[i - 1] != ' ')
-			new_line[j++] = ' ';
-		else
-			new_line[j++] = line[i];
-	}
-	new_line[j] = '\0';
-	return (new_line);
+	if (!value)
+		return (i);
+	while (value[j])
+		new_content[i++] = value[j++];
+	return (i);
 }
