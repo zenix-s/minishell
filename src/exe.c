@@ -8,7 +8,7 @@ static char	*search(char *object, char **command)
 	char	*finish;
 	char	*temp;
 
-	path = ft_split(object + 5, ':');
+	path = ft_split(object, ':');
 	cont = 0;
 	while (path[cont])
 	{
@@ -29,6 +29,28 @@ static char	*search(char *object, char **command)
 	exit(1);
 	return (NULL);
 }
+
+char	**obtain_env(t_env_token *list_env)
+{
+	int		aux;
+	int		x;
+	char	**env_now;
+	char	*temp;
+
+	x = 0;
+	aux = ft_lstsize(list_env);
+	env_now = ft_calloc(aux + 1, sizeof(char *));
+	while (list_env)
+	{
+		temp = ft_strjoin(list_env->key, "=");
+		env_now[x] = ft_strjoin(temp, list_env->value);
+		free(temp);
+		list_env = list_env->next;
+		x++;
+	}
+	return (env_now);
+}
+
 /*
 * si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
  * @path -> En esta funcion es un (char *) con todas las rutas 
@@ -36,8 +58,7 @@ static char	*search(char *object, char **command)
  * @env_now es un (char **) sacado con el contenido de las listas 
 
 */
-
-void	exe_all(char **command, t_token *list_env)
+void	exe_all(char **command, t_env_token *list_env)
 {
 	char	*path;
 	char	**env_now;
@@ -53,8 +74,8 @@ void	exe_all(char **command, t_token *list_env)
 	{
 		while (list_env)
 		{
-			if (ft_strncmp((char *) list_env->content, "PATH=", 5) == 0)
-				path = list_env->content;
+			if (ft_strcmp(list_env->key, "PATH") == 0)
+				path = list_env->value;
 			list_env = list_env->next;
 		}
 		path = search(path, command);
@@ -62,4 +83,5 @@ void	exe_all(char **command, t_token *list_env)
 	execve(path, command, env_now);
 	free(path);
 	ft_free(env_now);
+	ft_error("exe");
 }
