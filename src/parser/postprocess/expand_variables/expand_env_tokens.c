@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_env_token.c                                 :+:      :+:    :+:   */
+/*   expand_env_tokens.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:43:28 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ static t_bool	is_valid_init_char(char c)
 	return (ft_isalpha(c) || c == '_');
 }
 
-static t_bool	process_variable_expansion(
-	t_expand_env_state *st,
-	t_token *token,
-	t_env_token *env)
+static t_bool	process_variable_expansion(t_expand_env_state *st,
+		t_token *token, t_env_token *env)
 {
 	st->start++;
 	if (!is_valid_init_char(token->content[st->start]))
@@ -64,18 +62,20 @@ static t_bool	expand_env_token(t_token *token, t_env_token *env)
 	return (TRUE);
 }
 
-t_bool	expand_env_tokens(t_shell *shell)
+void	expand_env_tokens(t_state_machine *machine)
 {
+	t_shell		*shell;
 	t_token		*current;
 	t_env_token	*env;
 
+	shell = (t_shell *)machine->context;
 	current = shell->tokens;
 	env = shell->env;
 	while (current)
 	{
 		if (!expand_env_token(current, env))
-			return (FALSE);
+			return ;
 		current = current->next;
 	}
-	return (TRUE);
+	machine->execute = trim_nodes;
 }

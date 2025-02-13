@@ -6,6 +6,7 @@
 //
 # include <stdio.h>
 //
+# include "state_machine.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -23,12 +24,6 @@
 # define WRITE_END 1
 # define MAX_INPUT_LENGTH 1024
 
-typedef enum e_bool
-{
-	FALSE,
-	TRUE
-}						t_bool;
-
 typedef enum e_quote
 {
 	NONE,   // Outside of quotes
@@ -44,10 +39,22 @@ typedef enum e_cmd_type
 	EXE
 }						t_cmd_type;
 
+typedef enum e_built_in_type
+{
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}						t_built_in_type;
+
 typedef struct s_token
 {
 	char				*content;
 	t_cmd_type			type;
+	t_built_in_type		built_in;
 	struct s_token		*next;
 }						t_token;
 
@@ -60,8 +67,9 @@ typedef struct s_env_token
 
 typedef struct s_shell
 {
-	t_token *tokens;  // line
-	t_env_token *env; // enviroment
+	char				*input;
+	t_token				*tokens;
+	t_env_token			*env;
 }						t_shell;
 
 //----------------------------------------------------------------------------//
@@ -76,7 +84,7 @@ void					ft_error(char *texto);
 //                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
-t_token					*tokenize_line(char *line, t_shell *shell);
+void					tokenize_line(t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);

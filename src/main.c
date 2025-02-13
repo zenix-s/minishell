@@ -54,31 +54,29 @@ int	manage_unclosed_quotes(char **line)
 
 void	main_loop(t_shell *shell)
 {
-	char	*line;
-
 	while (1)
 	{
-		line = readline("minishell: ");
-		if (!line)
+		shell->input = readline("minishell: ");
+		if (!shell->input)
 		{
 			free_shell(shell);
 			exit(EXIT_SUCCESS);
 		}
-		while (has_unclosed_quotes(line))
+		while (has_unclosed_quotes(shell->input))
 		{
-			if (!manage_unclosed_quotes(&line))
+			if (!manage_unclosed_quotes(&shell->input))
 				break ;
 		}
-		shell->tokens = tokenize_line(line, shell);
-		//print_tokens(shell->tokens);
-		if (line && *line != '\0')
+		tokenize_line(shell);
+		print_tokens(shell->tokens);
+		if (shell->input && *shell->input != '\0')
 		{
-			if (strlen(line) > MAX_INPUT_LENGTH)
+			if (strlen(shell->input) > MAX_INPUT_LENGTH)
 				ft_error("Error: line so long.\n");
+			add_history(shell->input);
 			select_all(&shell);
-			add_history(line);
 		}
-		free(line);
+		free(shell->input);
 		free_tokens(shell->tokens);
 		shell->tokens = NULL;
 	}

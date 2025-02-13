@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trim_nodes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:43:21 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,18 @@ static t_bool	trim_node(t_token *token)
 	return (TRUE);
 }
 
-t_bool	trim_nodes(t_shell *shell)
+void	trim_nodes(t_state_machine *machine)
 {
+	t_shell	*shell;
 	t_token	*current;
 
+	shell = (t_shell *)machine->context;
 	current = shell->tokens;
 	while (current)
 	{
 		if (!trim_node(current))
-			return (FALSE);
+			return ;
 		current = current->next;
 	}
-	return (TRUE);
+	machine->is_done = TRUE;
 }
