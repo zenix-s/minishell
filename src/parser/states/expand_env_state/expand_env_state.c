@@ -62,7 +62,7 @@ static t_bool	expand_env_token(t_token *token, t_env_token *env)
 	return (TRUE);
 }
 
-void	expand_env_tokens(t_state_machine *machine)
+void	expand_env_state(t_state_machine *machine)
 {
 	t_shell		*shell;
 	t_token		*current;
@@ -77,5 +77,5 @@ void	expand_env_tokens(t_state_machine *machine)
 			return ;
 		current = current->next;
 	}
-	machine->execute = trim_nodes;
+	machine->execute = trim_nodes_state;
 }

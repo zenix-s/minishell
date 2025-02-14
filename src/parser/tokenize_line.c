@@ -69,7 +69,7 @@ void	tokenize_process(t_state_machine *machine)
 		add_token(&(shell->tokens), state->buffer);
 	}
 	free(state);
-	machine->execute = assign_token_type;
+	machine->execute = assign_type_state;
 }
 
 void	tokenize_line(t_shell *shell)

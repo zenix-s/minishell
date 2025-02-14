@@ -46,7 +46,7 @@ static t_bool	trim_node(t_token *token)
 	return (TRUE);
 }
 
-void	trim_nodes(t_state_machine *machine)
+void	trim_nodes_state(t_state_machine *machine)
 {
 	t_shell	*shell;
 	t_token	*current;

@@ -74,7 +74,17 @@ t_built_in_type	get_built_in_type(const char *str)
 	return (-1);
 }
 
-void	assign_token_type(t_state_machine *machine)
+static void	set_token_type(
+	t_token *token,
+	t_cmd_type type,
+	t_built_in_type built_in
+)
+{
+	token->type = type;
+	token->built_in = built_in;
+}
+
+void	assign_type_state(t_state_machine *machine)
 {
 	t_shell		*shell;
 	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
@@ -89,18 +99,15 @@ void	assign_token_type(t_state_machine *machine)
 	{
 		first_word = get_first_word(token->content);
 		if (first_word && is_in_array(first_word, builtins))
-		{
-			token->type = BUILT_IN;
-			token->built_in = get_built_in_type(first_word);
-		}
+			set_token_type(token, BUILT_IN, get_built_in_type(first_word));
 		else if (is_in_array(token->content, separators))
-			token->type = REDIRECT;
+			set_token_type(token, REDIRECT, UNDEFINED);
 		else if (strcmp(token->content, "|") == 0)
-			token->type = PIPE;
+			set_token_type(token, PIPE, UNDEFINED);
 		else
-			token->type = EXE;
+			set_token_type(token, EXE, UNDEFINED);
 		free(first_word);
 		token = token->next;
 	}
-	machine->execute = expand_env_tokens;
+	machine->execute = expand_env_state;
 }
