@@ -67,7 +67,7 @@ void	main_loop(t_shell *shell)
 			if (!manage_unclosed_quotes(&shell->input))
 				break ;
 		}
-		tokenize_line(shell);
+		parse_line(shell);
 		print_tokens(shell->tokens);
 		if (shell->input && *shell->input != '\0')
 		{

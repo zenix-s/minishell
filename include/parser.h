@@ -14,6 +14,7 @@
 # define PARSER_H
 
 # include "minishell.h"
+# include "state_machine.h"
 
 typedef struct s_parse_state
 {
@@ -33,6 +34,7 @@ typedef struct s_expand_env_state
 	char		new_content[1024];
 	uint64_t	i;
 	t_quote		quote;
+	t_bool		idiot;
 }				t_expand_env_state;
 
 t_bool			is_parse_space(char c);

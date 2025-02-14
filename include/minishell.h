@@ -85,7 +85,7 @@ void					ft_error(char *texto);
 //                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
-void					tokenize_line(t_shell *shell);
+void					parse_line(t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);

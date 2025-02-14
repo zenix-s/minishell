@@ -10,11 +10,36 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../../../include/minishell.h"
 #include "../../../../include/parser.h"
 
 static t_bool	is_valid_init_char(char c)
 {
 	return (ft_isalpha(c) || c == '_');
+}
+
+t_bool	get_var_name_export(t_expand_env_state *st, t_token *token)
+{
+	char	*new_value;
+
+	if (st->start > 0 && token->content[st->start - 3] != '=')
+	{
+		st->idiot = TRUE;
+		return (TRUE);
+	}
+	else
+	{
+		new_value = (char *)malloc(sizeof(char) * (ft_strlen(st->value) + 3));
+		if (!new_value)
+			return (FALSE);
+		new_value[0] = '"';
+		ft_strcpy(new_value + 1, st->value);
+		new_value[ft_strlen(st->value) + 1] = '"';
+		new_value[ft_strlen(st->value) + 2] = '\0';
+		free(st->value);
+		st->value = new_value;
+		return (TRUE);
+	}
 }
 
 static t_bool	process_variable_expansion(t_expand_env_state *st,
@@ -29,8 +54,11 @@ static t_bool	process_variable_expansion(t_expand_env_state *st,
 	st->var_name = get_var_name(token->content, &st->start);
 	if (!st->var_name)
 		return (FALSE);
-	st->value = get_env_value(env, st->var_name);
+	st->value = ft_strdup(get_env_value(env, st->var_name));
 	free(st->var_name);
+	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
+		&& !st->idiot && !get_var_name_export(st, token))
+		return (FALSE);
 	st->i = expand_variale(st->new_content, st->i, st->value);
 	return (TRUE);
 }
@@ -43,6 +71,7 @@ static t_bool	expand_env_token(t_token *token, t_env_token *env)
 	st.len = 0;
 	st.i = 0;
 	st.quote = NONE;
+	st.idiot = FALSE;
 	while (token->content[st.start] != '\0')
 	{
 		st.quote = get_quote_type(st.quote, token->content[st.start]);
