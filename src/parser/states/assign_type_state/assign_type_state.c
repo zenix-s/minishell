@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../../include/minishell.h"
-#include "../../../../include/parse.h"
+#include "../../../../include/parser.h"
 
 char	*get_first_word(const char *content)
 {

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
+#ifndef PARSER_H
+# define PARSER_H
 
 # include "minishell.h"
 
@@ -40,6 +40,7 @@ t_token			*create_token(char *content);
 t_bool			add_token(t_token **head, char *content);
 int				is_separator(const char *line, size_t *sep_len);
 
+void			tokenize_state(t_state_machine *machine);
 void			expand_env_state(t_state_machine *machine);
 void			trim_nodes_state(t_state_machine *machine);
 void			assign_type_state(t_state_machine *machine);
