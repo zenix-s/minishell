@@ -89,7 +89,7 @@ void					head(void);
 // Builds
 //  select
 void					select_all(t_shell **shell);
-void					select_build(t_shell **shell, char **line_arraid);
+int						select_build(t_shell **shell, char **line_arraid);
 void					execute_command(char **line_arraid, t_env_token *list_env);
 
 //redirect
@@ -148,6 +148,7 @@ char				**ft_split(char const *s, char c);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 void				ft_lstdelone(t_token *lst, void (*del)(void*));
 int					ft_lstsize(t_env_token *lst);
+int					lstsizetoken(t_token *lst);
 char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strjoin(char const *s1, char const *s2);
 int					ft_atoi(const char *str);

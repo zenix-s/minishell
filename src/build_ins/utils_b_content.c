@@ -10,16 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/minishell.h"
-
 
 /*
 *busca por la clave y da la clave con el contenido
 */
 char	*obtain_content(char *search, t_env_token *list_env)
 {
-
 	while (list_env)
 	{
 		if (ft_strcmp(list_env->key, search) == 0)
@@ -45,4 +42,3 @@ void	change_content(t_env_token **list_env, char *key, char *newcont)
 		l_aux = l_aux->next;
 	}
 }
-

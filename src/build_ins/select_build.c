@@ -17,8 +17,6 @@
 *"echo", "pwd", "export", "unset", "env", and "exit" commands.
 *it attempts to execute the command as an external program.
 */
-
-
 void	select_all(t_shell **shell)
 {
 	t_shell	*aux;
@@ -41,14 +39,13 @@ void	select_all(t_shell **shell)
 	}
 	aux = *shell;
 	line_arraid = ft_split(aux->tokens->content, ' ');
-//		if (ft_strcmp(line_arraid[0], "<<") == 0)
-//			foo_here_doc(line_arraid);
-	select_build(&aux, line_arraid);
+	if (select_build(&aux, line_arraid) == 5)
+		execute_command(line_arraid, (*shell)->env);
 	ft_free(line_arraid);
 }
 
 //el exit seguramente tenga que hacer mas cosas
-void	select_build(t_shell **shell, char **line_arraid)
+int	select_build(t_shell **shell, char **line_arraid)
 {
 	if (ft_strcmp(line_arraid[0], "pwd") == 0)
 		use_pwd();
@@ -70,10 +67,6 @@ void	select_build(t_shell **shell, char **line_arraid)
 	else if (ft_strcmp(line_arraid[0], "exit") == 0)
 		exit(0);
 	else
-		execute_command(line_arraid, (*shell)->env);
+		return (5);
+	return (1);
 }
-
-
-//TO DO
-
-// crear la lista de funciones de sistema (?) distinta al env cuando se usa export A (sin igual)

@@ -33,7 +33,6 @@ static int	create_new_rute(char *rute, char *step)
 	return (1);
 }
 
-
 static int	search_rute(char *line_arraid, int count)
 {
 	char	*rute;
