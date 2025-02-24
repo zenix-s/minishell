@@ -12,6 +12,25 @@
 
 #include "../../include/minishell.h"
 
+//esta funcion esta claramente en pañales
+//actualmente busca muy sesgado
+static int	follow_mode(t_token *env_aux)
+{
+	int	mode;
+
+	while (env_aux)
+	{
+		if (env_aux->type == REDIRECT)
+			mode = 1;
+		if (ft_strcmp(env_aux->content, ">") == 0)
+			mode = 2;
+		if (ft_strcmp(env_aux->content, ">>") == 0)
+			mode = 3;
+		env_aux = env_aux->next;
+	}
+	return (mode);
+}
+
 /*
 *used to parse a command line and execute the corresponding built-in function.
 *"echo", "pwd", "export", "unset", "env", and "exit" commands.
@@ -24,20 +43,35 @@ void	select_all(t_shell **shell)
 	char	**line_arraid;
 	int		mode;
 
-	mode = 0;
 	env_aux = (*shell)->tokens;
-	while (env_aux)
+	aux = *shell;
+	mode = follow_mode(env_aux);
+	//esto puede asumir mas cosas?
+	if (mode == 1)
 	{
-		if (env_aux->type == PIPE)
-			mode++;
-		env_aux = env_aux->next;
-	}
-	if (mode != 0)
-	{
-		select_pipex(shell, mode);
+		foo_here_doc(ft_split(env_aux->next->content, ' '));
 		return ;
 	}
-	aux = *shell;
+	if (mode == 2 || mode == 3)
+	{
+		stnd_redi(env_aux, &aux, mode);
+		return ;
+	}
+	mode = 0;
+	if (env_aux->next)
+	{
+		while (env_aux)
+		{
+			if (env_aux->type == PIPE)
+				mode++;
+			env_aux = env_aux->next;
+		}
+		if (mode != 0)
+		{
+			select_pipex(shell, mode);
+			return ;
+		}
+	}
 	line_arraid = ft_split(aux->tokens->content, ' ');
 	if (select_build(&aux, line_arraid) == 5)
 		execute_command(line_arraid, (*shell)->env);

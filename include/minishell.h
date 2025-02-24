@@ -92,8 +92,11 @@ void					select_all(t_shell **shell);
 int						select_build(t_shell **shell, char **line_arraid);
 void					execute_command(char **line_arraid, t_env_token *list_env);
 
-//redirect
+//----------------------------------------------------------------------------//
+//                                Redirect
+//----------------------------------------------------------------------------//
 void					foo_here_doc(char **line_arraid);
+void					stnd_redi(t_token *env_aux, t_shell **aux, int mode);
 //expecific comand
 void				use_unset(t_shell **shell, char **line_arraid);
 void				use_pwd(void);
@@ -112,7 +115,7 @@ int					env_is_absolute(char **cmd);
 char				*obtain_content(char *search, t_env_token *list_env);
 void				change_content(t_env_token **list_env, char *oldcont, char *newcont);
 //----------------------------------------------------------------------------//
-//pipex part
+//                                 pipex part
 //----------------------------------------------------------------------------//
 void				select_pipex(t_shell **shell, int mode);
 void				pipex(t_shell **shell);
@@ -123,6 +126,7 @@ char				**preline(t_shell **shell);
 char				**postline(t_shell **shell);
 int					pre_line_int(t_shell **shell);
 int					post_line_int(t_shell **shell);
+
 
 
 // ENV

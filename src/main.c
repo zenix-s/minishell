@@ -81,7 +81,7 @@ void	main_loop(t_shell *shell)
 				break ;
 		}
 		shell->tokens = tokenize_line(line, shell);
-		//print_tokens(shell->tokens);
+		print_tokens(shell->tokens);
 		if (line && *line != '\0')
 		{
 			if (strlen(line) > MAX_INPUT_LENGTH)
