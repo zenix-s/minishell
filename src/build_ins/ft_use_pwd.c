@@ -22,4 +22,3 @@ void	use_pwd(void)
 	printf ("%s\n", result);
 	free(result);
 }
-

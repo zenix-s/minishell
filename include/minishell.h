@@ -6,7 +6,6 @@
 //
 # include <stdio.h>
 //
-# include "state_machine.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -23,6 +22,23 @@
 # define READ_END 0
 # define WRITE_END 1
 # define MAX_INPUT_LENGTH 1024
+
+# include <stdlib.h>
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}				t_bool;
+
+// typedef struct s_state_machine
+// {
+// 	t_bool		is_done;
+// 	void		*context;
+// 	void		(*execute)(struct s_state_machine *);
+// }				t_state_machine;
+
+// t_state_machine	*create_state_machine(void);
 
 typedef enum e_quote
 {
@@ -68,6 +84,9 @@ typedef struct s_env_token
 
 typedef struct s_shell
 {
+	t_bool				is_done;
+	void				(*execute)(struct s_shell *);
+
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
@@ -99,19 +118,21 @@ void					head(void);
 // Builds
 //  select
 void					select_all(t_shell **shell);
-void					select_build(t_shell **shell, char **line_arraid);
-void					execute_command(char **line_arraid,
-							t_env_token *list_env);
+int						select_build(t_shell **shell, char **line_arraid);
+void					execute_command(char **line_arraid, t_env_token *list_env);
 
-// redirect
-void					foo_here_doc(char **line_arraid);
-// expecific comand
-void					use_unset(t_shell **shell, char **line_arraid);
-void					use_pwd(void);
-void					use_export(t_shell **shell, char **line_arraid);
-void					use_echo(char **line_arraid);
-void					use_cd(t_env_token **l_env, char **line_arraid,
-							t_shell **shell);
+//----------------------------------------------------------------------------//
+//                                Redirect
+//----------------------------------------------------------------------------//
+void					her_d(char **line_arraid, t_token *env_aux, t_shell **aux, int mode);
+void					stnd_out(t_token *env_aux, t_shell **aux, int mode);
+void					stnd_in(t_token *env_aux, t_shell **aux, int mode);
+//expecific comand
+void				use_unset(t_shell **shell, char **line_arraid);
+void				use_pwd(void);
+void				use_export(t_shell **shell, char **line_arraid);
+void				use_echo(char **line_arraid);
+void				use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell);
 
 // except
 void					exe_all(char **command, t_env_token *list_env);
@@ -125,7 +146,7 @@ char					*obtain_content(char *search, t_env_token *list_env);
 void					change_content(t_env_token **list_env, char *oldcont,
 							char *newcont);
 //----------------------------------------------------------------------------//
-// pipex part
+//                                 pipex part
 //----------------------------------------------------------------------------//
 void					select_pipex(t_shell **shell, int mode);
 void					pipex(t_shell **shell);
@@ -175,5 +196,6 @@ int						ft_strcpy(char *dest, const char *src);
 char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
+int				    	lstsizetoken(t_token *lst);
 
 #endif

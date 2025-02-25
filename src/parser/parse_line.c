@@ -16,14 +16,18 @@
 
 void	parse_line(t_shell *shell)
 {
-	t_state_machine	*machine;
+	// t_state_machine	*machine;
 
-	machine = create_state_machine();
-	machine->context = shell;
-	machine->execute = tokenize_state;
-	machine->is_done = FALSE;
-	while (!machine->is_done)
+	// machine = create_state_machine();
+	// machine->context = shell;
+	// machine->execute = tokenize_state;
+	// machine->is_done = FALSE;
+
+	shell->is_done = FALSE;
+	shell->execute = tokenize_state;
+
+	while (!shell->is_done)
 	{
-		machine->execute(machine);
+		shell->execute(shell);
 	}
 }

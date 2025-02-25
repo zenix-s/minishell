@@ -14,7 +14,6 @@
 # define PARSER_H
 
 # include "minishell.h"
-# include "state_machine.h"
 
 typedef struct s_parse_state
 {
@@ -42,10 +41,10 @@ t_token			*create_token(char *content);
 t_bool			add_token(t_token **head, char *content);
 int				is_separator(const char *line, size_t *sep_len);
 
-void			tokenize_state(t_state_machine *machine);
-void			expand_env_state(t_state_machine *machine);
-void			trim_nodes_state(t_state_machine *machine);
-void			assign_type_state(t_state_machine *machine);
+void			tokenize_state(t_shell *shell);
+void			expand_env_state(t_shell *shell);
+void			trim_nodes_state(t_shell *shell);
+void			assign_type_state(t_shell *shell);
 
 char			*get_var_name(const char *content, uint64_t *start);
 uint64_t		expand_variale(char *new_content, uint64_t i, const char *value);

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/23 13:50:42 by lortega-          #+#    #+#             */
+/*   Updated: 2025/02/23 13:50:45 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/minishell.h"
 
@@ -50,6 +61,11 @@ int	manage_unclosed_quotes(char **line)
 	free(temp);
 	free(new_line);
 	return (1);
+}
+
+void add_history_state(t_shell *shell)
+{
+	
 }
 
 void	main_loop(t_shell *shell)
@@ -116,6 +132,7 @@ int	main(int argc, char *argv[], char **env)
 	(void)argv;
 	init_sigaction();
 	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
+	shell->is_done = FALSE;
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
 	//print_env(shell->env);

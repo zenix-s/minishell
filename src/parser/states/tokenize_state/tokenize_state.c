@@ -50,12 +50,12 @@ static t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
 	return (TRUE);
 }
 
-void	tokenize_state(t_state_machine *machine)
+void	tokenize_state(t_shell *shell)
 {
-	t_shell			*shell;
+	// t_shell			*shell;
 	t_parse_state	*state;
 
-	shell = (t_shell *)machine->context;
+	// shell = (t_shell *)machine->context;
 	state = init_parse_state();
 	while (shell->input[state->i])
 	{
@@ -68,5 +68,5 @@ void	tokenize_state(t_state_machine *machine)
 		add_token(&(shell->tokens), state->buffer);
 	}
 	free(state);
-	machine->execute = assign_type_state;
+	shell->execute = assign_type_state;
 }

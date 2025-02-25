@@ -46,12 +46,12 @@ static t_bool	trim_node(t_token *token)
 	return (TRUE);
 }
 
-void	trim_nodes_state(t_state_machine *machine)
+void	trim_nodes_state(t_shell *shell)
 {
-	t_shell	*shell;
+	// t_shell	*shell;
 	t_token	*current;
 
-	shell = (t_shell *)machine->context;
+	// shell = (t_shell *)machine->context;
 	current = shell->tokens;
 	while (current)
 	{
@@ -59,5 +59,5 @@ void	trim_nodes_state(t_state_machine *machine)
 			return ;
 		current = current->next;
 	}
-	machine->is_done = TRUE;
+	shell->is_done = TRUE;
 }
