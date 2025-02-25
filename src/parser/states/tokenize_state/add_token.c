@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token.c                                     :+:      :+:    :+:   */
+/*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:03 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:04 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:00 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:42 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parse.h"
+#include "../../../../include/parser.h"
 
-t_token	*create_token(char *content)
+t_bool	add_token(t_token **head, char *content)
 {
 	t_token	*new_token;
+	t_token	*temp;
 
-	new_token = (t_token *)malloc(sizeof(t_token));
+	new_token = create_token(content);
 	if (!new_token)
-		return (NULL);
-	new_token->content = ft_strdup(content);
-	if (!new_token->content)
+		return (FALSE);
+	if (!*head)
 	{
-		free(new_token);
-		return (NULL);
+		*head = new_token;
+		return (TRUE);
 	}
-	new_token->next = NULL;
-	return (new_token);
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new_token;
+	return (TRUE);
 }

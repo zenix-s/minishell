@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_separator.c                                     :+:      :+:    :+:   */
+/*   parse_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:06 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:06 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:08 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 12:05:19 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/parser.h"
+#include "../../include/minishell.h"
+#include "../../include/parser.h"
 
-int	is_separator(const char *line, size_t *sep_len)
+
+void	parse_line(t_shell *shell)
 {
-	const char	*separators[] = {"<<", ">>", "<", ">", "|", NULL};
-	size_t		len;
-	int			i;
+	// t_state_machine	*machine;
 
-	i = 0;
-	while (separators[i])
+	// machine = create_state_machine();
+	// machine->context = shell;
+	// machine->execute = tokenize_state;
+	// machine->is_done = FALSE;
+
+	shell->is_done = FALSE;
+	shell->execute = tokenize_state;
+
+	while (!shell->is_done)
 	{
-		len = ft_strlen(separators[i]);
-		if (ft_strncmp(line, separators[i], len) == 0)
-		{
-			*sep_len = len;
-			return (1);
-		}
-		i++;
+		shell->execute(shell);
 	}
-	return (0);
 }

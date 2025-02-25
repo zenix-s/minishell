@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
+#ifndef PARSER_H
+# define PARSER_H
 
 # include "minishell.h"
 
@@ -33,6 +33,7 @@ typedef struct s_expand_env_state
 	char		new_content[1024];
 	uint64_t	i;
 	t_quote		quote;
+	t_bool		idiot;
 }				t_expand_env_state;
 
 t_bool			is_parse_space(char c);
@@ -40,11 +41,12 @@ t_token			*create_token(char *content);
 t_bool			add_token(t_token **head, char *content);
 int				is_separator(const char *line, size_t *sep_len);
 
-t_bool			expand_env_tokens(t_shell *shell);
-t_bool			trim_nodes(t_shell *shell);
-void			assign_token_type(t_shell *shell);
+void			tokenize_state(t_shell *shell);
+void			expand_env_state(t_shell *shell);
+void			trim_nodes_state(t_shell *shell);
+void			assign_type_state(t_shell *shell);
 
 char			*get_var_name(const char *content, uint64_t *start);
-uint64_t		expand_variale(char *new_content, uint64_t i, char *value);
+uint64_t		expand_variale(char *new_content, uint64_t i, const char *value);
 
 #endif

@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_variable.c                                  :+:      :+:    :+:   */
+/*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:03 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:04 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../include/parse.h"
+#include "../../../../include/parser.h"
 
-uint64_t	expand_variale(char *new_content, uint64_t i, char *value)
+t_token	*create_token(char *content)
 {
-	uint64_t	j;
+	t_token	*new_token;
 
-	j = 0;
-	if (!value)
-		return (i);
-	while (value[j])
-		new_content[i++] = value[j++];
-	return (i);
+	new_token = (t_token *)malloc(sizeof(t_token));
+	if (!new_token)
+		return (NULL);
+	new_token->content = ft_strdup(content);
+	if (!new_token->content)
+	{
+		free(new_token);
+		return (NULL);
+	}
+	new_token->next = NULL;
+	return (new_token);
 }

@@ -6,7 +6,7 @@
 /*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 19:27:34 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/08 19:27:44 by lortega-         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:11:27 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 char	*ft_strdup( char *src)
 {
-	int		x;
-	int		y;
-	char	*des;
+	uint64_t	x;
+	int			y;
+	char		*des;
 
+	if (src == NULL)
+		return (0);
 	x = ft_strlen(src);
 	y = 0;
 	des = (char *)malloc(sizeof(char) * (x + 1));

@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_line.c                                    :+:      :+:    :+:   */
+/*   tokenize_state.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:08 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 12:05:19 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include "../../include/parse.h"
+#include "../../../../include/parser.h"
 
 static t_parse_state	*init_parse_state(void)
 {
@@ -51,15 +50,17 @@ static t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
 	return (TRUE);
 }
 
-t_token	*tokenize_line(char *line, t_shell *shell)
+void	tokenize_state(t_shell *shell)
 {
+	// t_shell			*shell;
 	t_parse_state	*state;
 
+	// shell = (t_shell *)machine->context;
 	state = init_parse_state();
-	while (line[state->i])
+	while (shell->input[state->i])
 	{
-		if (!sub_tokenize(state, line, shell))
-			return (NULL);
+		if (!sub_tokenize(state, shell->input, shell))
+			return ;
 	}
 	if (state->buf_index > 0)
 	{
@@ -67,8 +68,5 @@ t_token	*tokenize_line(char *line, t_shell *shell)
 		add_token(&(shell->tokens), state->buffer);
 	}
 	free(state);
-	assign_token_type(shell);
-	expand_env_tokens(shell);
-	trim_nodes(shell);
-	return (shell->tokens);
+	shell->execute = assign_type_state;
 }
