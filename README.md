@@ -34,7 +34,7 @@ TO DO de cosas sin empezar
 
 # minishell
 
-## Redirecciones
+## Redirecciones del proyecto
 
 # >
 	1: Redirección de salida estándar (stdout): >
@@ -52,50 +52,26 @@ TO DO de cosas sin empezar
 		Sintaxis:
 			comando >> archivo.txt
 
-			
-Redirección de entrada estándar (stdin): <
+# <
+	3: Redirección de entrada estándar (stdin): <
 
-Descripción: Toma la entrada desde un archivo en lugar de desde el teclado.
-Sintaxis:
-bash
-Copy
-comando < archivo.txt
+	Descripción: Toma la entrada desde un archivo en lugar de desde el teclado.
+
+	Sintaxis:
+		comando < archivo.txt
+
+# <<
+	4: Here dock: <<
+
+	Descripcion: Permite redirigir múltiples líneas de texto directamente como entrada estándar a un comando, sin tener que escribirlas manualmente o desde un archivo.
+
+	Sintaxis:
+		comando >> archivo.txt
+
+Hay mas redirecciones de las cuales no hay que hacer caso para este proyecto
+
 Redirección de error estándar (stderr): 2>
-
-Descripción: Redirige la salida de error (stderr) hacia un archivo. El número 2 hace referencia al descriptor de archivo para errores (stderr).
-Sintaxis:
-bash
-Copy
-comando 2> archivo_error.txt
 Redirección de error estándar (stderr) en modo de anexado: 2>>
-
-Descripción: Redirige la salida de error y anexa los errores al final de un archivo de log de errores.
-Sintaxis:
-bash
-Copy
-comando 2>> archivo_error.txt
 Redirección de salida estándar (stdout) y error estándar (stderr) a un mismo archivo: &>
-
-Descripción: Redirige tanto la salida estándar como la salida de error a un archivo, sobrescribiendo el archivo.
-Sintaxis:
-bash
-Copy
-comando &> archivo.txt
 Redirección de salida estándar (stdout) y error estándar (stderr) a un mismo archivo en modo de anexado: &>>
-
-Descripción: Redirige tanto la salida estándar como la salida de error a un archivo, pero anexa la salida al archivo si ya existe.
-Sintaxis:
-bash
-Copy
-comando &>> archivo.txt
 Descarte de salida: > /dev/null o 2> /dev/null
-
-Descripción: Redirige la salida estándar o la salida de error a /dev/null, que es un "agujero negro" que descarta cualquier dato enviado allí.
-Sintaxis para salida estándar:
-bash
-Copy
-comando > /dev/null
-Sintaxis para error estándar:
-bash
-Copy
-comando 2> /dev/null

@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	stnd_redi(t_token *env_aux, t_shell **aux, int mode)
+void	stnd_out(t_token *env_aux, t_shell **aux, int mode)
 {
 	char	**cmd;
 	int		file;

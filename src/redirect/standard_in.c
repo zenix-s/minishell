@@ -1,0 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   standard_in.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 15:39:05 by lortega-          #+#    #+#             */
+/*   Updated: 2025/02/25 15:39:09 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+
+void	stnd_in(t_token *env_aux, t_shell **aux, int mode)
+{
+	char	**cmd;
+	int		file;
+	char	*name;
+	int		stdin_copy;
+
+	file = -1;
+	cmd = ft_split(env_aux->content, ' ');
+	name = env_aux->next->next->content;
+	if (mode == 4)
+		file = open(name, O_RDONLY);
+	if (mode == 1)
+		file = open("file.txt", O_RDONLY);
+	stdin_copy = dup(STDIN_FILENO);
+	if (file == -1)
+		ft_error("Error opening file");
+	if (dup2(file, STDIN_FILENO) == -1)
+		ft_error("Error redirecting stdout");
+	if (select_build(aux, cmd) == 5)
+		execute_command(cmd, (*aux)->env);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	close(file);
+	ft_free(cmd);
+}

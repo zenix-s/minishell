@@ -95,8 +95,9 @@ void					execute_command(char **line_arraid, t_env_token *list_env);
 //----------------------------------------------------------------------------//
 //                                Redirect
 //----------------------------------------------------------------------------//
-void					foo_here_doc(char **line_arraid);
-void					stnd_redi(t_token *env_aux, t_shell **aux, int mode);
+void					her_d(char **line_arraid, t_token *env_aux, t_shell **aux, int mode);
+void					stnd_out(t_token *env_aux, t_shell **aux, int mode);
+void					stnd_in(t_token *env_aux, t_shell **aux, int mode);
 //expecific comand
 void				use_unset(t_shell **shell, char **line_arraid);
 void				use_pwd(void);

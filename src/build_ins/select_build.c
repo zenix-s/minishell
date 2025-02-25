@@ -20,12 +20,15 @@ static int	follow_mode(t_token *env_aux)
 
 	while (env_aux)
 	{
-		if (env_aux->type == REDIRECT)
+		//esto mal buscado es para si sale << en primer lugar...
+		if (ft_strcmp(env_aux->content, "<<") == 0)
 			mode = 1;
 		if (ft_strcmp(env_aux->content, ">") == 0)
 			mode = 2;
 		if (ft_strcmp(env_aux->content, ">>") == 0)
 			mode = 3;
+		if (ft_strcmp(env_aux->content, "<") == 0)
+			mode = 4;
 		env_aux = env_aux->next;
 	}
 	return (mode);
@@ -49,12 +52,17 @@ void	select_all(t_shell **shell)
 	//esto puede asumir mas cosas?
 	if (mode == 1)
 	{
-		foo_here_doc(ft_split(env_aux->next->content, ' '));
+		her_d(ft_split(env_aux->next->next->content, ' '), env_aux, &aux, mode);
 		return ;
 	}
 	if (mode == 2 || mode == 3)
 	{
-		stnd_redi(env_aux, &aux, mode);
+		stnd_out(env_aux, &aux, mode);
+		return ;
+	}
+	if (mode == 4)
+	{
+		stnd_in(env_aux, &aux, mode);
 		return ;
 	}
 	mode = 0;
