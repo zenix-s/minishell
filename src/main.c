@@ -6,7 +6,7 @@
 /*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 13:50:42 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/23 13:50:45 by lortega-         ###   ########.fr       */
+/*   Updated: 2025/02/25 22:34:37 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,13 +136,9 @@ int	main(int argc, char *argv[], char **env)
 
 	(void)argc;
 	(void)argv;
-	init_sigaction();
-	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
-	shell->is_done = FALSE;
-	if (!create_list_env(env, &(shell->env)))
-		return (0);
-	//print_env(shell->env);
 	head();
+	init_sigaction();
+	shell = shell_factory(env);
 	main_loop(shell);
 	free_shell(shell);
 }
