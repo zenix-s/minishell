@@ -16,7 +16,7 @@
 
 static t_bool	is_valid_init_char(char c)
 {
-	return (ft_isalpha(c) || c == '_');
+	return (ft_isalpha(c) || c == '_' || c == '?');
 }
 
 t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
@@ -40,6 +40,17 @@ t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 	return (TRUE);
 }
 
+static char *get_env_final_value(const t_env_token *env, t_expand_env_state *st, t_token *token)
+{
+	if (ft_strcmp(st->var_name, "?") == 0)
+		return ("1");
+	st->value = ft_strdup(get_env_value(env, st->var_name));
+	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
+		&& !st->idiot && !process_value_for_export(st, token))
+		return (NULL);
+	return (st->value);
+}
+
 static t_bool	process_variable_expansion(t_expand_env_state *st,
 		t_token *token, const t_env_token *env)
 {
@@ -52,13 +63,7 @@ static t_bool	process_variable_expansion(t_expand_env_state *st,
 	st->var_name = get_var_name(token->content, &st->start);
 	if (!st->var_name)
 		return (FALSE);
-	st->value = ft_strdup(get_env_value(env, st->var_name));
-	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
-		&& !st->idiot && !process_value_for_export(st, token))
-	{
-		free(st->var_name);
-		return (FALSE);
-	}
+	st->value = get_env_final_value(env, st, token);
 	free(st->var_name);
 	st->i = expand_variale(st->new_content, st->i, st->value);
 	return (TRUE);
@@ -103,6 +108,7 @@ void	expand_env_state(t_state_machine *machine)
 	env = shell->env;
 	while (current)
 	{
+		printf("current->content: %s\n", current->content);
 		if (!expand_env_token(current, env))
 			return ;
 		current = current->next;
