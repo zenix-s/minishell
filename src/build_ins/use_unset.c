@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/minishell.h"
-
 
 static t_env_token	*prev(t_env_token **list_env, char *line)
 {
@@ -71,5 +69,3 @@ void	use_unset(t_shell **shell, char **line_arraid)
 		count++;
 	}
 }
-
-

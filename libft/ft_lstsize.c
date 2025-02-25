@@ -24,3 +24,16 @@ int	ft_lstsize(t_env_token *lst)
 	}
 	return (x);
 }
+
+int	lstsizetoken(t_token *lst)
+{
+	int	x;
+
+	x = 0;
+	while (lst)
+	{
+		x++;
+		lst = lst->next;
+	}
+	return (x);
+}
