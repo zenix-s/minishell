@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_line.c                                    :+:      :+:    :+:   */
+/*   parse_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,7 +14,7 @@
 #include "../../include/parser.h"
 
 
-void	tokenize_line(t_shell *shell)
+void	parse_line(t_shell *shell)
 {
 	t_state_machine	*machine;
 
