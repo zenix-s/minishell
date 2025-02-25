@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	stnd_in(t_token *env_aux, t_shell **aux, int mode)
+void	stnd_in(t_token *env_aux, t_shell *aux, int mode)
 {
 	char	**cmd;
 	int		file;
@@ -31,8 +31,8 @@ void	stnd_in(t_token *env_aux, t_shell **aux, int mode)
 		ft_error("Error opening file");
 	if (dup2(file, STDIN_FILENO) == -1)
 		ft_error("Error redirecting stdout");
-	if (select_build(aux, cmd) == 5)
-		execute_command(cmd, (*aux)->env);
+	if (s_build(aux, cmd) == 5)
+		execute_command(cmd, aux->env);
 	dup2(stdin_copy, STDIN_FILENO);
 	close(stdin_copy);
 	close(file);

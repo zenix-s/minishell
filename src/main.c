@@ -63,11 +63,6 @@ int	manage_unclosed_quotes(char **line)
 	return (1);
 }
 
-void add_history_state(t_shell *shell)
-{
-	
-}
-
 void	main_loop(t_shell *shell)
 {
 	while (1)
@@ -84,17 +79,7 @@ void	main_loop(t_shell *shell)
 				break ;
 		}
 		parse_line(shell);
-		print_tokens(shell->tokens);
-		if (shell->input && *shell->input != '\0')
-		{
-			if (strlen(shell->input) > MAX_INPUT_LENGTH)
-				ft_error("Error: line so long.\n");
-			add_history(shell->input);
-			select_all(&shell);
-		}
-		free(shell->input);
-		free_tokens(shell->tokens);
-		shell->tokens = NULL;
+		//print_tokens(shell->tokens);
 	}
 }
 

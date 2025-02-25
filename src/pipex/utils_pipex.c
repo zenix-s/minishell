@@ -10,15 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-char	**preline(t_shell **shell)
+//quiza aqui podria estar la busqueda de la redireccion
+
+
+// el nombre esta al reves!
+//devuelve el char **
+char	**preline(t_shell *shell)
 {
 	t_token	*aux;
 	t_token	*prev;
 	char	**result;
 
-	aux = (*shell)->tokens;
+	aux = shell->tokens;
 	prev = aux;
 	while (aux)
 	{
@@ -33,13 +38,13 @@ char	**preline(t_shell **shell)
 	return (NULL);
 }
 
-char	**postline(t_shell **shell)
+char	**postline(t_shell *shell)
 {
 	t_token	*aux;
 	t_token	*prev;
 	char	**result;
 
-	aux = (*shell)->tokens;
+	aux = shell->tokens;
 	while (aux)
 	{
 		if (ft_strcmp(aux->content, "|") == 0)

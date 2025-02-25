@@ -10,38 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-void	s_child(int *fd, int pid2, char **l_arraid, t_shell **shell)
+void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
 
-	aux = (*shell)->env;
+	aux = shell->env;
 	if (pid2 < 0)
 		return ;
 	if (pid2 == 0)
 	{
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
-		if (select_build(shell, l_arraid) == 5)
+		if (s_build(shell, l_arraid) == 5)
 			exe_all(l_arraid, aux);
 		close(fd[READ_END]);
 		exit(0);
 	}
 }
 
-void	f_child(int *fd, int pid1, char **l_arraid, t_shell **shell)
+//el problema es que aqui estas pasando a s_build el arraid primero, 
+//si hay cat << file.txt | wc file.txt estas metiendo cat 
+void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
 
-	aux = (*shell)->env;
+	aux = shell->env;
 	if (pid1 < 0)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
-		if (select_build(shell, l_arraid) == 5)
+		if (s_build(shell, l_arraid) == 5)
 			exe_all(l_arraid, aux);
 		close(fd[WRITE_END]);
 		exit (0);
@@ -52,7 +54,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell **shell)
  @ fd[2] ->contiene dos enteros ( READ_END and WRITE_END)
  @ pidx  ->almacena identificadores de proceso PID
 */
-void	pipex(t_shell **shell)
+void	pipex(t_shell *shell)
 {
 	int			fd[2];
 	pid_t		pid1;
@@ -73,12 +75,4 @@ void	pipex(t_shell **shell)
 	close(fd[WRITE_END]);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
-}
-
-void	select_pipex(t_shell **shell, int mode)
-{
-	if (mode == 1)
-		pipex(shell);
-	if (mode != 1)
-		big_pipex(shell);
 }

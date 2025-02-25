@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	her_d(char **line_arraid, t_token *env_aux, t_shell **aux, int mode)
+void	her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode)
 {
 	int		x;
 	char	*line;
@@ -35,6 +35,7 @@ void	her_d(char **line_arraid, t_token *env_aux, t_shell **aux, int mode)
 	close(text);
 	if (mode == 1)
 		stnd_in(env_aux, aux, mode);
-	unlink("file.txt");
+	if (mode == 5)
+		unlink("file.txt");
 	ft_free(line_arraid);
 }

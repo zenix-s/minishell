@@ -59,5 +59,5 @@ void	trim_nodes_state(t_shell *shell)
 			return ;
 		current = current->next;
 	}
-	shell->is_done = TRUE;
+	shell->execute = segurity;
 }

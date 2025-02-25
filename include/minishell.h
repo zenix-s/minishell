@@ -86,7 +86,6 @@ typedef struct s_shell
 {
 	t_bool				is_done;
 	void				(*execute)(struct s_shell *);
-
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
@@ -104,6 +103,8 @@ void					ft_error(char *texto);
 //                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
+
+void					segurity(t_shell *shell);
 void					parse_line(t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
@@ -117,16 +118,19 @@ void					head(void);
 
 // Builds
 //  select
-void					select_all(t_shell **shell);
+void					select_all(t_shell *shell);
 int						select_build(t_shell **shell, char **line_arraid);
+int						s_build(t_shell *shell, char **line_arraid);
 void					execute_command(char **line_arraid, t_env_token *list_env);
 
 //----------------------------------------------------------------------------//
 //                                Redirect
 //----------------------------------------------------------------------------//
-void					her_d(char **line_arraid, t_token *env_aux, t_shell **aux, int mode);
-void					stnd_out(t_token *env_aux, t_shell **aux, int mode);
-void					stnd_in(t_token *env_aux, t_shell **aux, int mode);
+void					redirect_state(t_shell *shell);
+int						follow_mode(t_token *env_aux);
+void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
+void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
+void					stnd_in(t_token *env_aux, t_shell *aux, int mode);
 //expecific comand
 void				use_unset(t_shell **shell, char **line_arraid);
 void				use_pwd(void);
@@ -148,15 +152,16 @@ void					change_content(t_env_token **list_env, char *oldcont,
 //----------------------------------------------------------------------------//
 //                                 pipex part
 //----------------------------------------------------------------------------//
-void					select_pipex(t_shell **shell, int mode);
-void					pipex(t_shell **shell);
-void					big_pipex(t_shell **shell);
+void					pipex_state(t_shell *shell);
+void					select_pipex(t_shell *shell, int mode);
+void					pipex(t_shell *shell);
+void					big_pipex(t_shell *shell);
 void					f_child(int *fd, int pid1, char **l_arraid,
-							t_shell **shell);
+							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
-							t_shell **shell);
-char					**preline(t_shell **shell);
-char					**postline(t_shell **shell);
+							t_shell *shell);
+char					**preline(t_shell *shell);
+char					**postline(t_shell *shell);
 int						pre_line_int(t_shell **shell);
 int						post_line_int(t_shell **shell);
 
