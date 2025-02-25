@@ -97,13 +97,13 @@ static t_bool	expand_env_token(t_token *token, t_env_token *env)
 	return (TRUE);
 }
 
-void	expand_env_state(t_state_machine *machine)
+void	expand_env_state(t_shell *shell)
 {
-	t_shell		*shell;
+	// t_shell		*shell;
 	t_token		*current;
 	t_env_token	*env;
 
-	shell = (t_shell *)machine->context;
+	// shell = (t_shell *)machine->context;
 	current = shell->tokens;
 	env = shell->env;
 	while (current)
@@ -113,5 +113,5 @@ void	expand_env_state(t_state_machine *machine)
 			return ;
 		current = current->next;
 	}
-	machine->execute = trim_nodes_state;
+	shell->execute = trim_nodes_state;
 }

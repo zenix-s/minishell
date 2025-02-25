@@ -6,7 +6,6 @@
 //
 # include <stdio.h>
 //
-# include "state_machine.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -23,6 +22,23 @@
 # define READ_END 0
 # define WRITE_END 1
 # define MAX_INPUT_LENGTH 1024
+
+# include <stdlib.h>
+
+typedef enum e_bool
+{
+	FALSE,
+	TRUE
+}				t_bool;
+
+// typedef struct s_state_machine
+// {
+// 	t_bool		is_done;
+// 	void		*context;
+// 	void		(*execute)(struct s_state_machine *);
+// }				t_state_machine;
+
+// t_state_machine	*create_state_machine(void);
 
 typedef enum e_quote
 {
@@ -68,6 +84,9 @@ typedef struct s_env_token
 
 typedef struct s_shell
 {
+	t_bool				is_done;
+	void				(*execute)(struct s_shell *);
+
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;

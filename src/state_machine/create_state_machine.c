@@ -10,17 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/state_machine.h"
+#include "../../include/minishell.h"
 
-t_state_machine	*create_state_machine(void)
-{
-	t_state_machine	*state_machine;
+// t_state_machine	*create_state_machine(void)
+// {
+// 	t_state_machine	*state_machine;
 
-	state_machine = (t_state_machine *)malloc(sizeof(t_state_machine));
-	if (!state_machine)
-		return (NULL);
-	state_machine->context = NULL;
-	state_machine->execute = NULL;
-	state_machine->is_done = FALSE;
-	return (state_machine);
-}
+// 	state_machine = (t_state_machine *)malloc(sizeof(t_state_machine));
+// 	if (!state_machine)
+// 		return (NULL);
+// 	state_machine->context = NULL;
+// 	state_machine->execute = NULL;
+// 	state_machine->is_done = FALSE;
+// 	return (state_machine);
+// }

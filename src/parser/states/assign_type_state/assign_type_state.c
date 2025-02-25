@@ -84,16 +84,16 @@ static void	set_token_type(
 	token->built_in = built_in;
 }
 
-void	assign_type_state(t_state_machine *machine)
+void	assign_type_state(t_shell *shell)
 {
-	t_shell		*shell;
+	// t_shell		*shell;
 	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
 		"exit", NULL};
 	const char	*separators[] = {"<<", ">>", "<", ">", NULL};
 	t_token		*token;
 	char		*first_word;
 
-	shell = (t_shell *)machine->context;
+	// shell = (t_shell *)machine->context;
 	token = shell->tokens;
 	while (token)
 	{
@@ -109,5 +109,5 @@ void	assign_type_state(t_state_machine *machine)
 		free(first_word);
 		token = token->next;
 	}
-	machine->execute = expand_env_state;
+	shell->execute = expand_env_state;
 }

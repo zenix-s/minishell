@@ -63,6 +63,11 @@ int	manage_unclosed_quotes(char **line)
 	return (1);
 }
 
+void add_history_state(t_shell *shell)
+{
+	
+}
+
 void	main_loop(t_shell *shell)
 {
 	while (1)
@@ -127,6 +132,7 @@ int	main(int argc, char *argv[], char **env)
 	(void)argv;
 	init_sigaction();
 	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
+	shell->is_done = FALSE;
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
 	//print_env(shell->env);
