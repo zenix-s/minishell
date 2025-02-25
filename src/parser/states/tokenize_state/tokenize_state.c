@@ -52,10 +52,8 @@ static t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
 
 void	tokenize_state(t_shell *shell)
 {
-	// t_shell			*shell;
 	t_parse_state	*state;
 
-	// shell = (t_shell *)machine->context;
 	state = init_parse_state();
 	while (shell->input[state->i])
 	{

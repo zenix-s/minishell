@@ -31,13 +31,6 @@ typedef enum e_bool
 	TRUE
 }				t_bool;
 
-// typedef struct s_state_machine
-// {
-// 	t_bool		is_done;
-// 	void		*context;
-// 	void		(*execute)(struct s_state_machine *);
-// }				t_state_machine;
-
 // t_state_machine	*create_state_machine(void);
 
 typedef enum e_quote
@@ -104,7 +97,6 @@ void					ft_error(char *texto);
 //                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
-void					parse_line(t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);

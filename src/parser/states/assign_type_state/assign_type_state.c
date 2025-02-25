@@ -21,8 +21,6 @@ char	*get_first_word(const char *content)
 
 	start = 0;
 	start = 0;
-	end = 0;
-	quote = NONE;
 	while (content[start] && is_parse_space(content[start]))
 		start++;
 	quote = get_quote_type(NONE, content[start]);
@@ -59,17 +57,17 @@ t_built_in_type	get_built_in_type(const char *str)
 {
 	if (strcmp(str, "echo") == 0)
 		return (ECHO);
-	else if (strcmp(str, "cd") == 0)
+	if (strcmp(str, "cd") == 0)
 		return (CD);
-	else if (strcmp(str, "pwd") == 0)
+	if (strcmp(str, "pwd") == 0)
 		return (PWD);
-	else if (strcmp(str, "export") == 0)
+	if (strcmp(str, "export") == 0)
 		return (EXPORT);
-	else if (strcmp(str, "unset") == 0)
+	if (strcmp(str, "unset") == 0)
 		return (UNSET);
-	else if (strcmp(str, "env") == 0)
+	if (strcmp(str, "env") == 0)
 		return (ENV);
-	else if (strcmp(str, "exit") == 0)
+	if (strcmp(str, "exit") == 0)
 		return (EXIT);
 	return (-1);
 }
@@ -86,14 +84,12 @@ static void	set_token_type(
 
 void	assign_type_state(t_shell *shell)
 {
-	// t_shell		*shell;
 	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
 		"exit", NULL};
 	const char	*separators[] = {"<<", ">>", "<", ">", NULL};
 	t_token		*token;
 	char		*first_word;
 
-	// shell = (t_shell *)machine->context;
 	token = shell->tokens;
 	while (token)
 	{

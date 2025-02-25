@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include "../include/parser.h"
 
 void	print_tokens(t_token *tokens)
 {
@@ -63,27 +64,32 @@ int	manage_unclosed_quotes(char **line)
 	return (1);
 }
 
-void add_history_state(t_shell *shell)
+void readline_state(t_shell *shell)
 {
-	
+	shell->input = readline("minishell: ");
+	if (!shell->input)
+	{
+		free_shell(shell);
+		exit(EXIT_SUCCESS);
+	}
+	while (has_unclosed_quotes(shell->input))
+	{
+		if (!manage_unclosed_quotes(&shell->input))
+			break ;
+	}
+	shell->execute = tokenize_state;
 }
 
 void	main_loop(t_shell *shell)
 {
 	while (1)
 	{
-		shell->input = readline("minishell: ");
-		if (!shell->input)
+		shell->is_done = FALSE;
+		shell->execute = readline_state;
+		while (!shell->is_done)
 		{
-			free_shell(shell);
-			exit(EXIT_SUCCESS);
+			shell->execute(shell);
 		}
-		while (has_unclosed_quotes(shell->input))
-		{
-			if (!manage_unclosed_quotes(&shell->input))
-				break ;
-		}
-		parse_line(shell);
 		print_tokens(shell->tokens);
 		if (shell->input && *shell->input != '\0')
 		{
