@@ -18,6 +18,8 @@ void	use_pwd(void)
 	char	*cwd;
 
 	cwd = (char *)ft_calloc(1024, sizeof(char));
+	if (!cwd)
+		return;
 	result = getcwd(cwd, 1024);
 	printf ("%s\n", result);
 	free(result);

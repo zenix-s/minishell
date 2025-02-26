@@ -17,7 +17,7 @@
 
 // el nombre esta al reves!
 //devuelve el char **
-char	**preline(t_shell *shell)
+char	**previusline(t_shell *shell)
 {
 	t_token	*aux;
 	t_token	*prev;

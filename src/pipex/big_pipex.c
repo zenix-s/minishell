@@ -98,7 +98,7 @@ void	big_pipex(t_shell *shell)
 	t_token	*l_aux;
 
 	l_aux = shell->tokens->next->next;
-	line_arraid = preline(shell);
+	line_arraid = previusline(shell);
 	if (pipe(fd) == -1)
 		ft_error("pipe:");
 	pid = fork();

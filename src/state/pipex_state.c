@@ -12,35 +12,13 @@
 
 #include "../../include/minishell.h"
 
-
-//hay que seguir por le big pipex! 
 void	select_pipex(t_shell *shell, int mode)
 {
-	t_token		*aux;
-	char		**cmd;
-	t_env_token	*moreaux;
-
-	cmd = NULL;
-	aux = shell->tokens;
-	while (aux)
-	{
-		if (aux->type == REDIRECT)
-			cmd = postline(shell);
-		aux = aux->next;
-	}
 	if (mode == 1)
-	{
-		if (cmd != NULL)
-		{
-			moreaux = shell->env;
-			if (s_build(shell, cmd) == 5)
-				exe_all(cmd, moreaux);
-		}
-		else
-			pipex(shell);
-	}
+		pipex(shell);
 	if (mode != 1)
 		big_pipex(shell);
+	shell->execute = cleaner;
 }
 
 void	pipex_state(t_shell *shell)
@@ -61,8 +39,6 @@ void	pipex_state(t_shell *shell)
 		if (mode != 0)
 			select_pipex(shell, mode);
 	}
-	if (mode != 0)
-		shell->is_done = TRUE;
-	else
-		shell->execute = select_all;
+	if (mode == 0)
+		shell->execute = redirect_state;
 }
