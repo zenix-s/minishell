@@ -66,6 +66,7 @@ static t_bool	process_variable_expansion(t_expand_env_state *st,
 	st->value = get_env_final_value(env, st, token);
 	free(st->var_name);
 	st->i = expand_variale(st->new_content, st->i, st->value);
+	free(st->value);
 	return (TRUE);
 }
 
@@ -99,16 +100,13 @@ static t_bool	expand_env_token(t_token *token, t_env_token *env)
 
 void	expand_env_state(t_shell *shell)
 {
-	// t_shell		*shell;
 	t_token		*current;
 	t_env_token	*env;
 
-	// shell = (t_shell *)machine->context;
 	current = shell->tokens;
 	env = shell->env;
 	while (current)
 	{
-		printf("current->content: %s\n", current->content);
 		if (!expand_env_token(current, env))
 			return ;
 		current = current->next;

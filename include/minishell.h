@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 22:01:06 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/27 17:25:16 by serferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 
@@ -30,15 +41,6 @@ typedef enum e_bool
 	FALSE,
 	TRUE
 }				t_bool;
-
-// typedef struct s_state_machine
-// {
-// 	t_bool		is_done;
-// 	void		*context;
-// 	void		(*execute)(struct s_state_machine *);
-// }				t_state_machine;
-
-// t_state_machine	*create_state_machine(void);
 
 typedef enum e_quote
 {
@@ -90,6 +92,11 @@ typedef struct s_shell
 	t_token				*tokens;
 	t_env_token			*env;
 }						t_shell;
+
+//----------------------------------------------------------------------------//
+//                                    SHELL
+//----------------------------------------------------------------------------//
+t_shell					*shell_factory(char **env);
 
 //----------------------------------------------------------------------------//
 //									CLEAN
@@ -206,5 +213,6 @@ char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
 int				    	lstsizetoken(t_token *lst);
+int						is_string_in_array(const char *str, const char *array[]);
 
 #endif

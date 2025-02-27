@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_line.c                                    :+:      :+:    :+:   */
+/*   shell_factory.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 11:13:08 by serferna          #+#    #+#             */
-/*   Updated: 2025/01/26 12:05:19 by serferna         ###   ########.fr       */
+/*   Created: 2025/02/25 22:35:36 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/25 22:35:43 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include "../../include/parser.h"
+#include "../include/minishell.h"
 
-
-void	parse_line(t_shell *shell)
+t_shell *shell_factory(char **env)
 {
-	// t_state_machine	*machine;
+	t_shell	*shell;
 
-	// machine = create_state_machine();
-	// machine->context = shell;
-	// machine->execute = tokenize_state;
-	// machine->is_done = FALSE;
-
-	shell->is_done = FALSE;
-	shell->execute = tokenize_state;
-
-	while (!shell->is_done)
+	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
+	if (!shell)
 	{
-		shell->execute(shell);
+		return (NULL);
 	}
+	shell->is_done = FALSE;
+	shell->execute = NULL;
+	shell->tokens = NULL;
+	shell->input = NULL;
+	if (!create_list_env(env, &(shell->env)))
+		return (0);
+	return (shell);
 }
