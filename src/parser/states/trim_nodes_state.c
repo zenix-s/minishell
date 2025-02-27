@@ -18,7 +18,7 @@ static void	skip_spaces(const char *content, int *i)
 		(*i)++;
 }
 
-static t_bool	trim_node(t_token *token)
+static void	trim_node(t_token *token)
 {
 	t_quote	quote_state;
 	int		i;
@@ -43,21 +43,17 @@ static t_bool	trim_node(t_token *token)
 	while (j > 0 && is_parse_space(token->content[j - 1]))
 		j--;
 	token->content[j] = '\0';
-	return (TRUE);
 }
 
 void	trim_nodes_state(t_shell *shell)
 {
-	// t_shell	*shell;
 	t_token	*current;
 
-	// shell = (t_shell *)machine->context;
 	current = shell->tokens;
 	while (current)
 	{
-		if (!trim_node(current))
-			return ;
+		trim_node(current);
 		current = current->next;
 	}
-	shell->is_done = TRUE;
+	shell->execute = segurity_state;
 }

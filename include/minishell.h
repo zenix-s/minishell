@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 22:01:06 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/27 17:25:16 by serferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 
@@ -30,15 +41,6 @@ typedef enum e_bool
 	FALSE,
 	TRUE
 }				t_bool;
-
-// typedef struct s_state_machine
-// {
-// 	t_bool		is_done;
-// 	void		*context;
-// 	void		(*execute)(struct s_state_machine *);
-// }				t_state_machine;
-
-// t_state_machine	*create_state_machine(void);
 
 typedef enum e_quote
 {
@@ -86,11 +88,15 @@ typedef struct s_shell
 {
 	t_bool				is_done;
 	void				(*execute)(struct s_shell *);
-
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
 }						t_shell;
+
+//----------------------------------------------------------------------------//
+//                                    SHELL
+//----------------------------------------------------------------------------//
+t_shell					*shell_factory(char **env);
 
 //----------------------------------------------------------------------------//
 //									CLEAN
@@ -103,7 +109,9 @@ void					ft_error(char *texto);
 //----------------------------------------------------------------------------//
 //                                   PARSER
 //----------------------------------------------------------------------------//
-void					ft_init(char *line);
+
+
+void					segurity_state(t_shell *shell);
 void					parse_line(t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
@@ -113,26 +121,33 @@ char					*echo_parser(char *line);
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);
 void					head(void);
-// void				use_unset(char **env, char *line);
-
+//----------------------------------------------------------------------------//
+//                                Estate
+//----------------------------------------------------------------------------//
+void					cleaner(t_shell *shell);
+void					error_state(int mod);
 // Builds
 //  select
-void					select_all(t_shell **shell);
-int						select_build(t_shell **shell, char **line_arraid);
-void					execute_command(char **line_arraid, t_env_token *list_env);
+void					select_all(t_shell *shell);
+//int						select_build(t_shell **shell, char **line_arraid);
+int						s_build(t_shell *shell, char **line_arraid);
+void					execute_cmd(char **l_arraid, t_env_token *list_env);
 
 //----------------------------------------------------------------------------//
 //                                Redirect
 //----------------------------------------------------------------------------//
-void					her_d(char **line_arraid, t_token *env_aux, t_shell **aux, int mode);
-void					stnd_out(t_token *env_aux, t_shell **aux, int mode);
-void					stnd_in(t_token *env_aux, t_shell **aux, int mode);
+void					redirect_state(t_shell *shell);
+int						little_redirect(t_shell *shell);
+int						follow_mode(t_token *env_aux);
+void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
+void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
+int					stnd_in(t_token *env_aux, t_shell *aux, int mode);
 //expecific comand
-void				use_unset(t_shell **shell, char **line_arraid);
+void					use_unset(t_shell *shell, char **line_arraid);
 void				use_pwd(void);
 void				use_export(t_shell **shell, char **line_arraid);
 void				use_echo(char **line_arraid);
-void				use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell);
+void					use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
 
 // except
 void					exe_all(char **command, t_env_token *list_env);
@@ -143,20 +158,21 @@ char					**obtain_env(t_env_token *list_env);
 int						env_is_absolute(char **cmd);
 
 char					*obtain_content(char *search, t_env_token *list_env);
-void					change_content(t_env_token **list_env, char *oldcont,
+void					change_content(t_env_token *list_env, char *oldcont,
 							char *newcont);
 //----------------------------------------------------------------------------//
 //                                 pipex part
 //----------------------------------------------------------------------------//
-void					select_pipex(t_shell **shell, int mode);
-void					pipex(t_shell **shell);
-void					big_pipex(t_shell **shell);
+void					pipex_state(t_shell *shell);
+void					select_pipex(t_shell *shell, int mode);
+void					pipex(t_shell *shell);
+void					big_pipex(t_shell *shell);
 void					f_child(int *fd, int pid1, char **l_arraid,
-							t_shell **shell);
+							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
-							t_shell **shell);
-char					**preline(t_shell **shell);
-char					**postline(t_shell **shell);
+							t_shell *shell);
+char					**previusline(t_shell *shell);
+char					**postline(t_shell *shell);
 int						pre_line_int(t_shell **shell);
 int						post_line_int(t_shell **shell);
 
@@ -197,5 +213,6 @@ char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
 int				    	lstsizetoken(t_token *lst);
+int						is_string_in_array(const char *str, const char *array[]);
 
 #endif

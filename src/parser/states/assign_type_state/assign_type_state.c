@@ -21,8 +21,6 @@ char	*get_first_word(const char *content)
 
 	start = 0;
 	start = 0;
-	end = 0;
-	quote = NONE;
 	while (content[start] && is_parse_space(content[start]))
 		start++;
 	quote = get_quote_type(NONE, content[start]);
@@ -41,35 +39,21 @@ char	*get_first_word(const char *content)
 	return (strndup(content + start, end - start));
 }
 
-int	is_in_array(const char *str, const char *array[])
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		if (strcmp(str, array[i]) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 t_built_in_type	get_built_in_type(const char *str)
 {
 	if (strcmp(str, "echo") == 0)
 		return (ECHO);
-	else if (strcmp(str, "cd") == 0)
+	if (strcmp(str, "cd") == 0)
 		return (CD);
-	else if (strcmp(str, "pwd") == 0)
+	if (strcmp(str, "pwd") == 0)
 		return (PWD);
-	else if (strcmp(str, "export") == 0)
+	if (strcmp(str, "export") == 0)
 		return (EXPORT);
-	else if (strcmp(str, "unset") == 0)
+	if (strcmp(str, "unset") == 0)
 		return (UNSET);
-	else if (strcmp(str, "env") == 0)
+	if (strcmp(str, "env") == 0)
 		return (ENV);
-	else if (strcmp(str, "exit") == 0)
+	if (strcmp(str, "exit") == 0)
 		return (EXIT);
 	return (-1);
 }
@@ -86,21 +70,19 @@ static void	set_token_type(
 
 void	assign_type_state(t_shell *shell)
 {
-	// t_shell		*shell;
 	const char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
 		"exit", NULL};
 	const char	*separators[] = {"<<", ">>", "<", ">", NULL};
 	t_token		*token;
 	char		*first_word;
 
-	// shell = (t_shell *)machine->context;
 	token = shell->tokens;
 	while (token)
 	{
 		first_word = get_first_word(token->content);
-		if (first_word && is_in_array(first_word, builtins))
+		if (first_word && is_string_in_array(first_word, builtins))
 			set_token_type(token, BUILT_IN, get_built_in_type(first_word));
-		else if (is_in_array(token->content, separators))
+		else if (is_string_in_array(token->content, separators))
 			set_token_type(token, REDIRECT, UNDEFINED);
 		else if (strcmp(token->content, "|") == 0)
 			set_token_type(token, PIPE, UNDEFINED);

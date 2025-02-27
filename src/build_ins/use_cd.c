@@ -30,6 +30,7 @@ static int	create_new_rute(char *rute, char *step)
 		return (-1);
 	}
 	free(rute);
+	printf("hola\n");
 	return (1);
 }
 
@@ -46,12 +47,15 @@ static int	search_rute(char *line_arraid, int count)
 	while (step[count])
 	{
 		rute = getcwd(cwd, 1024);
-		if (create_new_rute(rute, step[count]) == -1)
+		if (rute != NULL)
 		{
-			printf("cd: no such file or directory: %s\n", line_arraid);
-			free(cwd);
-			ft_free(step);
-			return (-1);
+			if (create_new_rute(rute, step[count]) == -1)
+			{
+				printf("cd: no such file or directory: %s\n", line_arraid);
+				free(cwd);
+				ft_free(step);
+				return (-1);
+			}
 		}
 		count++;
 	}
@@ -60,30 +64,33 @@ static int	search_rute(char *line_arraid, int count)
 	return (1);
 }
 
-static void	obtain_new_oldpwd(t_env_token **list_env, t_shell **shell)
+static void	obtain_new_oldpwd(t_env_token *list_env, t_shell *shell)
 {
 	char		**aux;
 	char		*pwd;
 	t_env_token	*l_aux;
 
-	l_aux = *list_env;
+	l_aux = list_env;
 	pwd = obtain_content("PWD", l_aux);
 	if (pwd)
 		change_content(list_env, "OLDPWD", pwd);
 	else
 	{
 		aux = ft_split("FOO OLDPWD FOO", ' ');
-		use_unset (shell, aux);
-		ft_free(aux);
+		if (aux)
+		{
+			use_unset (shell, aux);
+			ft_free(aux);
+		}
 	}
 }
 
-static void	go_home(t_env_token **list_env, t_shell **shell, char *cwd)
+static void	go_home(t_env_token *list_env, t_shell *shell, char *cwd)
 {
 	t_env_token	*l_aux;
 	char		*home;
 
-	l_aux = *list_env;
+	l_aux = list_env;
 	home = NULL;
 	while (l_aux)
 	{
@@ -95,23 +102,23 @@ static void	go_home(t_env_token **list_env, t_shell **shell, char *cwd)
 		printf("HOME not set\n");
 	else
 	{
-		l_aux = *list_env;
+		l_aux = list_env;
 		chdir(home);
-		obtain_new_oldpwd(&l_aux, shell);
-		change_content(&l_aux, "PWD", home);
+		obtain_new_oldpwd(l_aux, shell);
+		change_content(l_aux, "PWD", home);
 	}
 	free(cwd);
 }
 
-void	use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell)
+void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 {
 	char		*pwd;
 	t_env_token	*l_aux;
 	char		*cwd;
 	char		*new_pwd;
 
-	l_aux = *l_env;
-	pwd = obtain_content("PWD", *l_env);
+	l_aux = l_env;
+	pwd = obtain_content("PWD", l_env);
 	cwd = (char *)ft_calloc(1024, sizeof(char));
 	if (!line_arraid[1])
 		go_home(l_env, shell, cwd);
@@ -121,10 +128,10 @@ void	use_cd(t_env_token **l_env, char **line_arraid, t_shell **shell)
 			chdir(pwd);
 		else
 		{
-			obtain_new_oldpwd(&l_aux, shell);
+			obtain_new_oldpwd(l_aux, shell);
 			new_pwd = getcwd(cwd, 1024);
 			pwd = ft_strdup(new_pwd);
-			change_content(&l_aux, "PWD", pwd);
+			change_content(l_aux, "PWD", pwd);
 			free(pwd);
 			free(new_pwd);
 		}

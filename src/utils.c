@@ -36,8 +36,8 @@ void	ft_free(char **lst)
 	free(lst);
 }
 
-void	ft_error(char *texto)
+void	ft_error(char *text)
 {
-	perror(texto);
+	perror(text);
 	exit(-1);
 }
