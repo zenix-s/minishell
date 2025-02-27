@@ -14,11 +14,15 @@
 
 void	use_pwd(void)
 {
-	char	*result;
-	char	*cwd;
+	char	cwd[1024];
 
-	cwd = (char *)ft_calloc(1024, sizeof(char));
-	result = getcwd(cwd, 1024);
-	printf ("%s\n", result);
-	free(result);
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		printf("%s\n", cwd);
+	}
+	else
+	{
+		perror("getcwd");
+	}
 }

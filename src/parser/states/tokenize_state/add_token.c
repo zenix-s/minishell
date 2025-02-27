@@ -29,5 +29,6 @@ t_bool	add_token(t_token **head, char *content)
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new_token;
+//	free(content);
 	return (TRUE);
 }
