@@ -34,6 +34,11 @@ static void	last_child(int fd[2], t_token *list_token, t_shell *shell)
 	waitpid(pidf, NULL, 0);
 	close(fd[WRITE_END]);
 }
+/*
+		if (finish_redirect(shell, aux_token) == 0)
+		{
+		}
+*/
 
 static void	ft_middle_c(int fdp[2], int fd[2], char **l_arraid, t_shell *shell)
 {

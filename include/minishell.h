@@ -137,7 +137,7 @@ void					execute_cmd(char **l_arraid, t_env_token *list_env);
 //                                Redirect
 //----------------------------------------------------------------------------//
 void					redirect_state(t_shell *shell);
-int						little_redirect(t_shell *shell);
+//int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);

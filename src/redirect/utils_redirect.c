@@ -1,6 +1,6 @@
 
 #include "../../include/minishell.h"
-
+/*
 int	little_redirect(t_shell *shell)
 {
 	t_token	*env_aux;
@@ -16,6 +16,7 @@ int	little_redirect(t_shell *shell)
 		stnd_in(env_aux, shell, mod);
 	return (mod);
 }
+*/
 
 int	finish_redirect(t_shell *shell, t_token *aux_shell)
 {

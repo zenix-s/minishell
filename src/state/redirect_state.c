@@ -24,8 +24,7 @@ int	follow_mode(t_token *env_aux)
 		{
 			if (x == 0)
 				return (5);
-			else
-				return (1);
+			return (1);
 		}
 		if (ft_strcmp(env_aux->content, ">") == 0)
 			return (2);

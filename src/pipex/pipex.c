@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-static t_shell	*real_search(t_shell *shell)
+static t_token	*real_search(t_shell *shell)
 {
 	t_token	*result;
 
@@ -22,10 +22,10 @@ static t_shell	*real_search(t_shell *shell)
 	{
 		if (result->type == PIPE)
 		{
-			result = result->tokens->next;
+			result = result->next;
 			return (result);
 		}
-		result = result->tokens->next;
+		result = result->next;
 	}
 	return (NULL);
 }
@@ -42,7 +42,7 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
-		if (little_redirect(shell, aux_shell) == 0)
+		if (finish_redirect(shell, aux_shell) == 0)
 		{
 			close(fd[WRITE_END]);
 			dup2(fd[READ_END], STDIN_FILENO);
@@ -60,13 +60,15 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
+	t_token		*aux_token;
 
+	aux_token = shell->tokens;
 	aux = shell->env;
 	if (pid1 < 0)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-		if (little_redirect(shell) == 0)
+		if (finish_redirect(shell, aux_token) == 0)
 		{
 			close(fd[READ_END]);
 			dup2(fd[WRITE_END], STDOUT_FILENO);
