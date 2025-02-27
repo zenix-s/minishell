@@ -90,17 +90,16 @@ void	main_loop(t_shell *shell)
 		{
 			shell->execute(shell);
 		}
-		print_tokens(shell->tokens);
-		if (shell->input && *shell->input != '\0')
+		while (has_unclosed_quotes(shell->input))
 		{
-			if (strlen(shell->input) > MAX_INPUT_LENGTH)
-				ft_error("Error: line so long.\n");
-			add_history(shell->input);
-			select_all(&shell);
+			if (!manage_unclosed_quotes(&shell->input))
+				break ;
 		}
-		free(shell->input);
-		free_tokens(shell->tokens);
-		shell->tokens = NULL;
+		parse_line(shell);
+		//print_tokens(shell->tokens);
+		//shell->tokens = NULL;
+		//free_tokens(shell->tokens);
+		//free(shell->input);
 	}
 }
 

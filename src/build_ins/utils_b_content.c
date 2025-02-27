@@ -27,11 +27,11 @@ char	*obtain_content(char *search, t_env_token *list_env)
 }
 
 //REMEMBER, this function need remove "=" in the call
-void	change_content(t_env_token **list_env, char *key, char *newcont)
+void	change_content(t_env_token *list_env, char *key, char *newcont)
 {
 	t_env_token	*l_aux;
 
-	l_aux = *list_env;
+	l_aux = list_env;
 	while (l_aux)
 	{
 		if (ft_strcmp(l_aux->key, key) == 0)
