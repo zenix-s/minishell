@@ -90,17 +90,11 @@ void	main_loop(t_shell *shell)
 		{
 			shell->execute(shell);
 		}
-		print_tokens(shell->tokens);
-		if (shell->input && *shell->input != '\0')
-		{
-			if (strlen(shell->input) > MAX_INPUT_LENGTH)
-				ft_error("Error: line so long.\n");
-			add_history(shell->input);
-			select_all(&shell);
-		}
-		free(shell->input);
-		free_tokens(shell->tokens);
-		shell->tokens = NULL;
+		//parse_line(shell);
+		//print_tokens(shell->tokens);
+		//shell->tokens = NULL;
+		//free_tokens(shell->tokens);
+		//free(shell->input);
 	}
 }
 

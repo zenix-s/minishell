@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	execute_command(char **line_arraid, t_env_token *list_env)
+void	execute_cmd(char **l_arraid, t_env_token *list_env)
 {
 	pid_t	pid;
 
@@ -23,7 +23,7 @@ void	execute_command(char **line_arraid, t_env_token *list_env)
 		return ;
 	}
 	if (pid == 0)
-		exe_all(line_arraid, list_env);
+		exe_all(l_arraid, list_env);
 	else
 		waitpid(pid, NULL, 0);
 }

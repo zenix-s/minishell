@@ -66,6 +66,7 @@ static t_bool	process_variable_expansion(t_expand_env_state *st,
 	st->value = get_env_final_value(env, st, token);
 	free(st->var_name);
 	st->i = expand_variale(st->new_content, st->i, st->value);
+	free(st->value);
 	return (TRUE);
 }
 
