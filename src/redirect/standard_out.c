@@ -31,7 +31,7 @@ void	stnd_out(t_token *env_aux, t_shell *aux, int mode)
 	if (dup2(file, STDOUT_FILENO) == -1)
 		ft_error("Error redirecting stdout");
 	if (s_build(aux, cmd) == 5)
-		execute_command(cmd, aux->env);
+		execute_cmd(cmd, aux->env);
 	dup2(stdout_copy, STDOUT_FILENO);
 	close(stdout_copy);
 	close(file);

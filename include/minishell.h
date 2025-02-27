@@ -124,7 +124,7 @@ void					error_state(int mod);
 void					select_all(t_shell *shell);
 //int						select_build(t_shell **shell, char **line_arraid);
 int						s_build(t_shell *shell, char **line_arraid);
-void					execute_command(char **line_arraid, t_env_token *list_env);
+void					execute_cmd(char **l_arraid, t_env_token *list_env);
 
 //----------------------------------------------------------------------------//
 //                                Redirect

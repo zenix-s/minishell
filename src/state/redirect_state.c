@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
+//>> no escribe nada en bash y aqui si 
 //actualmente busca muy sesgado
 int	follow_mode(t_token *env_aux)
 {
@@ -51,10 +51,9 @@ int	little_redirect(t_shell *shell)
 	if (mod == 2 || mod == 3)
 		stnd_out(env_aux, shell, mod);
 	if (mod == 4)
-		mod = stnd_in(env_aux, shell, mod);
+		stnd_in(env_aux, shell, mod);
 	return (mod);
 }
-
 
 void	redirect_state(t_shell *shell)
 {

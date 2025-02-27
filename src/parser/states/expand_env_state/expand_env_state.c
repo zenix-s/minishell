@@ -108,7 +108,7 @@ void	expand_env_state(t_shell *shell)
 	env = shell->env;
 	while (current)
 	{
-		//printf("current->content: %s\n", current->content);
+		printf("current->content: %s\n", current->content);
 		if (!expand_env_token(current, env))
 			return ;
 		current = current->next;

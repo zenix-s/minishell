@@ -27,9 +27,8 @@ void	select_all(t_shell *shell)
 	aux = shell;
 	line_arraid = ft_split(aux->tokens->content, ' ');
 	if (s_build(aux, line_arraid) == 5)
-		execute_command(line_arraid, shell->env);
+		execute_cmd(line_arraid, shell->env);
 	ft_free(line_arraid);
-
 	shell->execute = cleaner;
 }
 
@@ -53,7 +52,10 @@ int	s_build(t_shell *shell, char **line_arraid)
 	else if (ft_strcmp(line_arraid[0], "cd") == 0)
 		use_cd(shell->env, line_arraid, shell);
 	else if (ft_strcmp(line_arraid[0], "exit") == 0)
+	{
+		free_shell(shell);
 		exit(0);
+	}
 	else
 		return (5);
 	return (1);

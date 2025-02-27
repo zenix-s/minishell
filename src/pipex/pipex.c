@@ -11,44 +11,47 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
+/*
 static t_shell	*real_search(t_shell *shell)
 {
-	t_shell	*result;
+	t_token	*result;
 
-	result = shell;
-	while(result)
+
+	result = shell->tokens;
+	while (result)
 	{
-		if (result->tokens->type == PIPE)
+		if (result->type == PIPE)
 		{
-			result->tokens = result->tokens->next;
-			return(result);
+			result = result->tokens->next;
+			return (result);
 		}
-		result->tokens = result->tokens->next;
+		result = result->tokens->next;
 	}
-	return(shell);
+	return (NULL);
 }
+
+*/
 
 void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
-	t_shell		*aux_shell;
+//	t_token		*aux_shell;
 
-	aux_shell = real_search(shell);
+//	aux_shell = real_search(shell);
 	aux = shell->env;
 	if (pid2 < 0)
 		return ;
 	if (pid2 == 0)
 	{
-		if (little_redirect(aux_shell) == 0)
-		{
-			printf("%s\n", l_arraid[0]);
-			close(fd[WRITE_END]);
-			dup2(fd[READ_END], STDIN_FILENO);
-			if (s_build(shell, l_arraid) == 5)
-				exe_all(l_arraid, aux);
-			close(fd[READ_END]);
-		}
+//		if (little_redirect(shell, aux_shell) == 0)
+//		{
+		close(fd[WRITE_END]);
+		dup2(fd[READ_END], STDIN_FILENO);
+		if (s_build(shell, l_arraid) == 5)
+			exe_all(l_arraid, aux);
+		close(fd[READ_END]);
+//		}
+		shell->execute = cleaner;
 		exit(0);
 	}
 }
@@ -72,6 +75,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 				exe_all(l_arraid, aux);
 			close(fd[WRITE_END]);
 		}
+		shell->execute = cleaner;
 		exit (0);
 	}
 }

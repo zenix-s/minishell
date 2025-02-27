@@ -32,10 +32,10 @@ int	stnd_in(t_token *env_aux, t_shell *aux, int mode)
 	if (dup2(file, STDIN_FILENO) == -1)
 		ft_error("Error redirecting stdout");
 	if (s_build(aux, cmd) == 5)
-		execute_command(cmd, aux->env);
+		execute_cmd(cmd, aux->env);
 	dup2(stdin_copy, STDIN_FILENO);
 	close(stdin_copy);
 	close(file);
 	ft_free(cmd);
-	return (0);
+	return (10);
 }
