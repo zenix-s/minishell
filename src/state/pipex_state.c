@@ -18,7 +18,7 @@ void	select_pipex(t_shell *shell, int mode)
 		pipex(shell);
 	if (mode != 1)
 		big_pipex(shell);
-	shell->execute = cleaner;
+	shell->execute = clean_end_state;
 }
 
 void	pipex_state(t_shell *shell)

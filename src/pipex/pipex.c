@@ -51,7 +51,7 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 			exe_all(l_arraid, aux);
 		close(fd[READ_END]);
 //		}
-		shell->execute = cleaner;
+		shell->execute = clean_end_state;
 		exit(0);
 	}
 }
@@ -75,7 +75,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 				exe_all(l_arraid, aux);
 			close(fd[WRITE_END]);
 		}
-		shell->execute = cleaner;
+		shell->execute = clean_end_state;
 		exit (0);
 	}
 }
