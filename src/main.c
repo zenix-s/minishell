@@ -90,12 +90,7 @@ void	main_loop(t_shell *shell)
 		{
 			shell->execute(shell);
 		}
-		while (has_unclosed_quotes(shell->input))
-		{
-			if (!manage_unclosed_quotes(&shell->input))
-				break ;
-		}
-		parse_line(shell);
+		//parse_line(shell);
 		//print_tokens(shell->tokens);
 		//shell->tokens = NULL;
 		//free_tokens(shell->tokens);
