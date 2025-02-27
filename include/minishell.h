@@ -124,7 +124,7 @@ void					head(void);
 //----------------------------------------------------------------------------//
 //                                Estate
 //----------------------------------------------------------------------------//
-void					cleaner(t_shell *shell);
+void					clean_end_state(t_shell *shell);
 void					error_state(int mod);
 // Builds
 //  select

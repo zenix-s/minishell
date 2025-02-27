@@ -2,7 +2,7 @@
 #include "../../include/minishell.h"
 
 //La linea final acaba el proceso.
-void	cleaner(t_shell *shell)
+void	clean_end_state(t_shell *shell)
 {
 	free(shell->input);
 	free_tokens(shell->tokens);

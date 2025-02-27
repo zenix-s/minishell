@@ -73,6 +73,6 @@ void	redirect_state(t_shell *shell)
 	else
 	{
 		error_state(mod);
-		shell->execute = cleaner;
+		shell->execute = clean_end_state;
 	}
 }
