@@ -142,6 +142,7 @@ int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int					stnd_in(t_token *env_aux, t_shell *aux, int mode);
+int					finish_redirect(t_shell *shell, t_token *aux_shell);
 //expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void				use_pwd(void);

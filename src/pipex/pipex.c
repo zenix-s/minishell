@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-/*
+
 static t_shell	*real_search(t_shell *shell)
 {
 	t_token	*result;
@@ -30,27 +30,26 @@ static t_shell	*real_search(t_shell *shell)
 	return (NULL);
 }
 
-*/
 
 void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
-//	t_token		*aux_shell;
+	t_token		*aux_shell;
 
-//	aux_shell = real_search(shell);
+	aux_shell = real_search(shell);
 	aux = shell->env;
 	if (pid2 < 0)
 		return ;
 	if (pid2 == 0)
 	{
-//		if (little_redirect(shell, aux_shell) == 0)
-//		{
-		close(fd[WRITE_END]);
-		dup2(fd[READ_END], STDIN_FILENO);
-		if (s_build(shell, l_arraid) == 5)
-			exe_all(l_arraid, aux);
-		close(fd[READ_END]);
-//		}
+		if (little_redirect(shell, aux_shell) == 0)
+		{
+			close(fd[WRITE_END]);
+			dup2(fd[READ_END], STDIN_FILENO);
+			if (s_build(shell, l_arraid) == 5)
+				exe_all(l_arraid, aux);
+			close(fd[READ_END]);
+		}
 		shell->execute = cleaner;
 		exit(0);
 	}
