@@ -6,7 +6,7 @@
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 22:01:06 by serferna          #+#    #+#             */
-/*   Updated: 2025/02/25 22:36:55 by serferna         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:25:16 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void					ft_error(char *texto);
 //                                   PARSER
 //----------------------------------------------------------------------------//
 void					ft_init(char *line);
-t_quote					get_quote_type(t_quote quote_state, char c);
+t_quote					get_quote_type(t_quote quote_state, char chr);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);
 char					*echo_parser(char *line);
@@ -203,5 +203,6 @@ char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
 int				    	lstsizetoken(t_token *lst);
+int						is_string_in_array(const char *str, const char *array[]);
 
 #endif

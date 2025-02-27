@@ -39,20 +39,6 @@ char	*get_first_word(const char *content)
 	return (strndup(content + start, end - start));
 }
 
-int	is_in_array(const char *str, const char *array[])
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		if (strcmp(str, array[i]) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
 t_built_in_type	get_built_in_type(const char *str)
 {
 	if (strcmp(str, "echo") == 0)
@@ -94,9 +80,9 @@ void	assign_type_state(t_shell *shell)
 	while (token)
 	{
 		first_word = get_first_word(token->content);
-		if (first_word && is_in_array(first_word, builtins))
+		if (first_word && is_string_in_array(first_word, builtins))
 			set_token_type(token, BUILT_IN, get_built_in_type(first_word));
-		else if (is_in_array(token->content, separators))
+		else if (is_string_in_array(token->content, separators))
 			set_token_type(token, REDIRECT, UNDEFINED);
 		else if (strcmp(token->content, "|") == 0)
 			set_token_type(token, PIPE, UNDEFINED);

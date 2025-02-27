@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_shell.c                                       :+:      :+:    :+:   */
+/*   is_string_in_array.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 13:55:35 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/23 13:55:38 by lortega-         ###   ########.fr       */
+/*   Created: 2025/02/26 09:06:05 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/26 09:06:05 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	free_shell(t_shell *shell)
-{
-	if (shell->tokens)
-		free_tokens(shell->tokens);
-	if (shell->env)
-		free_env_tokens(shell->env);
-	free(shell);
+int is_string_in_array(const char *str, const char *array[]) {
+  int i;
+
+  i = 0;
+  while (array[i]) {
+    if (strcmp(str, array[i]) == 0)
+      return (1);
+    i++;
+  }
+  return (0);
 }
