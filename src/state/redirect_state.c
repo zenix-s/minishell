@@ -37,7 +37,7 @@ int	follow_mode(t_token *env_aux)
 	}
 	return (0);
 }
-
+/*
 void	redirect_state(t_shell *shell)
 {
 	t_token	*env_aux;
@@ -56,6 +56,23 @@ void	redirect_state(t_shell *shell)
 	else
 	{
 		error_state(mod);
+		shell->execute = cleaner;
+	}
+}
+*/
+
+void	redirect_state(t_shell *shell)
+{
+	int		mode;	
+	t_token	*aux_token;
+
+	aux_token = shell->tokens;
+	mode = loop_redirect(shell, aux_token);
+	if (mode >= 0)
+		shell->execute = select_all;
+	else
+	{
+		error_state(mode);
 		shell->execute = cleaner;
 	}
 }

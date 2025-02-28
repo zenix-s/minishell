@@ -30,7 +30,6 @@ static t_token	*real_search(t_shell *shell)
 	return (NULL);
 }
 
-
 void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
@@ -42,7 +41,7 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
-		if (finish_redirect(shell, aux_shell) == 0)
+		if (loop_redirect(shell, aux_shell) == 0)
 		{
 			close(fd[WRITE_END]);
 			dup2(fd[READ_END], STDIN_FILENO);
@@ -55,8 +54,6 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 	}
 }
 
-//el problema es que aqui estas pasando a s_build el arraid primero, 
-//si hay cat << file.txt | wc file.txt estas metiendo cat 
 void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
@@ -68,7 +65,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-		if (finish_redirect(shell, aux_token) == 0)
+		if (loop_redirect(shell, aux_token) == 0)
 		{
 			close(fd[READ_END]);
 			dup2(fd[WRITE_END], STDOUT_FILENO);

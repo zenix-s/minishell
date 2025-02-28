@@ -141,8 +141,9 @@ void					redirect_state(t_shell *shell);
 int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
-int					stnd_in(t_token *env_aux, t_shell *aux, int mode);
-int					finish_redirect(t_shell *shell, t_token *aux_shell);
+int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
+int						finish_redirect(t_shell *shell, t_token *aux_shell);
+int						loop_redirect(t_shell *shell, t_token *aux_token);
 //expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void				use_pwd(void);
@@ -172,10 +173,12 @@ void					f_child(int *fd, int pid1, char **l_arraid,
 							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_shell *shell);
+void					middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell);
+void					change_fd(int fdp[2], int fd[2]);
 char					**previusline(t_shell *shell);
 char					**postline(t_shell *shell);
-int						pre_line_int(t_shell **shell);
-int						post_line_int(t_shell **shell);
+//int						pre_line_int(t_shell **shell);
+//int						post_line_int(t_shell **shell);
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);

@@ -12,11 +12,33 @@
 
 #include "../../include/minishell.h"
 
-static void	last_child(int fd[2], t_token *list_token, t_shell *shell)
+static t_token	*last_pipex(t_shell *shell)
+{
+	t_token	*result;
+	t_token	*aux;
+
+	aux = shell->tokens;
+
+	while (aux)
+	{
+		if (aux->type == PIPE)
+		{
+			aux = aux->next;
+			result = aux;
+		}
+		aux = aux->next;
+	}
+	return (result);
+}
+
+
+//en esta funcion se puede buscar a lo bruto la ultima pipe y usar esa como list_token
+static void	last_child(int fd[2], t_shell *shell)
 {
 	pid_t		pidf;
 	t_env_token	*aux;
 	char		**line_arraid;
+	t_token		*t_for_use;
 
 	pidf = fork();
 	aux = shell->env;
@@ -24,46 +46,21 @@ static void	last_child(int fd[2], t_token *list_token, t_shell *shell)
 		ft_error("fork");
 	if (pidf == 0)
 	{
-		line_arraid = ft_split(list_token->content, ' ');
+		t_for_use = last_pipex(shell);
+		printf("este es el comando que entra en last_child --> %s\n",t_for_use->content);
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		close(fd[WRITE_END]);
-		if (s_build(shell, line_arraid) == 5)
-			exe_all(line_arraid, aux);
+		if (loop_redirect(shell, t_for_use) == 0)
+		{
+			line_arraid = ft_split(t_for_use->content, ' ');
+			if (s_build(shell, line_arraid) == 5)
+				exe_all(line_arraid, aux);
+			ft_free(line_arraid);
+		}
 	}
 	waitpid(pidf, NULL, 0);
 	close(fd[WRITE_END]);
-}
-/*
-		if (finish_redirect(shell, aux_token) == 0)
-		{
-		}
-*/
-
-static void	ft_middle_c(int fdp[2], int fd[2], char **l_arraid, t_shell *shell)
-{
-	pid_t		pid;
-	t_env_token	*aux;
-
-	pid = fork();
-	if (pid < 0)
-		ft_error("fork");
-	if (pid == 0)
-	{
-		aux = shell->env;
-		dup2(fdp[READ_END], STDIN_FILENO);
-		dup2(fd[1], STDOUT_FILENO);
-		close(fdp[READ_END]);
-		close(fd[0]);
-		close(fd[1]);
-		if (s_build(shell, l_arraid) == 5)
-			exe_all(l_arraid, aux);
-		exit(0);
-	}
-	close(fdp[READ_END]);
-	close(fd[WRITE_END]);
-	waitpid(pid, NULL, 0);
-	ft_free(l_arraid);
 }
 
 static void	process(int fdp[2], t_shell *shell, t_token *list_token)
@@ -75,7 +72,7 @@ static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 	list_aux = list_token;
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-	ft_middle_c(fdp, fd, ft_split(list_aux->content, ' '), shell);
+	middle_child(fdp, fd, list_aux, shell);
 	list_aux = list_aux->next;
 	while (list_aux != NULL)
 	{
@@ -83,13 +80,13 @@ static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 		aux[1] = fd[1];
 		if (list_aux->type == PIPE)
 			list_aux = list_aux->next;
-		if (list_aux->next == NULL )
-			last_child(fd, list_aux, shell);
+		if (list_aux->next == NULL ) // esto lo lleva al penultimo, no al adecuado con redirecciones
+			last_child(fd, shell);
 		else
 		{
 			if (pipe(fd) == -1)
 				ft_error("pipe_more");
-			ft_middle_c(aux, fd, ft_split(list_aux->content, ' '), shell);
+			middle_child(aux, fd, list_aux, shell);
 		}
 		list_aux = list_aux->next;
 	}
