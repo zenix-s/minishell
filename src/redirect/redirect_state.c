@@ -68,7 +68,7 @@ void	redirect_state(t_shell *shell)
 
 	aux_token = shell->tokens;
 	mode = loop_redirect(shell, aux_token);
-	if (mode >= 0)
+	if (mode <= 0)
 		shell->execute = select_all;
 	else
 	{

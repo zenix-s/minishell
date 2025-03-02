@@ -31,8 +31,6 @@ static t_token	*last_pipex(t_shell *shell)
 	return (result);
 }
 
-
-//en esta funcion se puede buscar a lo bruto la ultima pipe y usar esa como list_token
 static void	last_child(int fd[2], t_shell *shell)
 {
 	pid_t		pidf;
@@ -59,35 +57,52 @@ static void	last_child(int fd[2], t_shell *shell)
 			ft_free(line_arraid);
 		}
 	}
+	shell->execute = cleaner;
 	waitpid(pidf, NULL, 0);
 	close(fd[WRITE_END]);
 }
 
+static int	contpipex(t_token *list_aux)
+{
+	int		size;
+	t_token	*list_cont;
+
+	size = 0;
+	list_cont = list_aux;
+	while (list_cont)
+	{
+		if (list_cont->type == PIPE)
+			size++;
+		list_cont = list_cont->next;
+	}
+	return (size);
+}
 static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 {
 	int		fd[2];
 	t_token	*list_aux;
 	int		aux[2];
+	int		size;
 
 	list_aux = list_token;
 	if (pipe(fd) == -1)
 		ft_error("pipe");
 	middle_child(fdp, fd, list_aux, shell);
 	list_aux = list_aux->next;
+	size = contpipex(list_aux);
 	while (list_aux != NULL)
 	{
 		aux[0] = fd[0];
 		aux[1] = fd[1];
-		if (list_aux->type == PIPE)
-			list_aux = list_aux->next;
-		if (list_aux->next == NULL ) // esto lo lleva al penultimo, no al adecuado con redirecciones
-			last_child(fd, shell);
-		else
+		if (list_aux->type == PIPE && size > 1)
 		{
 			if (pipe(fd) == -1)
 				ft_error("pipe_more");
 			middle_child(aux, fd, list_aux, shell);
+			size--;
 		}
+		if (list_aux->type == PIPE && size == 1)
+			last_child(fd, shell);
 		list_aux = list_aux->next;
 	}
 }

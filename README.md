@@ -75,3 +75,18 @@ Redirección de error estándar (stderr) en modo de anexado: 2>>
 Redirección de salida estándar (stdout) y error estándar (stderr) a un mismo archivo: &>
 Redirección de salida estándar (stdout) y error estándar (stderr) a un mismo archivo en modo de anexado: &>>
 Descarte de salida: > /dev/null o 2> /dev/null
+
+
+TODO
+
+----> union de gran pipex con redirecciones
+
+----> dejar las redirecciones bien del todo...
+			---> si haces ls < archivo que no existe. da leaks
+			
+			---> en caasos como cat << aaa   . este ultimo aaa se queda como parte de lo que tiene que repetir, eso esta mal. pues no tendria que aparecer
+			---> cuando se hace << aaa tiene que salir por pantalla normal no por archivo aleatorio
+
+			---> tecnicamente en << pa se tiene que añadir todo el comando al historial pero no se como hacerlo 
+
+
