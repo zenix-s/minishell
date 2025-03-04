@@ -10,14 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../../include/minishell.h"
 
 void	check_redirect_newline_error_state(t_shell *shell)
 {
 	int			i;
 	t_token		*current;
-	const char	*redirects[] = {">>", ">", "<<", "<", NULL}; // TODO Extraer a estructura shell
+	const char	*redirects[] = {">>", ">", "<<", "<", NULL};
 
+	// TODO Extraer a estructura shell
 	current = shell->tokens;
 	while (current)
 	{
