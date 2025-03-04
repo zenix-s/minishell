@@ -47,6 +47,7 @@ void			trim_nodes_state(t_shell *shell);
 void			assign_type_state(t_shell *shell);
 
 char			*get_var_name(const char *content, uint64_t *start);
-uint64_t		expand_variale(char *new_content, uint64_t i, const char *value);
+uint64_t		expand_variale(char *new_content, uint64_t i,
+					const char *value);
 
 #endif
