@@ -41,6 +41,4 @@ void	pipex_state(t_shell *shell)
 	}
 	if (mode == 0)
 		shell->execute = redirect_state;
-//	if (mode != 0)
-//		shell->execute = cleaner;
 }

@@ -85,6 +85,7 @@ typedef struct s_env_token
 	struct s_env_token	*next;
 }						t_env_token;
 
+
 typedef struct s_shell
 {
 	t_bool				is_done;
@@ -92,7 +93,10 @@ typedef struct s_shell
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
-
+	char				*read;
+	char				*write;
+	int					*mode;
+	char				**here;
 	// Error handling
 	char				*error_message;
 	t_bool				exit_of_failure;
@@ -134,6 +138,7 @@ void					error_state(int mod);
 void					fail_state(t_shell *shell);
 void					exit_state(t_shell *shell);
 // Builds
+void 					prepare_files(t_shell *shell);
 //  select
 void					select_all(t_shell *shell);
 //int						select_build(t_shell **shell, char **line_arraid);
@@ -147,6 +152,7 @@ void					check_redirect_newline_error_state(t_shell *shell);
 //                                Redirect
 //----------------------------------------------------------------------------//
 void					redirect_state(t_shell *shell);
+int						prepare(t_shell *shell, t_token *aux_token);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
