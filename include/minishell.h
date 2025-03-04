@@ -95,7 +95,7 @@ typedef struct s_shell
 	t_env_token			*env;
 	char				*read;
 	char				*write;
-	int					*mode;
+	int					mode;
 	char				**here;
 	// Error handling
 	char				*error_message;
@@ -140,7 +140,7 @@ void					error_state(int mod);
 void					fail_state(t_shell *shell);
 void					exit_state(t_shell *shell);
 // Builds
-void 					prepare_files(t_shell *shell);
+void 					create_files_state(t_shell *shell);
 //  select
 void					select_all(t_shell *shell);
 // int						select_build(t_shell **shell, char **line_arraid);

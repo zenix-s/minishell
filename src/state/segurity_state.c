@@ -9,7 +9,7 @@ void	segurity_state(t_shell *shell)
 		if (strlen(shell->input) > MAX_INPUT_LENGTH)
 			ft_error("Error: line so long.\n");
 		add_history(shell->input);
-		shell->execute = pipex_state;
+		shell->execute = create_files_state;
 	}
 	else
 		shell->execute = clean_end_state;
