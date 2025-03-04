@@ -12,6 +12,6 @@ void	segurity_state(t_shell *shell)
 		shell->execute = pipex_state;
 	}
 	else
-		shell->execute = cleaner;
+		shell->execute = clean_end_state;
 
 }

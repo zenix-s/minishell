@@ -14,6 +14,7 @@
 
 # define MINISHELL_H
 
+# include "errors.h"
 //
 # include <stdio.h>
 //
@@ -91,6 +92,10 @@ typedef struct s_shell
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
+
+	// Error handling
+	char				*error_message;
+	t_bool				exit_of_failure;
 }						t_shell;
 
 //----------------------------------------------------------------------------//
@@ -124,14 +129,19 @@ void					head(void);
 //----------------------------------------------------------------------------//
 //                                Estate
 //----------------------------------------------------------------------------//
-void					cleaner(t_shell *shell);
+void					clean_end_state(t_shell *shell);
 void					error_state(int mod);
+void					fail_state(t_shell *shell);
+void					exit_state(t_shell *shell);
 // Builds
 //  select
 void					select_all(t_shell *shell);
 //int						select_build(t_shell **shell, char **line_arraid);
 int						s_build(t_shell *shell, char **line_arraid);
 void					execute_cmd(char **l_arraid, t_env_token *list_env);
+
+
+void					check_redirect_newline_error_state(t_shell *shell);
 
 //----------------------------------------------------------------------------//
 //                                Redirect

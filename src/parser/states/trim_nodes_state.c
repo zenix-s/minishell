@@ -55,5 +55,5 @@ void	trim_nodes_state(t_shell *shell)
 		trim_node(current);
 		current = current->next;
 	}
-	shell->execute = segurity_state;
+	shell->execute = check_redirect_newline_error_state;
 }

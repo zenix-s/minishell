@@ -29,7 +29,7 @@ void	select_all(t_shell *shell)
 	if (s_build(aux, line_arraid) == 5)
 		execute_cmd(line_arraid, shell->env);
 	ft_free(line_arraid);
-	shell->execute = cleaner;
+	shell->execute = clean_end_state;
 }
 
 int	s_build(t_shell *shell, char **line_arraid)

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-//>> no escribe nada en bash y aqui si 
+//>> no escribe nada en bash y aqui si
 //actualmente busca muy sesgado
 int	follow_mode(t_token *env_aux)
 {
@@ -82,7 +82,7 @@ int	loop_redirect(t_shell *shell, t_token *aux_token)
 
 void	redirect_state(t_shell *shell)
 {
-	int		mode;	
+	int		mode;
 	t_token	*aux_token;
 
 	aux_token = shell->tokens;
@@ -92,6 +92,6 @@ void	redirect_state(t_shell *shell)
 	else
 	{
 		error_state(mode);
-		shell->execute = cleaner;
+		shell->execute = clean_end_state;
 	}
 }

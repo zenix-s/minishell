@@ -1,5 +1,5 @@
 
-#include "../../../include/minishell.h"
+#include "../../include/minishell.h"
 
 void	free_env_tokens(t_env_token *env)
 {
