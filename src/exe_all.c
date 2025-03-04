@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static char	*search(char *object, char **command)
+char	*search(char *object, char **command)
 {
 	char	**path;
 	int		cont;
