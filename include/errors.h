@@ -2,7 +2,6 @@
 
 # define ERRORS_H
 
-# define ERR_UNEXPECTED_TOKEN_NEWLINE \
-	"syntax error near unexpected token `newline'"
+# define ERR_UNEXPECTED_TOKEN_NEWLINE "syntax error near unexpected token `newline'"
 
 #endif

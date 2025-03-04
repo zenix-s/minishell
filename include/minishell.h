@@ -41,7 +41,7 @@ typedef enum e_bool
 {
 	FALSE,
 	TRUE
-}				t_bool;
+}						t_bool;
 
 typedef enum e_quote
 {
@@ -119,7 +119,6 @@ void					ft_error(char *texto);
 //                                   PARSER
 //----------------------------------------------------------------------------//
 
-
 void					segurity_state(t_shell *shell);
 void					parse_line(t_shell *shell);
 t_quote					get_quote_type(t_quote quote_state, char c);
@@ -130,6 +129,9 @@ char					*echo_parser(char *line);
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);
 void					head(void);
+
+void					parser_end_state(t_shell *shell);
+
 //----------------------------------------------------------------------------//
 //                                Estate
 //----------------------------------------------------------------------------//
@@ -141,10 +143,9 @@ void					exit_state(t_shell *shell);
 void 					prepare_files(t_shell *shell);
 //  select
 void					select_all(t_shell *shell);
-//int						select_build(t_shell **shell, char **line_arraid);
+// int						select_build(t_shell **shell, char **line_arraid);
 int						s_build(t_shell *shell, char **line_arraid);
 void					execute_cmd(char **l_arraid, t_env_token *list_env);
-
 
 void					check_redirect_newline_error_state(t_shell *shell);
 
@@ -155,17 +156,19 @@ void					redirect_state(t_shell *shell);
 int						prepare(t_shell *shell, t_token *aux_token);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux);
-void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
+void					her_d(char **line_arraid, t_token *env_aux,
+							t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						finish_redirect(t_shell *shell, t_token *aux_shell);
 int						loop_redirect(t_shell *shell, t_token *aux_token);
-//expecific comand
+// expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void					use_pwd(void);
 void					use_export(t_shell **shell, char **line_arraid);
 void					use_echo(char **line_arraid);
-void					use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
+void					use_cd(t_env_token *l_env, char **line_arraid,
+							t_shell *shell);
 
 // except
 void					exe_all(char **command, t_env_token *list_env);
@@ -190,12 +193,13 @@ void					f_child(int *fd, int pid1, char **l_arraid,
 							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_shell *shell);
-void					middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell);
+void					middle_child(int fdp[2], int fd[2], t_token *list_aux,
+							t_shell *shell);
 void					change_fd(int fdp[2], int fd[2]);
 char					**previusline(t_shell *shell);
 char					**postline(t_shell *shell);
-//int						pre_line_int(t_shell **shell);
-//int						post_line_int(t_shell **shell);
+// int						pre_line_int(t_shell **shell);
+// int						post_line_int(t_shell **shell);
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);
@@ -233,7 +237,8 @@ int						ft_strcpy(char *dest, const char *src);
 char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
-int				    	lstsizetoken(t_token *lst);
-int						is_string_in_array(const char *str, const char *array[]);
+int						lstsizetoken(t_token *lst);
+int						is_string_in_array(const char *str,
+							const char *array[]);
 
 #endif

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/minishell.h"
+#include "../../../../include/minishell.h"
 
 static t_bool	is_valid_quoting(uint64_t *i, char *line, t_quote in_quotes)
 {

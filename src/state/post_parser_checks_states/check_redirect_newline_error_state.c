@@ -10,48 +10,34 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include <stdio.h>
+#include "../../../include/minishell.h"
 
-// zenix-dev ~/Escritorio/test
-// × ls >
-// bash: error sintáctico cerca del elemento inesperado `newline'
-
-// zenix-dev ~/Escritorio/test
-// × ls >>
-// bash: error sintáctico cerca del elemento inesperado `newline'
-
-// zenix-dev ~/Escritorio/test
-// × ls <<
-// bash: error sintáctico cerca del elemento inesperado `newline'
 void	check_redirect_newline_error_state(t_shell *shell)
 {
 	int			i;
 	t_token		*current;
 	const char	*redirects[] = {">>", ">", "<<", "<", NULL};
 
+	// TODO Extraer a estructura shell
 	current = shell->tokens;
 	while (current)
 	{
-		if (current->type == REDIRECT)
+		i = 0;
+		while (current->type == REDIRECT && redirects[i])
 		{
-			i = 0;
-			while (redirects[i])
+			if (!ft_strcmp(current->content, redirects[i]))
 			{
-				if (!ft_strcmp(current->content, redirects[i]))
+				if (!current->next)
 				{
-					if (!current->next)
-					{
-						shell->error_message = ERR_UNEXPECTED_TOKEN_NEWLINE;
-						shell->exit_of_failure = FALSE;
-						shell->execute = fail_state;
-						return ;
-					}
+					shell->error_message = ERR_UNEXPECTED_TOKEN_NEWLINE;
+					shell->exit_of_failure = FALSE;
+					shell->execute = fail_state;
+					return ;
 				}
-				i++;
 			}
+			i++;
 		}
 		current = current->next;
 	}
-	shell->execute = segurity_state; // TODO: Definir siguiente estado
+	shell->execute = parser_end_state;
 }

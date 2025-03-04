@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_parser_space.c                                  :+:      :+:    :+:   */
+/*   get_quote_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,9 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/parser.h"
+#include "../../include/minishell.h"
 
-t_bool	is_parse_space(char c)
+t_quote	get_quote_type(t_quote quote_state, char chr)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
+	if (chr == '"' && quote_state != SINGLE)
+	{
+		if (quote_state == DOUBLE)
+			quote_state = NONE;
+		else
+			quote_state = DOUBLE;
+	}
+	else if (chr == '\'' && quote_state != DOUBLE)
+	{
+		if (quote_state == SINGLE)
+			quote_state = NONE;
+		else
+			quote_state = SINGLE;
+	}
+	return (quote_state);
 }

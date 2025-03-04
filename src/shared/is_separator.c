@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/parser.h"
+#include "../../include/minishell.h"
 
 int	is_separator(const char *line, size_t *sep_len)
 {
