@@ -28,7 +28,7 @@ static t_env_token	*prev(t_env_token **list_env, char *line)
 }
 //me da el nodo que estoy buscando para procesar su eliminación
 
-static t_env_token	*search(t_env_token *list_env, char *line)
+static t_env_token	*search_a(t_env_token *list_env, char *line)
 {
 	t_env_token	*l_aux;
 	char		*char_env;
@@ -55,7 +55,7 @@ void	use_unset(t_shell *shell, char **line_arraid)
 	count = 1;
 	while (line_arraid[count] != NULL)
 	{
-		list_aux = search(shell->env, line_arraid[count]);
+		list_aux = search_a(shell->env, line_arraid[count]);
 		if (list_aux)
 		{
 			prev_aux = prev(&shell->env, list_aux->key);
