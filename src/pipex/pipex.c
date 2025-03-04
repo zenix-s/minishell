@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-/*
-static t_shell	*real_search(t_shell *shell)
+
+static t_token	*real_search(t_shell *shell)
 {
 	t_token	*result;
 
@@ -22,52 +22,50 @@ static t_shell	*real_search(t_shell *shell)
 	{
 		if (result->type == PIPE)
 		{
-			result = result->tokens->next;
+			result = result->next;
 			return (result);
 		}
-		result = result->tokens->next;
+		result = result->next;
 	}
 	return (NULL);
 }
 
-*/
-
 void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
-//	t_token		*aux_shell;
+	t_token		*aux_shell;
 
-//	aux_shell = real_search(shell);
+	aux_shell = real_search(shell);
 	aux = shell->env;
 	if (pid2 < 0)
 		return ;
 	if (pid2 == 0)
 	{
-//		if (little_redirect(shell, aux_shell) == 0)
-//		{
-		close(fd[WRITE_END]);
-		dup2(fd[READ_END], STDIN_FILENO);
-		if (s_build(shell, l_arraid) == 5)
-			exe_all(l_arraid, aux);
-		close(fd[READ_END]);
-//		}
-		shell->execute = clean_end_state;
+		if (loop_redirect(shell, aux_shell) == 0)
+		{
+			close(fd[WRITE_END]);
+			dup2(fd[READ_END], STDIN_FILENO);
+			if (s_build(shell, l_arraid) == 5)
+				exe_all(l_arraid, aux);
+			close(fd[READ_END]);
+		}
+		shell->execute = cleaner;
 		exit(0);
 	}
 }
 
-//el problema es que aqui estas pasando a s_build el arraid primero, 
-//si hay cat << file.txt | wc file.txt estas metiendo cat 
 void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 {
 	t_env_token	*aux;
+	t_token		*aux_token;
 
+	aux_token = shell->tokens;
 	aux = shell->env;
 	if (pid1 < 0)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-		if (little_redirect(shell) == 0)
+		if (loop_redirect(shell, aux_token) == 0)
 		{
 			close(fd[READ_END]);
 			dup2(fd[WRITE_END], STDOUT_FILENO);
