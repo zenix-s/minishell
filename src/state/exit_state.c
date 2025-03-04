@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_shell.c                                       :+:      :+:    :+:   */
+/*   exit_state.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 13:55:35 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/23 13:55:38 by lortega-         ###   ########.fr       */
+/*   Created: 2025/02/27 21:22:37 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/27 21:24:30 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	free_shell(t_shell *shell)
+/**
+ * @param shell Puntero a la estructura shell
+ * Ultimo estado de la iteracion, libera la memoria de los tokens y el input
+ * para permitir la salida del programa.
+ */
+void exit_state(t_shell *shell)
 {
-	if (shell->tokens)
-		free_tokens(shell->tokens);
-	if (shell->env)
-		free_env_tokens(shell->env);
-	if (shell->input)
-		free(shell->input);
-	if (shell->error_message)
-		free(shell->error_message);
-	free(shell);
+  	free_shell(shell);
+	exit(EXIT_SUCCESS);
 }

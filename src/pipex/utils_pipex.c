@@ -57,7 +57,7 @@ char	**postline(t_shell *shell)
 	}
 	return (NULL);
 }
-
+/*
 int	pre_line_int(t_shell **shell)
 {
 	t_token	*aux;
@@ -85,3 +85,4 @@ int	post_line_int(t_shell **shell)
 	}
 	return (-1);
 }
+*/

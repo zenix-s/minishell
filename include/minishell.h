@@ -14,6 +14,7 @@
 
 # define MINISHELL_H
 
+# include "errors.h"
 //
 # include <stdio.h>
 //
@@ -91,6 +92,10 @@ typedef struct s_shell
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
+
+	// Error handling
+	char				*error_message;
+	t_bool				exit_of_failure;
 }						t_shell;
 
 //----------------------------------------------------------------------------//
@@ -124,8 +129,10 @@ void					head(void);
 //----------------------------------------------------------------------------//
 //                                Estate
 //----------------------------------------------------------------------------//
-void					cleaner(t_shell *shell);
+void					clean_end_state(t_shell *shell);
 void					error_state(int mod);
+void					fail_state(t_shell *shell);
+void					exit_state(t_shell *shell);
 // Builds
 //  select
 void					select_all(t_shell *shell);
@@ -133,24 +140,30 @@ void					select_all(t_shell *shell);
 int						s_build(t_shell *shell, char **line_arraid);
 void					execute_cmd(char **l_arraid, t_env_token *list_env);
 
+
+void					check_redirect_newline_error_state(t_shell *shell);
+
 //----------------------------------------------------------------------------//
 //                                Redirect
 //----------------------------------------------------------------------------//
 void					redirect_state(t_shell *shell);
-int						little_redirect(t_shell *shell);
+//int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
-int					stnd_in(t_token *env_aux, t_shell *aux, int mode);
+int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
+int						finish_redirect(t_shell *shell, t_token *aux_shell);
+int						loop_redirect(t_shell *shell, t_token *aux_token);
 //expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
-void				use_pwd(void);
-void				use_export(t_shell **shell, char **line_arraid);
-void				use_echo(char **line_arraid);
+void					use_pwd(void);
+void					use_export(t_shell **shell, char **line_arraid);
+void					use_echo(char **line_arraid);
 void					use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
 
 // except
 void					exe_all(char **command, t_env_token *list_env);
+char					*search(char *object, char **command);
 
 // utils_build
 t_token					*new_env(t_token *list_env, char **env);
@@ -171,10 +184,12 @@ void					f_child(int *fd, int pid1, char **l_arraid,
 							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_shell *shell);
+void					middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell);
+void					change_fd(int fdp[2], int fd[2]);
 char					**previusline(t_shell *shell);
 char					**postline(t_shell *shell);
-int						pre_line_int(t_shell **shell);
-int						post_line_int(t_shell **shell);
+//int						pre_line_int(t_shell **shell);
+//int						post_line_int(t_shell **shell);
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);

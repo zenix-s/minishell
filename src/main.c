@@ -90,11 +90,6 @@ void	main_loop(t_shell *shell)
 		{
 			shell->execute(shell);
 		}
-		//parse_line(shell);
-		//print_tokens(shell->tokens);
-		//shell->tokens = NULL;
-		//free_tokens(shell->tokens);
-		//free(shell->input);
 	}
 }
 
