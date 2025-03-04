@@ -57,7 +57,7 @@ static void	last_child(int fd[2], t_shell *shell)
 			ft_free(line_arraid);
 		}
 	}
-	shell->execute = cleaner;
+	shell->execute = clean_end_state;
 	waitpid(pidf, NULL, 0);
 	close(fd[WRITE_END]);
 }
