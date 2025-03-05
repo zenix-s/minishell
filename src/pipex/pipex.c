@@ -41,14 +41,14 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
-		if (loop_redirect(shell, aux_shell) == 0)
-		{
-			close(fd[WRITE_END]);
-			dup2(fd[READ_END], STDIN_FILENO);
-			if (s_build(shell, l_arraid) == 5)
-				exe_all(l_arraid, aux);
-			close(fd[READ_END]);
-		}
+//		if (loop_redirect(shell, aux_shell) == 0)
+//		{
+		close(fd[WRITE_END]);
+		dup2(fd[READ_END], STDIN_FILENO);
+		if (s_build(shell, l_arraid) == 5)
+			exe_all(l_arraid, aux);
+		close(fd[READ_END]);
+//		}
 		shell->execute = clean_end_state;
 		exit(0);
 	}
@@ -65,14 +65,13 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-		if (loop_redirect(shell, aux_token) == 0)
-		{
-			close(fd[READ_END]);
-			dup2(fd[WRITE_END], STDOUT_FILENO);
-			if (s_build(shell, l_arraid) == 5)
-				exe_all(l_arraid, aux);
-			close(fd[WRITE_END]);
-		}
+		if (prepare (shell, aux_token) != -1)
+			return ;
+		close(fd[READ_END]);
+		dup2(fd[WRITE_END], STDOUT_FILENO);
+		if (s_build(shell, l_arraid) == 5)
+			exe_all(l_arraid, aux);
+		close(fd[WRITE_END]);
 		shell->execute = clean_end_state;
 		exit (0);
 	}
@@ -89,6 +88,7 @@ void	pipex(t_shell *shell)
 	pid_t		pid2;
 	char		**line_arraid;
 
+//	prepare_in_loop(shell); esta linea es la solucion! porque es solo si tiene pipe y no siempre
 	line_arraid = previusline(shell);
 	if (pipe(fd) == -1)
 		ft_error("pipex");

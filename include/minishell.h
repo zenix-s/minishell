@@ -154,6 +154,8 @@ void					check_redirect_newline_error_state(t_shell *shell);
 //----------------------------------------------------------------------------//
 void					redirect_state(t_shell *shell);
 int						prepare(t_shell *shell, t_token *aux_token);
+int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
+int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux,

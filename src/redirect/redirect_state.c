@@ -80,62 +80,17 @@ int	loop_redirect(t_shell *shell, t_token *aux_token)
 	return (mode);
 }
 
-int	prepare(t_shell *shell, t_token *aux_token)
-{
-	int	mode;
-	int	file;
-
-	mode = 0;
-	while (aux_token && aux_token->type != PIPE)
-	{
-		if (aux_token->type == REDIRECT)
-		{
-			if (ft_strcmp(aux_token->content, "<<") == 0) //este es mas largo
-				shell->here[0] = aux_token->next->content;
-			if (ft_strcmp(aux_token->content, "<") == 0)
-			{
-				file = open(aux_token->next->content, O_RDONLY);
-				if (file == -1)
-					return (-1);
-				shell->read = aux_token->next->content;
-				close (file);
-			}
-			if (ft_strcmp(aux_token->content, ">") == 0)
-			{
-				file = open(aux_token->next->content, O_CREAT | O_WRONLY |O_TRUNC, 0644);
-				if (file == -1)
-					return (-1);
-				shell->write = aux_token->next->content;
-				shell->mode = 1;
-				close (file);
-			}
-			if (ft_strcmp(aux_token->content, ">>") == 0)
-			{
-				file = open(aux_token->next->content, O_CREAT | O_WRONLY |O_TRUNC, 0644);
-				if (file == -1)
-					return (-1);
-				shell->write = aux_token->next->content;
-				shell->mode = 2;
-				close (file);
-			}
-			mode++;
-			aux_token = aux_token->next;
-		}
-		aux_token = aux_token->next;
-	}
-	return (mode);
-}
-
 void	redirect_state(t_shell *shell)
 {
 	int		mode;
 	t_token	*aux_token;
 
 	aux_token = shell->tokens;
-	mode = prepare(shell, aux_token);
-	//mode = loop_redirect(shell, aux_token);
-	if (mode <= 0)
+	//mode = prepare(shell, aux_token);
+	mode = 0;
+	if (mode == 0)
 		shell->execute = select_all;
+	//loop_redirect(shell, aux_token);
 	else
 	{
 		error_state(mode);

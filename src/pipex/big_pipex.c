@@ -49,13 +49,13 @@ static void	last_child(int fd[2], t_shell *shell)
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		close(fd[WRITE_END]);
-		if (loop_redirect(shell, t_for_use) == 0)
-		{
-			line_arraid = ft_split(t_for_use->content, ' ');
-			if (s_build(shell, line_arraid) == 5)
-				exe_all(line_arraid, aux);
-			ft_free(line_arraid);
-		}
+//		if (loop_redirect(shell, t_for_use) == 0)
+//		{
+		line_arraid = ft_split(t_for_use->content, ' ');
+		if (s_build(shell, line_arraid) == 5)
+			exe_all(line_arraid, aux);
+		ft_free(line_arraid);
+//		}
 	}
 	shell->execute = clean_end_state;
 	waitpid(pidf, NULL, 0);

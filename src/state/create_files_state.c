@@ -9,15 +9,20 @@ void	create_files_state(t_shell *shell)
 	env_aux = shell->tokens;
 	while (env_aux)
 	{
-		if (ft_strcmp(env_aux->content, ">") == 0)
+		while (env_aux->type != PIPE)
 		{
-			fd = open(env_aux->next->content, O_CREAT, 0644);
-			close (fd);
-		}
-		if (ft_strcmp(env_aux->content, ">>") == 0)
-		{
-			fd = open(env_aux->next->content, O_CREAT, 0644);
-			close (fd);
+
+			if (ft_strcmp(env_aux->content, ">") == 0)
+			{
+				fd = open(env_aux->next->content, O_CREAT, 0644);
+				close (fd);
+			}
+			if (ft_strcmp(env_aux->content, ">>") == 0)
+			{
+				fd = open(env_aux->next->content, O_CREAT, 0644);
+				close (fd);
+			}
+			env_aux = env_aux->next;
 		}
 		env_aux = env_aux->next;
 	}
