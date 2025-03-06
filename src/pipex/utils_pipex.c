@@ -17,6 +17,9 @@
 
 // el nombre esta al reves!
 //devuelve el char **
+/*
+es posible que esta funcion muera ---
+*/
 char	**previusline(t_shell *shell)
 {
 	t_token	*aux;
@@ -57,32 +60,3 @@ char	**postline(t_shell *shell)
 	}
 	return (NULL);
 }
-/*
-int	pre_line_int(t_shell **shell)
-{
-	t_token	*aux;
-
-	aux = (*shell)->tokens;
-	while (aux)
-	{
-		if (ft_strcmp(aux->next->content, "|") == 0)
-			return (1);
-		aux = aux->next;
-	}
-	return (-1);
-}
-
-int	post_line_int(t_shell **shell)
-{
-	t_token	*aux;
-
-	aux = (*shell)->tokens;
-	while (aux)
-	{
-		if (ft_strcmp(aux->content, "|") == 0 && aux->next != NULL)
-			return (1);
-		aux = aux->next;
-	}
-	return (-1);
-}
-*/

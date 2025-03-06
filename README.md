@@ -1,4 +1,3 @@
-
 TO DO 
 
 -pipex para las redirecciones que esta medio hecho
@@ -74,5 +73,3 @@ TODO
 			---> cuando se hace << aaa tiene que salir por pantalla normal no por archivo aleatorio
 
 			---> tecnicamente en << pa se tiene que añadir todo el comando al historial pero no se como hacerlo 
-
-

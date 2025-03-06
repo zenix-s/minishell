@@ -52,48 +52,70 @@ int	finish_redirect(t_shell *shell, t_token *aux_shell)
 	if (mod == 4)
 		stnd_in(env_aux, shell, mod);
 	return (mod);
-
 }
 
-int	loop_redirect(t_shell *shell, t_token *aux_token)
+static void	dup_close(int stdin_copy, int file_in)
 {
-	int	mode;
-	int	result;
-	int	loop;
-
-	loop = 0;
-	result = 0;
-	mode = finish_redirect(shell, aux_token);
-/*
-	while (aux_token && aux_token->type != PIPE)
-	{
-		if (mode != 0)
-			result = mode;
-		while (aux_token && aux_token->type != PIPE && aux_token->type != REDIRECT)
-			aux_token = aux_token->next;
-		if (aux_token && aux_token->type != PIPE)
-			aux_token = aux_token->next;
-		loop++;
-	}
-	return (result);
-*/
-	return (mode);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	close(file_in);
 }
 
 void	redirect_state(t_shell *shell)
 {
-	int		mode;
-	t_token	*aux_token;
+	int		file_in;
+	int		file_out;
+	int		stdin_copy;
+	int		stdout_copy;
+	char	**cmd;
 
-	aux_token = shell->tokens;
-	//mode = prepare(shell, aux_token);
-	mode = 0;
-	if (mode == 0)
-		shell->execute = select_all;
-	//loop_redirect(shell, aux_token);
-	else
+	if (shell->read != NULL)
 	{
-		error_state(mode);
-		shell->execute = clean_end_state;
+		file_in = open(shell->read, O_RDONLY);
+		if (file_in == -1)
+			return ;
+		stdin_copy = dup(STDIN_FILENO);
+		if (dup2(file_in, STDIN_FILENO) == -1)
+			ft_error("Error redirigiendo la entrada estándar");
 	}
+	if (shell->write != NULL)
+	{
+		if (shell->mode == 1)
+			file_out = open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (shell->mode == 2)
+			file_out = open(shell->write, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (file_out == -1)
+			ft_error("Error abriendo el archivo de salida");
+		stdout_copy = dup(STDOUT_FILENO);
+		if (dup2(file_out, STDOUT_FILENO) == -1)
+			ft_error("Error redirigiendo la salida estándar");
+	}
+	if (shell->read != NULL || shell->write != NULL)
+	{
+		cmd = ft_split(shell->tokens->content, ' ');
+		if (s_build(shell, cmd) == 5)
+			execute_cmd(cmd, shell->env);
+		ft_free(cmd);
+	}
+	if (shell->read != NULL)
+		dup_close(stdin_copy, file_in);
+	// {
+	// 	dup2(stdin_copy, STDIN_FILENO);
+	// 	close(stdin_copy);
+	// 	close(file_in);
+	// }
+	if (shell->write != NULL)
+	{
+		dup2(stdout_copy, STDOUT_FILENO);
+		close(stdout_copy);
+		close(file_out);
+	}
+	if (shell->read == NULL && shell->write == NULL)
+		shell->execute = select_all;
+	else
+		shell->execute = clean_end_state;
+//	else
+//	{
+//		error_state(mode);
+//	}
 }

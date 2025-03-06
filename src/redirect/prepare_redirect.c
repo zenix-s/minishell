@@ -45,20 +45,20 @@ int	prepare(t_shell *shell, t_token *aux_token)
 {
 	int		mode;
 	int		aux;
-	char	*foo;
+	char	*name;
 
 	mode = 0;
 	while (aux_token && aux_token->type != PIPE)
 	{
 		if (aux_token->type == REDIRECT)
 		{
-			if (ft_strcmp(aux_token->content, "<<") == 0) //este es mas largo
+			if (ft_strcmp(aux_token->content, "<<") == 0)
 				shell->here[0] = aux_token->next->content;
 			aux = ft_read_open(aux_token, shell, "<");
 			if (aux == -1)
 				return (-1);
-			foo = aux_token->next->content;
-			aux = ft_write_open(aux_token, shell, foo);
+			name = aux_token->next->content;
+			aux = ft_write_open(aux_token, shell, name);
 			if (aux == -1)
 				return (-1);
 			mode++;
@@ -67,4 +67,19 @@ int	prepare(t_shell *shell, t_token *aux_token)
 		aux_token = aux_token->next;
 	}
 	return (mode);
+}
+
+void	prepare_in_loop(t_shell *shell)
+{
+	t_token	*token_aux;
+
+	token_aux = shell->tokens;
+	while (token_aux)
+	{
+		prepare(shell, token_aux);
+		while (token_aux && token_aux->type != PIPE)
+			token_aux = token_aux->next;
+		if (token_aux && token_aux->type == PIPE)
+			token_aux = token_aux->next;
+	}
 }

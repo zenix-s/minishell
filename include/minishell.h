@@ -93,6 +93,7 @@ typedef struct s_shell
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
+	// redirect
 	char				*read;
 	char				*write;
 	int					mode;
@@ -153,17 +154,20 @@ void					check_redirect_newline_error_state(t_shell *shell);
 //                                Redirect
 //----------------------------------------------------------------------------//
 void					redirect_state(t_shell *shell);
+void					prepare_in_loop(t_shell *shell);
 int						prepare(t_shell *shell, t_token *aux_token);
 int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
 int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
+int						use_redirect(t_shell *shell);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux);
 void					her_d(char **line_arraid, t_token *env_aux,
 							t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
+int						new_stnd_in(t_shell *shell);
 int						finish_redirect(t_shell *shell, t_token *aux_shell);
-int						loop_redirect(t_shell *shell, t_token *aux_token);
+
 // expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void					use_pwd(void);
