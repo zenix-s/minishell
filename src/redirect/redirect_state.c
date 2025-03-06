@@ -54,13 +54,18 @@ int	finish_redirect(t_shell *shell, t_token *aux_shell)
 	return (mod);
 }
 
-static void	dup_close(int stdin_copy, int file_in)
+static void	dup_close(int copy, int file)
 {
-	dup2(stdin_copy, STDIN_FILENO);
-	close(stdin_copy);
-	close(file_in);
+	dup2(copy, STDIN_FILENO);
+	close(copy);
+	close(file);
 }
 
+// otra opcion es abrir directamente los tres casos, asi te ahorras todo lo demas 
+//solo entrada
+//solo salida
+//las dos
+//ademas esto se puede usar como distintos estados
 void	redirect_state(t_shell *shell)
 {
 	int		file_in;
@@ -87,7 +92,7 @@ void	redirect_state(t_shell *shell)
 		if (file_out == -1)
 			ft_error("Error abriendo el archivo de salida");
 		stdout_copy = dup(STDOUT_FILENO);
-		if (dup2(file_out, STDOUT_FILENO) == -1)
+		if (dup2(file_out, STDOUT_FILENO) == -1) //
 			ft_error("Error redirigiendo la salida estándar");
 	}
 	if (shell->read != NULL || shell->write != NULL)
@@ -99,17 +104,8 @@ void	redirect_state(t_shell *shell)
 	}
 	if (shell->read != NULL)
 		dup_close(stdin_copy, file_in);
-	// {
-	// 	dup2(stdin_copy, STDIN_FILENO);
-	// 	close(stdin_copy);
-	// 	close(file_in);
-	// }
 	if (shell->write != NULL)
-	{
-		dup2(stdout_copy, STDOUT_FILENO);
-		close(stdout_copy);
-		close(file_out);
-	}
+		dup_close(stdout_copy, file_out);
 	if (shell->read == NULL && shell->write == NULL)
 		shell->execute = select_all;
 	else
