@@ -20,10 +20,10 @@
 void	select_all(t_shell *shell)
 {
 	t_shell	*aux;
-	t_token	*env_aux;
+	// t_token	*env_aux;
 	char	**line_arraid;
 
-	env_aux = shell->tokens;
+	// env_aux = shell->tokens;
 	aux = shell;
 	line_arraid = ft_split(aux->tokens->content, ' ');
 	if (s_build(aux, line_arraid) == 5)

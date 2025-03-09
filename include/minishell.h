@@ -128,6 +128,9 @@ void					head(void);
 
 void					parser_end_state(t_shell *shell);
 
+char					**split_input(char *input, const char **split,
+							const char **s_split);
+
 //----------------------------------------------------------------------------//
 //                                Estate
 //----------------------------------------------------------------------------//
@@ -232,7 +235,7 @@ char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
 int						lstsizetoken(t_token *lst);
-int						is_string_in_array(const char *str,
-							const char *array[]);
+uint64_t				is_string_in_array(const char *str, const char *arr[]);
+int						ft_super_strcat(char **dest, const char *src);
 
 #endif
