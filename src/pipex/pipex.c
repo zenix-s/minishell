@@ -47,7 +47,8 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 			return ;
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
-		if (finish_redirect(shell, aux_token) == 0)
+		//if (finish_redirect(shell, aux_token) == 0)
+		if (pipex_redirect(shell, aux_token) == 0)
 		{
 			if (aux_token->type == BUILT_IN || aux_token->type == EXE)
 			{
@@ -76,7 +77,8 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 			return ;
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
-		if (finish_redirect(shell, aux_token) == 0)
+		//if (finish_redirect(shell, aux_token) == 0)
+		if (pipex_redirect(shell, aux_token) == 0)
 		{
 			if (aux_token->type == BUILT_IN || aux_token->type == EXE)
 			{

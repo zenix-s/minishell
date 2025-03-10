@@ -160,14 +160,17 @@ int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
 int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
 int						use_redirect(t_shell *shell);
 //int						little_redirect(t_shell *shell);
-int						follow_mode(t_token *env_aux);
+int						follow_mode(t_token *env_aux); //
 void					her_d(char **line_arraid, t_token *env_aux,
 							t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						new_stnd_in(t_shell *shell);
-int						finish_redirect(t_shell *shell, t_token *aux_shell);
-
+int						finish_redirect(t_shell *shell, t_token *aux_shell); //
+void					read_alone(t_shell *shell, char **cmd);
+void					write_alone(t_shell *shell, char **cmd);
+int						new_open(t_shell *shell);
+void					full_redirect(t_shell *shell, char **cmd);
 // expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void					use_pwd(void);
@@ -191,6 +194,7 @@ void					change_content(t_env_token *list_env, char *oldcont,
 //----------------------------------------------------------------------------//
 //                                 pipex part
 //----------------------------------------------------------------------------//
+int						pipex_redirect(t_shell *shell, t_token *aux_token);
 void					pipex_state(t_shell *shell);
 void					select_pipex(t_shell *shell, int mode);
 void					pipex(t_shell *shell);

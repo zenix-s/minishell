@@ -54,64 +54,96 @@ int	finish_redirect(t_shell *shell, t_token *aux_shell)
 	return (mod);
 }
 
-static void	dup_close(int copy, int file)
+void	read_alone(t_shell *shell, char **cmd)
 {
-	dup2(copy, STDIN_FILENO);
-	close(copy);
-	close(file);
+	int		file_in;
+	int		stdin_copy;
+
+	file_in = open(shell->read, O_RDONLY);
+	if (file_in == -1)
+		return ;
+	stdin_copy = dup(STDIN_FILENO);
+	if (dup2(file_in, STDIN_FILENO) == -1)
+		ft_error("Error redirigiendo la entrada estándar");
+	if (s_build(shell, cmd) == 5)
+		execute_cmd(cmd, shell->env);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	close(file_in);
 }
 
-// otra opcion es abrir directamente los tres casos, asi te ahorras todo lo demas 
-//solo entrada
-//solo salida
-//las dos
-//ademas esto se puede usar como distintos estados
-void	redirect_state(t_shell *shell)
+void	write_alone(t_shell *shell, char **cmd)
+{
+	int		file_out;
+	int		stdout_copy;
+
+	if (shell->mode == 1)
+		file_out = open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (shell->mode == 2)
+		file_out = open(shell->write, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (file_out == -1)
+		ft_error("Error abriendo el archivo de salida");
+	stdout_copy = dup(STDOUT_FILENO);
+	if (dup2(file_out, STDOUT_FILENO) == -1)
+		ft_error("Error redirigiendo la salida estándar");
+	if (s_build(shell, cmd) == 5)
+		execute_cmd(cmd, shell->env);
+	dup2(stdout_copy, STDOUT_FILENO);
+	close(stdout_copy);
+	close(file_out);
+}
+
+int	new_open(t_shell *shell)
+{
+	if (shell->mode == 1)
+		return (open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644));
+	if (shell->mode == 2)
+		return (open(shell->write, O_CREAT | O_WRONLY | O_APPEND, 0644));
+	return (-1);
+}
+
+void	full_redirect(t_shell *shell, char **cmd)
 {
 	int		file_in;
 	int		file_out;
 	int		stdin_copy;
 	int		stdout_copy;
+
+	file_in = open(shell->read, O_RDONLY);
+	if (file_in == -1)
+		return ;
+	stdin_copy = dup(STDIN_FILENO);
+	if (stdin_copy == -1 || dup2(file_in, STDIN_FILENO) == -1)
+		ft_error("Error redirigiendo la entrada estándar");
+	file_out = new_open(shell);
+	if (file_out == -1)
+		ft_error("Error abriendo el archivo de salida");
+	stdout_copy = dup(STDOUT_FILENO);
+	if (dup2(file_out, STDOUT_FILENO) == -1)
+		ft_error("Error redirigiendo la salida estándar");
+	if (s_build(shell, cmd) == 5)
+		execute_cmd(cmd, shell->env);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	close(file_in);
+	dup2(stdout_copy, STDOUT_FILENO);
+	close(stdout_copy);
+	close(file_out);
+}
+
+void	redirect_state(t_shell *shell)
+{
 	char	**cmd;
 
-	if (shell->read != NULL)
-	{
-		file_in = open(shell->read, O_RDONLY);
-		if (file_in == -1)
-			return ;
-		stdin_copy = dup(STDIN_FILENO);
-		if (dup2(file_in, STDIN_FILENO) == -1)
-			ft_error("Error redirigiendo la entrada estándar");
-	}
-	if (shell->write != NULL)
-	{
-		if (shell->mode == 1)
-			file_out = open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (shell->mode == 2)
-			file_out = open(shell->write, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (file_out == -1)
-			ft_error("Error abriendo el archivo de salida");
-		stdout_copy = dup(STDOUT_FILENO);
-		if (dup2(file_out, STDOUT_FILENO) == -1) //
-			ft_error("Error redirigiendo la salida estándar");
-	}
-	if (shell->read != NULL || shell->write != NULL)
-	{
-		cmd = ft_split(shell->tokens->content, ' ');
-		if (s_build(shell, cmd) == 5)
-			execute_cmd(cmd, shell->env);
-		ft_free(cmd);
-	}
-	if (shell->read != NULL)
-		dup_close(stdin_copy, file_in);
-	if (shell->write != NULL)
-		dup_close(stdout_copy, file_out);
+	cmd = ft_split(shell->tokens->content, ' ');
+	if (shell->read != NULL && shell->write == NULL)
+		read_alone(shell, cmd);
+	else if (shell->read == NULL && shell->write != NULL)
+		write_alone(shell, cmd);
+	else if (shell->read != NULL && shell->write != NULL)
+		full_redirect(shell, cmd);
+	ft_free(cmd);
+	shell->execute = clean_end_state;
 	if (shell->read == NULL && shell->write == NULL)
 		shell->execute = select_all;
-	else
-		shell->execute = clean_end_state;
-//	else
-//	{
-//		error_state(mode);
-//	}
 }
