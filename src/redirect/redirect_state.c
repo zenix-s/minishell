@@ -63,8 +63,6 @@ int	loop_redirect(t_shell *shell, t_token *aux_token)
 
 	loop = 0;
 	result = 0;
-	(void)loop;
-	(void)result;
 	mode = finish_redirect(shell, aux_token);
 /*
 	while (aux_token && aux_token->type != PIPE)
