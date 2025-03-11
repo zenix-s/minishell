@@ -15,39 +15,44 @@
 
 # include "minishell.h"
 
+static const char	*g_split_space[] = {" ", NULL};
+static const char	*g_split_redirect[] = {">>", "<<", ">", "<", NULL};
+static const char	*g_split_pipe[] = {"|", NULL};
+static const char	*g_split_redirect_pipe[] = {">>", "<<", ">", "<", "|",
+		NULL};
+
 typedef struct s_parse_state
 {
-	t_quote		quote_state;
-	uint64_t	i;
-	uint64_t	buf_index;
-	char		buffer[1024];
-	uint64_t	len;
-}				t_parse_state;
+	int64_t			i;
+	int64_t			first;
+	t_bool			is_first;
+	t_bool			is_next_redirect;
+}					t_parse_state;
 
 typedef struct s_expand_env_state
 {
-	uint64_t	len;
-	char		*var_name;
-	char		*value;
-	uint64_t	start;
-	char		new_content[1024];
-	uint64_t	i;
-	t_quote		quote;
-	t_bool		idiot;
-}				t_expand_env_state;
+	uint64_t		len;
+	char			*var_name;
+	char			*value;
+	uint64_t		start;
+	char			new_content[1024];
+	uint64_t		i;
+	t_quote			quote;
+	t_bool			idiot;
+}					t_expand_env_state;
 
-t_bool			is_parse_space(char c);
-t_token			*create_token(char *content);
-t_bool			add_token(t_token **head, char *content);
-int				is_separator(const char *line, size_t *sep_len);
+t_bool				is_parse_space(char c);
+t_token				*create_token(char *content);
+t_bool				add_token(t_token **head, char *content);
+int					is_separator(const char *line, size_t *sep_len);
 
-void			tokenize_state(t_shell *shell);
-void			expand_env_state(t_shell *shell);
-void			trim_nodes_state(t_shell *shell);
-void			assign_type_state(t_shell *shell);
+void				tokenize_state(t_shell *shell);
+void				expand_env_state(t_shell *shell);
+void				trim_nodes_state(t_shell *shell);
+void				assign_type_state(t_shell *shell);
 
-char			*get_var_name(const char *content, uint64_t *start);
-uint64_t		expand_variale(char *new_content, uint64_t i,
-					const char *value);
+char				*get_var_name(const char *content, uint64_t *start);
+uint64_t			expand_variale(char *new_content, uint64_t i,
+						const char *value);
 
 #endif
