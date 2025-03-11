@@ -86,14 +86,14 @@ static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 	list_aux = list_token;
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-	printf("primera --- > ptata\n");
+//	printf("primera --- > ptata\n");
 	middle_child(fdp, fd, list_aux, shell);
-	printf("segunda --- > ptata\n");
+//	printf("segunda --- > ptata\n");
 	list_aux = list_aux->next;
 	size = contpipex(list_aux);
 	while (list_aux != NULL)
 	{
-		printf("ptata\n");
+//		printf("ptata\n");
 		aux[0] = fd[0];
 		aux[1] = fd[1];
 		if (list_aux->type == PIPE && size > 1)
@@ -109,6 +109,19 @@ static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 	}
 }
 
+static t_token	*next_pipex(t_shell *shell)
+{
+	t_token	*l_aux;
+
+	l_aux = shell->tokens;
+	while (l_aux && l_aux->type != PIPE)
+	{
+		l_aux = l_aux->next;
+	}
+	l_aux = l_aux->next;
+	return (l_aux);
+}
+
 void	big_pipex(t_shell *shell)
 {
 	int		fd[2];
@@ -117,7 +130,7 @@ void	big_pipex(t_shell *shell)
 	t_token	*l_aux;
 
 	prepare_in_loop(shell);
-	l_aux = shell->tokens->next->next;
+	l_aux = next_pipex(shell);
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
 		ft_error("No command found");
