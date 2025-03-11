@@ -19,52 +19,123 @@ static t_parse_state	*init_parse_state(void)
 	state = (t_parse_state *)malloc(sizeof(t_parse_state));
 	if (!state)
 		return (NULL);
-	state->quote_state = NONE;
 	state->i = 0;
-	state->buf_index = 0;
-	state->len = 0;
+	state->first = 0;
+	state->is_first = TRUE;
+	state->is_next_redirect = FALSE;
 	return (state);
 }
 
-static t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
+char	**handle_first_redirect(char **result, int64_t *i)
 {
-	state->quote_state = get_quote_type(state->quote_state, line[state->i]);
-	if (state->quote_state == NONE && is_separator(&line[state->i],
-			&state->len))
+	char	**aux;
+
+	if (is_string_in_array(result[*i], g_split_redirect))
 	{
-		if (state->buf_index > 0)
-		{
-			state->buffer[state->buf_index] = '\0';
-			if (!add_token(&(shell->tokens), state->buffer))
-				return (FALSE);
-			state->buf_index = 0;
-		}
-		ft_strncpy(state->buffer, &line[state->i], state->len);
-		state->buffer[state->len] = '\0';
-		if (!add_token(&(shell->tokens), state->buffer))
-			return (FALSE);
-		state->i += state->len;
+		aux = insert_string_on_array(result, "", *i);
+		if (aux == NULL)
+			return (NULL);
+		free(result);
+		result = aux;
+		(*i)++;
 	}
-	else
-		state->buffer[state->buf_index++] = line[state->i++];
-	return (TRUE);
+	return (result);
+}
+
+void	handle_pipe_case(t_parse_state *state)
+{
+	state->is_first = TRUE;
+	state->is_next_redirect = FALSE;
+	state->i++;
+	state->first = state->i;
+}
+
+char	**merge_with_first(char **result, t_parse_state *state)
+{
+	char	**aux;
+
+	ft_super_strcat(&(result[state->first]), " ");
+	ft_super_strcat(&(result[state->first]), result[state->i]);
+	free(result[state->i]);
+	aux = delete_string_on_array(result, state->i);
+	if (aux == NULL)
+		return (NULL);
+	free(result);
+	return (aux);
+}
+
+char	**handle_general_case(char **result, t_parse_state *state)
+{
+	if (state->is_first)
+	{
+		state->is_first = FALSE;
+		// state->i++;
+		return (result);
+	}
+	result = merge_with_first(result, state);
+	if (!result)
+		return (NULL);
+	--state->i;
+	return (result);
+}
+
+char	**handle_redirect_case(char **result, t_parse_state *state)
+{
+	if (is_string_in_array(result[state->i - 1], g_split_redirect)
+		&& state->i > 0)
+		return (result);
+	result = merge_with_first(result, state);
+	if (!result)
+		return (NULL);
+	--state->i;
+	return (result);
+}
+
+char	**pre_process_input(char *input, t_parse_state *state)
+{
+	char	**result;
+
+	result = split_input(input, g_split_space, g_split_redirect_pipe);
+	while (result[state->i] != NULL)
+	{
+		if (state->is_first)
+		{
+			result = handle_first_redirect(result, &state->i);
+			if (!result)
+				return (NULL);
+		}
+		if (is_string_in_array(result[state->i], g_split_pipe))
+		{
+			handle_pipe_case(state);
+			continue ;
+		}
+		if (is_string_in_array(result[state->i], g_split_redirect))
+			state->is_next_redirect = TRUE;
+		else if (state->is_next_redirect)
+			result = handle_redirect_case(result, state);
+		else
+			result = handle_general_case(result, state);
+		state->i++;
+	}
+	return (result);
 }
 
 void	tokenize_state(t_shell *shell)
 {
 	t_parse_state	*state;
+	char			**res;
+	int64_t			i;
 
 	state = init_parse_state();
-	while (shell->input[state->i])
+	res = pre_process_input(shell->input, state);
+	i = 0;
+	while (res[i] != NULL)
 	{
-		if (!sub_tokenize(state, shell->input, shell))
-			return ;
+		add_token(&(shell->tokens), res[i]);
+		free(res[i]);
+		i++;
 	}
-	if (state->buf_index > 0)
-	{
-		state->buffer[state->buf_index] = '\0';
-		add_token(&(shell->tokens), state->buffer);
-	}
+	free(res);
 	free(state);
 	shell->execute = assign_type_state;
 }
