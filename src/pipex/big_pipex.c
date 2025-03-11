@@ -45,11 +45,10 @@ static void	last_child(int fd[2], t_shell *shell)
 	if (pidf == 0)
 	{
 		t_for_use = last_pipex(shell);
-		printf("este es el comando que entra en last_child --> %s\n",t_for_use->content);
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		close(fd[WRITE_END]);
-		if (loop_redirect(shell, t_for_use) == 0)
+		if (pipex_redirect(shell, t_for_use) == 0)
 		{
 			line_arraid = ft_split(t_for_use->content, ' ');
 			if (s_build(shell, line_arraid) == 5)
@@ -60,6 +59,20 @@ static void	last_child(int fd[2], t_shell *shell)
 	shell->execute = clean_end_state;
 	waitpid(pidf, NULL, 0);
 	close(fd[WRITE_END]);
+}
+
+static t_token	*next_pipex(t_token *list_token)
+{
+	t_token	*l_aux;
+
+	l_aux = list_token;
+	while (l_aux && l_aux->type != PIPE)
+	{
+		l_aux = l_aux->next;
+	}
+	if (l_aux)
+		l_aux = l_aux->next;
+	return (l_aux);
 }
 
 static int	contpipex(t_token *list_aux)
@@ -77,33 +90,31 @@ static int	contpipex(t_token *list_aux)
 	}
 	return (size);
 }
-static void	process(int fdp[2], t_shell *shell, t_token *list_token)
+
+static void	process(int fdp[2], t_shell *shell, t_token *list_token, int size)
 {
 	int		fd[2];
 	t_token	*list_aux;
 	int		aux[2];
-	int		size;
 
-	list_aux = list_token;
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-	middle_child(fdp, fd, list_aux, shell);
-	list_aux = list_aux->next;
-	size = contpipex(list_aux);
-	while (list_aux != NULL)
+	middle_child(fdp, fd, list_token, shell);
+	list_aux = list_token;
+	while (size >= 0)
 	{
+		list_aux = next_pipex(list_aux);
 		aux[0] = fd[0];
 		aux[1] = fd[1];
-		if (list_aux->type == PIPE && size > 1)
+		if (size == 1)
+			last_child(fd, shell);
+		if (size > 1)
 		{
 			if (pipe(fd) == -1)
 				ft_error("pipe_more");
 			middle_child(aux, fd, list_aux, shell);
-			size--;
 		}
-		if (list_aux->type == PIPE && size == 1)
-			last_child(fd, shell);
-		list_aux = list_aux->next;
+		size--;
 	}
 }
 
@@ -114,15 +125,19 @@ void	big_pipex(t_shell *shell)
 	char	**line_arraid;
 	t_token	*l_aux;
 
-	l_aux = shell->tokens->next->next;
-	line_arraid = previusline(shell);
+	l_aux = shell->tokens;
+	prepare_in_loop(shell);
+	line_arraid = ft_split(shell->tokens->content, ' ');
+	if (!line_arraid || !line_arraid[0])
+		ft_error("No command found");
 	if (pipe(fd) == -1)
 		ft_error("pipe:");
 	pid = fork();
 	f_child(fd, pid, line_arraid, shell);
 	ft_free(line_arraid);
 	close(fd[WRITE_END]);
-	process(fd, shell, l_aux);
+	l_aux = next_pipex(l_aux);
+	process(fd, shell, l_aux, contpipex(l_aux));
 	waitpid(pid, NULL, 0);
 	close(fd[READ_END]);
 }

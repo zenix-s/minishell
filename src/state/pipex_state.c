@@ -40,7 +40,9 @@ void	pipex_state(t_shell *shell)
 			select_pipex(shell, mode);
 	}
 	if (mode == 0)
+	{
+		env_aux = shell->tokens;
+		prepare(shell, env_aux);
 		shell->execute = redirect_state;
-//	if (mode != 0)
-//		shell->execute = cleaner;
+	}
 }

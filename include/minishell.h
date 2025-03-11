@@ -85,6 +85,7 @@ typedef struct s_env_token
 	struct s_env_token	*next;
 }						t_env_token;
 
+
 typedef struct s_shell
 {
 	t_bool				is_done;
@@ -92,7 +93,11 @@ typedef struct s_shell
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
-
+	// redirect
+	char				*read;
+	char				*write;
+	int					mode;
+	char				**here;
 	// Error handling
 	char				*error_message;
 	t_bool				exit_of_failure;
@@ -139,6 +144,7 @@ void					error_state(int mod);
 void					fail_state(t_shell *shell);
 void					exit_state(t_shell *shell);
 // Builds
+void 					create_files_state(t_shell *shell);
 //  select
 void					select_all(t_shell *shell);
 // int						select_build(t_shell **shell, char **line_arraid);
@@ -151,14 +157,23 @@ void					check_redirect_newline_error_state(t_shell *shell);
 //                                Redirect
 //----------------------------------------------------------------------------//
 void					redirect_state(t_shell *shell);
-// int						little_redirect(t_shell *shell);
-int						follow_mode(t_token *env_aux);
+void					prepare_in_loop(t_shell *shell);
+int						prepare(t_shell *shell, t_token *aux_token);
+int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
+int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
+int						use_redirect(t_shell *shell);
+//int						little_redirect(t_shell *shell);
+int						follow_mode(t_token *env_aux); //
 void					her_d(char **line_arraid, t_token *env_aux,
 							t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
-int						finish_redirect(t_shell *shell, t_token *aux_shell);
-int						loop_redirect(t_shell *shell, t_token *aux_token);
+int						new_stnd_in(t_shell *shell);
+int						finish_redirect(t_shell *shell, t_token *aux_shell); //
+void					read_alone(t_shell *shell, char **cmd);
+void					write_alone(t_shell *shell, char **cmd);
+int						new_open(t_shell *shell);
+void					full_redirect(t_shell *shell, char **cmd);
 // expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void					use_pwd(void);
@@ -182,6 +197,7 @@ void					change_content(t_env_token *list_env, char *oldcont,
 //----------------------------------------------------------------------------//
 //                                 pipex part
 //----------------------------------------------------------------------------//
+int						pipex_redirect(t_shell *shell, t_token *aux_token);
 void					pipex_state(t_shell *shell);
 void					select_pipex(t_shell *shell, int mode);
 void					pipex(t_shell *shell);

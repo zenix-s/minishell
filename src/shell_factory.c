@@ -18,15 +18,16 @@ t_shell *shell_factory(char **env)
 
 	shell = (t_shell *) ft_calloc(1, sizeof(t_shell));
 	if (!shell)
-	{
 		return (NULL);
-	}
 	shell->is_done = FALSE;
 	shell->execute = NULL;
 	shell->tokens = NULL;
 	shell->input = NULL;
 	shell->error_message = NULL;
 	shell->exit_of_failure = FALSE;
+	shell->read = NULL;
+	shell->write = NULL;
+	shell->here = NULL;
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
 	return (shell);
