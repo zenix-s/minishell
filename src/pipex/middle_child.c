@@ -17,7 +17,7 @@ void	middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell)
 	char		**l_arraid;
 
 	l_arraid = ft_split(list_aux->content, ' ');
-	printf("hijo second l_arraid --> %s\n", l_arraid[0]);
+//	printf("hijo second l_arraid --> %s\n", l_arraid[0]);
 	pid = fork();
 	if (pid < 0)
 		ft_error("fork");

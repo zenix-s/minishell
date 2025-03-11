@@ -89,7 +89,11 @@ static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 //	printf("primera --- > ptata\n");
 	middle_child(fdp, fd, list_aux, shell);
 //	printf("segunda --- > ptata\n");
-	list_aux = list_aux->next;
+//	list_aux = list_aux->next; // 
+		// el problema es que no llega bien las lineas en concreto 
+		//estas gestionando mal si hay mas de un comando 
+		//por tanto la gestion es buena pero tiene que iniciar desde 
+		//la funcion next pipex.
 	size = contpipex(list_aux);
 	while (list_aux != NULL)
 	{
@@ -130,7 +134,6 @@ void	big_pipex(t_shell *shell)
 	t_token	*l_aux;
 
 	prepare_in_loop(shell);
-	l_aux = next_pipex(shell);
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
 		ft_error("No command found");
@@ -140,6 +143,7 @@ void	big_pipex(t_shell *shell)
 	f_child(fd, pid, line_arraid, shell);
 	ft_free(line_arraid);
 	close(fd[WRITE_END]);
+	l_aux = next_pipex(shell);
 	process(fd, shell, l_aux);
 	waitpid(pid, NULL, 0);
 	close(fd[READ_END]);
