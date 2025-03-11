@@ -34,29 +34,32 @@ void	select_all(t_shell *shell)
 
 int	s_build(t_shell *shell, char **line_arraid)
 {
-	if (ft_strcmp(line_arraid[0], "pwd") == 0)
-		use_pwd();
-	else if (ft_strcmp(line_arraid[0], "env") == 0)
-		print_env(shell->env);
-	else if (ft_strcmp(line_arraid[0], "echo") == 0)
-		use_echo(line_arraid);
-	else if (ft_strcmp(line_arraid[0], "export") == 0)
+	if (line_arraid[0] != NULL)
 	{
-		if (!line_arraid[1])
+		if (ft_strcmp(line_arraid[0], "pwd") == 0)
+			use_pwd();
+		else if (ft_strcmp(line_arraid[0], "env") == 0)
 			print_env(shell->env);
+		else if (ft_strcmp(line_arraid[0], "echo") == 0)
+			use_echo(line_arraid);
+		else if (ft_strcmp(line_arraid[0], "export") == 0)
+		{
+			if (!line_arraid[1])
+				print_env(shell->env);
+			else
+				use_export(&shell, line_arraid);
+		}
+		else if (ft_strcmp(line_arraid[0], "unset") == 0)
+			use_unset(shell, line_arraid);
+		else if (ft_strcmp(line_arraid[0], "cd") == 0)
+			use_cd(shell->env, line_arraid, shell);
+		else if (ft_strcmp(line_arraid[0], "exit") == 0)
+		{
+			free_shell(shell);
+			exit(0);
+		}
 		else
-			use_export(&shell, line_arraid);
+			return (5);
 	}
-	else if (ft_strcmp(line_arraid[0], "unset") == 0)
-		use_unset(shell, line_arraid);
-	else if (ft_strcmp(line_arraid[0], "cd") == 0)
-		use_cd(shell->env, line_arraid, shell);
-	else if (ft_strcmp(line_arraid[0], "exit") == 0)
-	{
-		free_shell(shell);
-		exit(0);
-	}
-	else
-		return (5);
 	return (1);
 }
