@@ -61,6 +61,20 @@ static void	last_child(int fd[2], t_shell *shell)
 	close(fd[WRITE_END]);
 }
 
+static t_token	*next_pipex(t_token *list_token)
+{
+	t_token	*l_aux;
+
+	l_aux = list_token;
+	while (l_aux && l_aux->type != PIPE)
+	{
+		l_aux = l_aux->next;
+	}
+	if (l_aux)
+		l_aux = l_aux->next;
+	return (l_aux);
+}
+
 static int	contpipex(t_token *list_aux)
 {
 	int		size;
@@ -76,54 +90,32 @@ static int	contpipex(t_token *list_aux)
 	}
 	return (size);
 }
-static void	process(int fdp[2], t_shell *shell, t_token *list_token)
+
+static void	process(int fdp[2], t_shell *shell, t_token *list_token, int size)
 {
 	int		fd[2];
 	t_token	*list_aux;
 	int		aux[2];
-	int		size;
 
-	list_aux = list_token;
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-//	printf("primera --- > ptata\n");
-	middle_child(fdp, fd, list_aux, shell);
-//	printf("segunda --- > ptata\n");
-//	list_aux = list_aux->next; // 
-		// el problema es que no llega bien las lineas en concreto 
-		//estas gestionando mal si hay mas de un comando 
-		//por tanto la gestion es buena pero tiene que iniciar desde 
-		//la funcion next pipex.
-	size = contpipex(list_aux);
-	while (list_aux != NULL)
+	middle_child(fdp, fd, list_token, shell);
+	list_aux = list_token;
+	while (size >= 0)
 	{
-//		printf("ptata\n");
+		list_aux = next_pipex(list_aux);
 		aux[0] = fd[0];
 		aux[1] = fd[1];
-		if (list_aux->type == PIPE && size > 1)
+		if (size == 1)
+			last_child(fd, shell);
+		if (size > 1)
 		{
 			if (pipe(fd) == -1)
 				ft_error("pipe_more");
 			middle_child(aux, fd, list_aux, shell);
-			size--;
 		}
-		if (list_aux->type == PIPE && size == 1)
-			last_child(fd, shell);
-		list_aux = list_aux->next;
+		size--;
 	}
-}
-
-static t_token	*next_pipex(t_shell *shell)
-{
-	t_token	*l_aux;
-
-	l_aux = shell->tokens;
-	while (l_aux && l_aux->type != PIPE)
-	{
-		l_aux = l_aux->next;
-	}
-	l_aux = l_aux->next;
-	return (l_aux);
 }
 
 void	big_pipex(t_shell *shell)
@@ -133,6 +125,7 @@ void	big_pipex(t_shell *shell)
 	char	**line_arraid;
 	t_token	*l_aux;
 
+	l_aux = shell->tokens;
 	prepare_in_loop(shell);
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
@@ -143,8 +136,8 @@ void	big_pipex(t_shell *shell)
 	f_child(fd, pid, line_arraid, shell);
 	ft_free(line_arraid);
 	close(fd[WRITE_END]);
-	l_aux = next_pipex(shell);
-	process(fd, shell, l_aux);
+	l_aux = next_pipex(l_aux);
+	process(fd, shell, l_aux, contpipex(l_aux));
 	waitpid(pid, NULL, 0);
 	close(fd[READ_END]);
 }

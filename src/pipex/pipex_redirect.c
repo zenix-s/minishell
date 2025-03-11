@@ -6,6 +6,7 @@ int	pipex_redirect(t_shell *shell, t_token *aux_token)
 	char	**cmd;
 
 	cmd = ft_split(aux_token->content, ' ');
+	printf("demtro de pipex redirect --> %s\n", cmd[0]);
 	if (shell->read != NULL && shell->write == NULL)
 	{
 		read_alone(shell, cmd);
