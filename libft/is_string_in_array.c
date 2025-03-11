@@ -12,14 +12,20 @@
 
 #include "../include/minishell.h"
 
-int is_string_in_array(const char *str, const char *array[]) {
-  int i;
+uint64_t	is_string_in_array(const char *str, const char *search[])
+{
+	uint64_t	i;
+	uint64_t	len;
 
-  i = 0;
-  while (array[i]) {
-    if (strcmp(str, array[i]) == 0)
-      return (1);
-    i++;
-  }
-  return (0);
+	if (search == NULL)
+		return (0);
+	i = 0;
+	while (search[i] != NULL)
+	{
+		len = ft_strlen(search[i]);
+		if (ft_strncmp(str, search[i], len) == 0)
+			return (len);
+		i++;
+	}
+	return (0);
 }

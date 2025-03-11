@@ -30,3 +30,37 @@ int	ft_strcat(char *dest, const char *src)
 	dest[i] = '\0';
 	return (i);
 }
+
+int ft_super_strcat(char **dest, const char *src)
+{
+	size_t	src_len;
+	size_t	dest_len;
+	size_t	i;
+	size_t	j;
+	char	*aux;
+
+	src_len = ft_strlen(src);
+	dest_len = ft_strlen(*dest);
+	aux = (char *)malloc(sizeof(char) * (src_len + dest_len + 1));
+	if (!aux)
+		return (0);
+	i = 0;
+	j = 0;
+	while ((*dest)[i])
+	{
+		aux[j] = (*dest)[i];
+		i++;
+		j++;
+	}
+	i = 0;
+	while (src[i])
+	{
+		aux[j] = src[i];
+		i++;
+		j++;
+	}
+	aux[j] = '\0';
+	free(*dest);
+	*dest = aux;
+	return (j);
+}
