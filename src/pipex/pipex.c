@@ -47,7 +47,6 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 			return ;
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
-		//if (finish_redirect(shell, aux_token) == 0)
 		if (pipex_redirect(shell, aux_token) == 0)
 		{
 			if (aux_token->type == BUILT_IN || aux_token->type == EXE)
@@ -77,7 +76,6 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 			return ;
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
-		//if (finish_redirect(shell, aux_token) == 0)
 		if (pipex_redirect(shell, aux_token) == 0)
 		{
 			if (aux_token->type == BUILT_IN || aux_token->type == EXE)
@@ -105,6 +103,8 @@ void	pipex(t_shell *shell)
 
 	prepare_in_loop(shell);
 	line_arraid = ft_split(shell->tokens->content, ' ');
+	if (!line_arraid || !line_arraid[0])
+		ft_error("No command found");
 	if (pipe(fd) == -1)
 		ft_error("pipex");
 	pid1 = fork();

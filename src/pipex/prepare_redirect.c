@@ -41,6 +41,15 @@ int	ft_write_open(t_token *aux_token, t_shell *shell, char *name)
 	return (0);
 }
 
+static void	before_prepare(t_shell *shell)
+{
+	shell->mode = 0;
+	shell->write = NULL;
+	shell->read = NULL;
+	if (shell->here)
+		ft_free(shell->here);
+}
+
 int	prepare(t_shell *shell, t_token *aux_token)
 {
 	int		mode;
@@ -48,6 +57,7 @@ int	prepare(t_shell *shell, t_token *aux_token)
 	char	*name;
 
 	mode = 0;
+	before_prepare(shell);
 	while (aux_token && aux_token->type != PIPE)
 	{
 		if (aux_token->type == REDIRECT)

@@ -45,17 +45,16 @@ static void	last_child(int fd[2], t_shell *shell)
 	if (pidf == 0)
 	{
 		t_for_use = last_pipex(shell);
-		printf("este es el comando que entra en last_child --> %s\n",t_for_use->content);
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		close(fd[WRITE_END]);
-//		if (loop_redirect(shell, t_for_use) == 0)
-//		{
-		line_arraid = ft_split(t_for_use->content, ' ');
-		if (s_build(shell, line_arraid) == 5)
-			exe_all(line_arraid, aux);
-		ft_free(line_arraid);
-//		}
+		if (pipex_redirect(shell, t_for_use) == 0)
+		{
+			line_arraid = ft_split(t_for_use->content, ' ');
+			if (s_build(shell, line_arraid) == 5)
+				exe_all(line_arraid, aux);
+			ft_free(line_arraid);
+		}
 	}
 	shell->execute = clean_end_state;
 	waitpid(pidf, NULL, 0);
@@ -87,11 +86,14 @@ static void	process(int fdp[2], t_shell *shell, t_token *list_token)
 	list_aux = list_token;
 	if (pipe(fd) == -1)
 		ft_error("pipe");
+	printf("primera --- > ptata\n");
 	middle_child(fdp, fd, list_aux, shell);
+	printf("segunda --- > ptata\n");
 	list_aux = list_aux->next;
 	size = contpipex(list_aux);
 	while (list_aux != NULL)
 	{
+		printf("ptata\n");
 		aux[0] = fd[0];
 		aux[1] = fd[1];
 		if (list_aux->type == PIPE && size > 1)
@@ -114,8 +116,11 @@ void	big_pipex(t_shell *shell)
 	char	**line_arraid;
 	t_token	*l_aux;
 
+	prepare_in_loop(shell);
 	l_aux = shell->tokens->next->next;
-	line_arraid = previusline(shell);
+	line_arraid = ft_split(shell->tokens->content, ' ');
+	if (!line_arraid || !line_arraid[0])
+		ft_error("No command found");
 	if (pipe(fd) == -1)
 		ft_error("pipe:");
 	pid = fork();

@@ -31,6 +31,7 @@ void	middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell)
 		exit(0);
 //		}
 	}
+	shell->execute = clean_end_state;
 	close(fdp[READ_END]);
 	close(fd[WRITE_END]);
 	waitpid(pid, NULL, 0);

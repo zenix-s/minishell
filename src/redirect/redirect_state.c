@@ -11,48 +11,46 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-//>> no escribe nada en bash y aqui si
-//actualmente busca muy sesgado
-int	follow_mode(t_token *env_aux)
-{
-	int	x;
+// int	follow_mode(t_token *env_aux)
+// {
+// 	int	x;
 
-	x = 0;
-	while (env_aux)
-	{
-		if (ft_strcmp(env_aux->content, "<<") == 0)
-		{
-			if (x == 0)
-				return (5);
-			return (1);
-		}
-		if (ft_strcmp(env_aux->content, ">") == 0)
-			return (2);
-		if (ft_strcmp(env_aux->content, ">>") == 0)
-			return (3);
-		if (ft_strcmp(env_aux->content, "<") == 0)
-			return (4);
-		env_aux = env_aux->next;
-		x++;
-	}
-	return (0);
-}
+// 	x = 0;
+// 	while (env_aux)
+// 	{
+// 		if (ft_strcmp(env_aux->content, "<<") == 0)
+// 		{
+// 			if (x == 0)
+// 				return (5);
+// 			return (1);
+// 		}
+// 		if (ft_strcmp(env_aux->content, ">") == 0)
+// 			return (2);
+// 		if (ft_strcmp(env_aux->content, ">>") == 0)
+// 			return (3);
+// 		if (ft_strcmp(env_aux->content, "<") == 0)
+// 			return (4);
+// 		env_aux = env_aux->next;
+// 		x++;
+// 	}
+// 	return (0);
+// }
 
-int	finish_redirect(t_shell *shell, t_token *aux_shell)
-{
-	t_token	*env_aux;
-	int		mod;
+// int	finish_redirect(t_shell *shell, t_token *aux_shell)
+// {
+// 	t_token	*env_aux;
+// 	int		mod;
 
-	env_aux = aux_shell;
-	mod = follow_mode(env_aux);
-	if (mod == 1 || mod == 5)
-		her_d(ft_split(env_aux->next->next->content, ' '), env_aux, shell, mod);
-	if (mod == 2 || mod == 3)
-		stnd_out(env_aux, shell, mod);
-	if (mod == 4)
-		stnd_in(env_aux, shell, mod);
-	return (mod);
-}
+// 	env_aux = aux_shell;
+// 	mod = follow_mode(env_aux);
+// 	if (mod == 1 || mod == 5)
+// 		her_d(ft_split(env_aux->next->next->content, ' '), env_aux, shell, mod);
+// 	if (mod == 2 || mod == 3)
+// 		stnd_out(env_aux, shell, mod);
+// 	if (mod == 4)
+// 		stnd_in(env_aux, shell, mod);
+// 	return (mod);
+// }
 
 void	read_alone(t_shell *shell, char **cmd)
 {
@@ -65,7 +63,7 @@ void	read_alone(t_shell *shell, char **cmd)
 	stdin_copy = dup(STDIN_FILENO);
 	if (dup2(file_in, STDIN_FILENO) == -1)
 		ft_error("Error redirigiendo la entrada estándar");
-	if (s_build(shell, cmd) == 5)
+	if (cmd && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdin_copy, STDIN_FILENO);
 	close(stdin_copy);
@@ -86,7 +84,7 @@ void	write_alone(t_shell *shell, char **cmd)
 	stdout_copy = dup(STDOUT_FILENO);
 	if (dup2(file_out, STDOUT_FILENO) == -1)
 		ft_error("Error redirigiendo la salida estándar");
-	if (s_build(shell, cmd) == 5)
+	if (cmd != NULL && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdout_copy, STDOUT_FILENO);
 	close(stdout_copy);
@@ -121,7 +119,7 @@ void	full_redirect(t_shell *shell, char **cmd)
 	stdout_copy = dup(STDOUT_FILENO);
 	if (dup2(file_out, STDOUT_FILENO) == -1)
 		ft_error("Error redirigiendo la salida estándar");
-	if (s_build(shell, cmd) == 5)
+	if (cmd && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdin_copy, STDIN_FILENO);
 	close(stdin_copy);
@@ -135,7 +133,10 @@ void	redirect_state(t_shell *shell)
 {
 	char	**cmd;
 
-	cmd = ft_split(shell->tokens->content, ' ');
+	if (shell->tokens->content)
+		cmd = ft_split(shell->tokens->content, ' ');
+	else
+		cmd = NULL;
 	if (shell->read != NULL && shell->write == NULL)
 		read_alone(shell, cmd);
 	else if (shell->read == NULL && shell->write != NULL)
