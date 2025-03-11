@@ -128,6 +128,9 @@ void					head(void);
 
 void					parser_end_state(t_shell *shell);
 
+char					**split_input(char *input, const char **split,
+							const char **s_split);
+
 //----------------------------------------------------------------------------//
 //                                Estate
 //----------------------------------------------------------------------------//
@@ -209,7 +212,6 @@ t_token					*ft_lstnew(void *content);
 int						ft_strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t count, size_t size);
 void					ft_bzero(void *s, unsigned int n);
-void					ft_lstadd_back(t_token **lst, t_token *new);
 t_token					*ft_lstlast(t_token *lst);
 char					*ft_strdup(char *src);
 size_t					ft_strlen(const char *s);
@@ -232,7 +234,10 @@ char					*ft_strndup(const char *s, size_t n);
 int						ft_isalnum(int c);
 int						ft_isalpha(int c);
 int						lstsizetoken(t_token *lst);
-int						is_string_in_array(const char *str,
-							const char *array[]);
+uint64_t				is_string_in_array(const char *str, const char *arr[]);
+int						ft_super_strcat(char **dest, const char *src);
+char					**delete_string_on_array(char *arr[], int pos);
+char					**insert_string_on_array(char *arr[], char *str,
+							int pos);
 
 #endif
