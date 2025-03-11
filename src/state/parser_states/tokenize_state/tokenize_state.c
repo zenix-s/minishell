@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../../../include/parser.h"
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 
 static t_parse_state	*init_parse_state(void)
 {
@@ -22,280 +19,123 @@ static t_parse_state	*init_parse_state(void)
 	state = (t_parse_state *)malloc(sizeof(t_parse_state));
 	if (!state)
 		return (NULL);
-	state->quote_state = NONE;
 	state->i = 0;
-	state->buf_index = 0;
-	state->len = 0;
+	state->first = 0;
+	state->is_first = TRUE;
+	state->is_next_redirect = FALSE;
 	return (state);
 }
 
-static t_bool	sub_tokenize(t_parse_state *state, char *line, t_shell *shell)
+char	**handle_first_redirect(char **result, int64_t *i)
 {
-	state->quote_state = get_quote_type(state->quote_state, line[state->i]);
-	if (state->quote_state == NONE && is_separator(&line[state->i],
-			&state->len))
+	char	**aux;
+
+	if (is_string_in_array(result[*i], g_split_redirect))
 	{
-		if (state->buf_index > 0)
+		aux = insert_string_on_array(result, "", *i);
+		if (aux == NULL)
+			return (NULL);
+		free(result);
+		result = aux;
+		(*i)++;
+	}
+	return (result);
+}
+
+void	handle_pipe_case(t_parse_state *state)
+{
+	state->is_first = TRUE;
+	state->is_next_redirect = FALSE;
+	state->i++;
+	state->first = state->i;
+}
+
+char	**merge_with_first(char **result, t_parse_state *state)
+{
+	char	**aux;
+
+	ft_super_strcat(&(result[state->first]), " ");
+	ft_super_strcat(&(result[state->first]), result[state->i]);
+	free(result[state->i]);
+	aux = delete_string_on_array(result, state->i);
+	if (aux == NULL)
+		return (NULL);
+	free(result);
+	return (aux);
+}
+
+char	**handle_general_case(char **result, t_parse_state *state)
+{
+	if (state->is_first)
+	{
+		state->is_first = FALSE;
+		// state->i++;
+		return (result);
+	}
+	result = merge_with_first(result, state);
+	if (!result)
+		return (NULL);
+	--state->i;
+	return (result);
+}
+
+char	**handle_redirect_case(char **result, t_parse_state *state)
+{
+	if (is_string_in_array(result[state->i - 1], g_split_redirect)
+		&& state->i > 0)
+		return (result);
+	result = merge_with_first(result, state);
+	if (!result)
+		return (NULL);
+	--state->i;
+	return (result);
+}
+
+char	**pre_process_input(char *input, t_parse_state *state)
+{
+	char	**result;
+
+	result = split_input(input, g_split_space, g_split_redirect_pipe);
+	while (result[state->i] != NULL)
+	{
+		if (state->is_first)
 		{
-			state->buffer[state->buf_index] = '\0';
-			if (!add_token(&(shell->tokens), state->buffer))
-				return (FALSE);
-			state->buf_index = 0;
+			result = handle_first_redirect(result, &state->i);
+			if (!result)
+				return (NULL);
 		}
-		ft_strncpy(state->buffer, &line[state->i], state->len);
-		state->buffer[state->len] = '\0';
-		if (!add_token(&(shell->tokens), state->buffer))
-			return (FALSE);
-		state->i += state->len;
+		if (is_string_in_array(result[state->i], g_split_pipe))
+		{
+			handle_pipe_case(state);
+			continue ;
+		}
+		if (is_string_in_array(result[state->i], g_split_redirect))
+			state->is_next_redirect = TRUE;
+		else if (state->is_next_redirect)
+			result = handle_redirect_case(result, state);
+		else
+			result = handle_general_case(result, state);
+		state->i++;
 	}
-	else
-		state->buffer[state->buf_index++] = line[state->i++];
-	return (TRUE);
+	return (result);
 }
-
-char	**insert_string(char *arr[], char *str, int pos)
-{
-	int64_t	size;
-	int64_t	i;
-	char	**new_arr;
-
-	size = 0;
-	if (arr == NULL || str == NULL || pos < 0)
-		return (NULL);
-	while (arr[size] != NULL)
-		size++;
-	if (pos > size)
-		return (NULL);
-	new_arr = (char **)malloc((size + 2) * sizeof(char *));
-	if (new_arr == NULL)
-		return (NULL);
-	i = -1;
-	while (++i < pos)
-		new_arr[i] = arr[i];
-	new_arr[pos] = ft_strdup(str);
-	while (i < size)
-	{
-		new_arr[i + 1] = arr[i];
-		i++;
-	}
-	new_arr[size + 1] = NULL;
-	return (new_arr);
-}
-
-void	empty_string(char *str)
-{
-	int64_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		str[i] = '\0';
-		i++;
-	}
-}
-
-char	**delete_string(char *arr[], int pos)
-{
-	int64_t	size;
-	int64_t	i;
-	char	**new_arr;
-
-	size = 0;
-	if (arr == NULL || pos < 0)
-		return (NULL);
-	while (arr[size] != NULL)
-		size++;
-	if (pos >= size)
-		return (NULL);
-	new_arr = (char **)malloc(size * sizeof(char *));
-	if (new_arr == NULL)
-		return (NULL);
-	i = -1;
-	while (++i < pos)
-		new_arr[i] = arr[i];
-	--i;
-	while (++i < size - 1)
-		new_arr[i] = arr[i + 1];
-	new_arr[size - 1] = NULL;
-	return (new_arr);
-}
-
-char    **handle_first_redirect(char **result, int64_t *i)
-{
-    char    **aux;
-    const char    *redirect[] = {">>", "<<", ">", "<", NULL};
-
-    if (is_string_in_array(result[*i], redirect))
-    {
-        aux = insert_string(result, "", *i);
-        if (aux == NULL)
-            return (NULL);
-        free(result);
-        result = aux;
-        (*i)++;
-    }
-    return (result);
-}
-
-void    handle_pipe_case(t_bool *is_first, t_bool *is_next_redirect, int64_t *i, int64_t *first)
-{
-    *is_first = TRUE;
-    *is_next_redirect = FALSE;
-    (*i)++;
-    *first = *i;
-}
-
-char    **merge_with_first(char **result, int64_t *i, int64_t first)
-{
-    char    **aux;
-
-    ft_super_strcat(&result[first], " ");
-    ft_super_strcat(&result[first], result[*i]);
-    free(result[*i]);
-    aux = delete_string(result, *i);
-    if (aux == NULL)
-        return (NULL);
-    free(result);
-    return (aux);
-}
-
-char    **pre_process_input(char *input)
-{
-    const char    *split[] = {" ", NULL};
-    const char    *s_split[] = {">>", "<<", ">", "<", "|", NULL};
-    const char    *redirect[] = {">>", "<<", ">", "<", NULL};
-    const char    *pipe[] = {"|", NULL};
-    char        **result = split_input(input, split, s_split);
-    int64_t        i = 0, first = 0;
-    t_bool        is_first = TRUE, is_next_redirect = FALSE;
-
-    while (result[i] != NULL)
-    {
-        if (is_first)
-        {
-            result = handle_first_redirect(result, &i);
-            if (!result) return (NULL);
-            is_first = FALSE;
-        }
-        if (is_string_in_array(result[i], pipe))
-        {
-            handle_pipe_case(&is_first, &is_next_redirect, &i, &first);
-            continue;
-        }
-        if (is_string_in_array(result[i], redirect))
-            is_next_redirect = TRUE;
-        else if (is_next_redirect)
-        {
-            if (is_string_in_array(result[i - 1], redirect) && i > 0)
-            {
-                i++;
-                continue;
-            }
-            result = merge_with_first(result, &i, first);
-            if (!result) return (NULL);
-            --i;
-        }
-        i++;
-    }
-    return (result);
-}
-
-// char	**pre_process_input(char *input)
-// {
-// 	const char	*split[] = {" ", NULL};
-// 	const char	*s_split[] = {">>", "<<", ">", "<", "|", NULL};
-// 	const char	*redirect[] = {">>", "<<", ">", "<", NULL};
-// 	const char	*pipe[] = {"|", NULL};
-// 	char		**result;
-// 	char		**aux;
-// 	int64_t		i;
-// 	t_bool		is_first;
-// 	int64_t		first;
-// 	t_bool		is_next_redirect;
-
-// 	result = split_input(input, split, s_split);
-// 	i = 0;
-// 	first = 0;
-// 	is_first = TRUE;
-// 	is_next_redirect = FALSE;
-// 	while (result[i] != NULL)
-// 	{
-// 		if (is_first)
-// 		{
-// 			if (is_string_in_array(result[i], redirect))
-// 			{
-// 				aux = insert_string(result, "", i);
-// 				if (aux == NULL)
-// 					return (NULL);
-// 				free(result);
-// 				result = aux;
-// 				i++;
-// 			}
-// 			is_first = FALSE;
-// 		}
-// 		if (is_string_in_array(result[i], pipe))
-// 		{
-// 			is_first = TRUE;
-// 			is_next_redirect = FALSE;
-// 			i++;
-// 			first = i;
-// 			continue ;
-// 		}
-// 		if (is_string_in_array(result[i], redirect))
-// 			is_next_redirect = TRUE;
-// 		else if (is_next_redirect)
-// 		{
-// 			if (is_string_in_array(result[i - 1], redirect) && i > 0)
-// 			{
-// 				i++;
-// 				continue ;
-// 			}
-// 			ft_super_strcat(&result[first], " ");
-// 			ft_super_strcat(&result[first], result[i]);
-// 			free(result[i]);
-// 			aux = delete_string(result, i);
-// 			if (aux == NULL)
-// 				return (NULL);
-// 			free(result);
-// 			result = aux;
-// 			--i;
-// 		}
-// 		i++;
-// 	}
-// 	return (result);
-// }
 
 void	tokenize_state(t_shell *shell)
 {
 	t_parse_state	*state;
+	char			**res;
+	int64_t			i;
 
-	char **res = pre_process_input(shell->input);
-	int64_t i = 0;
-
+	state = init_parse_state();
+	res = pre_process_input(shell->input, state);
+	i = 0;
 	while (res[i] != NULL)
 	{
-		printf("res[%ld]: %s\n", i, res[i]);
+		add_token(&(shell->tokens), res[i]);
 		free(res[i]);
 		i++;
 	}
 	free(res);
-	shell->execute = exit_state;
-	return;
-
-	state = init_parse_state();
-	while (shell->input[state->i])
-	{
-		if (!sub_tokenize(state, shell->input, shell))
-			return ;
-	}
-	if (state->buf_index > 0)
-	{
-		state->buffer[state->buf_index] = '\0';
-		add_token(&(shell->tokens), state->buffer);
-	}
 	free(state);
 	shell->execute = assign_type_state;
 }
-
-// {
-// }
