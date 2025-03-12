@@ -11,8 +11,10 @@ void	free_env_tokens(t_env_token *env)
 	{
 		temp = current;
 		current = current->next;
-		free(temp->key);
-		free(temp->value);
+		if (temp->key)
+			free(temp->key);
+		if (temp->value)
+			free(temp->value);
 		free(temp);
 	}
 }
