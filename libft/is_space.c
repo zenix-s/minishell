@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/parser.h"
+#include "../include/minishell.h"
 
-t_bool	is_parse_space(char c)
+t_bool	is_space(char c)
 {
 	return (c == ' ' || c == '\t' || c == '\n');
 }
