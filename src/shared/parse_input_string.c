@@ -203,17 +203,3 @@ char	**special_split(char *input, const char **split, const char **s_split)
 	free(aux);
 	return (result);
 }
-
-void	free_split_result(char **result)
-{
-	int64_t	i;
-
-	if (result == NULL)
-		return ;
-	i = 0;
-	while (result[i] != NULL)
-	{
-		free(result[i]);
-		i++;
-	}
-}
