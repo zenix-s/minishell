@@ -49,5 +49,7 @@ void			assign_type_state(t_shell *shell);
 char			*get_var_name(const char *content, uint64_t *start);
 uint64_t		expand_variale(char *new_content, uint64_t i,
 					const char *value);
+t_bool			pre_process_input(t_parse_state *state);
+t_bool			is_valid_init_char(char c);
 
 #endif
