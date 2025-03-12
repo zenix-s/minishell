@@ -17,7 +17,7 @@
  * Ultimo estado de la iteracion, libera la memoria de los tokens y el input
  * para permitir la salida del programa.
  */
-void exit_state(t_shell *shell)
+void	exit_state(t_shell *shell)
 {
 	free_shell(shell);
 	exit(EXIT_SUCCESS);
