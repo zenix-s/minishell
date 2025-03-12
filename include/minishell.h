@@ -85,7 +85,6 @@ typedef struct s_env_token
 	struct s_env_token	*next;
 }						t_env_token;
 
-
 typedef struct s_shell
 {
 	t_bool				is_done;
@@ -133,8 +132,11 @@ void					head(void);
 
 void					parser_end_state(t_shell *shell);
 
-char					**split_input(char *input, const char **split,
+char					**special_split(char *input, const char **split,
 							const char **s_split);
+
+u_int64_t				is_string_redirect(const char *str);
+u_int64_t				is_string_pipe(const char *str);
 
 //----------------------------------------------------------------------------//
 //                                Estate
@@ -144,7 +146,7 @@ void					error_state(int mod);
 void					fail_state(t_shell *shell);
 void					exit_state(t_shell *shell);
 // Builds
-void 					create_files_state(t_shell *shell);
+void					create_files_state(t_shell *shell);
 //  select
 void					select_all(t_shell *shell);
 // int						select_build(t_shell **shell, char **line_arraid);
@@ -159,17 +161,19 @@ void					check_redirect_newline_error_state(t_shell *shell);
 void					redirect_state(t_shell *shell);
 void					prepare_in_loop(t_shell *shell);
 int						prepare(t_shell *shell, t_token *aux_token);
-int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
-int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
+int						ft_read_open(t_token *aux_token, t_shell *shell,
+							char *s);
+int						ft_write_open(t_token *aux_token, t_shell *shell,
+							char *name);
 int						use_redirect(t_shell *shell);
-//int						little_redirect(t_shell *shell);
-int						follow_mode(t_token *env_aux); //
+// int						little_redirect(t_shell *shell);
+int	follow_mode(t_token *env_aux); //
 void					her_d(char **line_arraid, t_token *env_aux,
 							t_shell *aux, int mode);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						new_stnd_in(t_shell *shell);
-int						finish_redirect(t_shell *shell, t_token *aux_shell); //
+int	finish_redirect(t_shell *shell, t_token *aux_shell); //
 void					read_alone(t_shell *shell, char **cmd);
 void					write_alone(t_shell *shell, char **cmd);
 int						new_open(t_shell *shell);
@@ -255,5 +259,7 @@ int						ft_super_strcat(char **dest, const char *src);
 char					**delete_string_on_array(char *arr[], int pos);
 char					**insert_string_on_array(char *arr[], char *str,
 							int pos);
+t_bool					string_is_null_or_whitespace(const char *str);
+t_bool					is_space(char c);
 
 #endif
