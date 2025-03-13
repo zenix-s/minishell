@@ -17,7 +17,7 @@ char	*get_first_word(const char *content)
 {
 	uint64_t	start;
 	uint64_t	end;
-	t_quote		quote;
+	int		quote;
 
 	start = 0;
 	start = 0;

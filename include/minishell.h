@@ -15,9 +15,9 @@
 # define MINISHELL_H
 
 # include "errors.h"
-//
+
 # include <stdio.h>
-//
+
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -122,7 +122,7 @@ void					ft_error(char *texto);
 
 void					segurity_state(t_shell *shell);
 void					parse_line(t_shell *shell);
-t_quote					get_quote_type(t_quote quote_state, char c);
+int						get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);
 char					*echo_parser(char *line);
@@ -161,6 +161,7 @@ void					prepare_in_loop(t_shell *shell);
 int						prepare(t_shell *shell, t_token *aux_token);
 int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
 int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
+int						ft_open(t_shell *shell, int file, char *name, int mode);
 int						use_redirect(t_shell *shell);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux); //
@@ -174,6 +175,9 @@ void					read_alone(t_shell *shell, char **cmd);
 void					write_alone(t_shell *shell, char **cmd);
 int						new_open(t_shell *shell);
 void					full_redirect(t_shell *shell, char **cmd);
+void 					redirect_error(t_token *list, int mode);
+
+
 // expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void					use_pwd(void);

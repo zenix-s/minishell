@@ -93,25 +93,24 @@ void	full_redirect(t_shell *shell, char **cmd)
 void	redirect_state(t_shell *shell)
 {
 	char	**cmd;
+	t_token	*aux_token;
 
+	aux_token = shell->tokens;
+	shell->execute = clean_end_state;
+	if (prepare(shell, aux_token) == -1)
+		return ;
 	if (shell->tokens && shell->tokens->content)
 		cmd = ft_split(shell->tokens->content, ' ');
 	else
 		cmd = NULL;
-//	printf("paso redirect\n");
-//	printf(".----> %s\n", shell->read);
 	if (shell->read != NULL && shell->write == NULL)
-	{
-//		printf("paso por la comprobacion\n");
 		read_alone(shell, cmd);
-	}
 	else if (shell->read == NULL && shell->write != NULL)
 		write_alone(shell, cmd);
 	else if (shell->read != NULL && shell->write != NULL)
 		full_redirect(shell, cmd);
 	if (cmd)
 		ft_free(cmd);
-	shell->execute = clean_end_state;
 	if (shell->read == NULL && shell->write == NULL)
 		shell->execute = select_all;
 }

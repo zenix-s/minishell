@@ -20,7 +20,10 @@ int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
 	{
 		file = open(aux_token->next->content, O_RDONLY);
 		if (file == -1)
+		{
+			redirect_error(aux_token->next, 1);
 			return (-1);
+		}
 		shell->read = aux_token->next->content;
 		close (file);
 	}
@@ -31,24 +34,18 @@ int	ft_write_open(t_token *aux_token, t_shell *shell, char *name)
 {
 	int		file;
 
+	file = 0;
 	if (ft_strcmp(aux_token->content, ">") == 0)
-	{
-		file = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (file == -1)
-			return (-1);
-		shell->write = name;
-		shell->mode = 1;
-		close (file);
-	}
+		file = ft_open(shell, file, name, 1);
 	else if (ft_strcmp(aux_token->content, ">>") == 0)
+		file = ft_open(shell, file, name, 1);
+	if (file == -1)
 	{
-		file = open(name, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (file == -1)
-			return (-1);
-		shell->write = name;
-		shell->mode = 2;
-		close (file);
+		redirect_error(aux_token->next, 1);
+		return (-1);
 	}
+	shell->write = name;
+	close (file);
 	return (0);
 }
 
@@ -63,7 +60,6 @@ int	prepare(t_shell *shell, t_token *x)
 {
 	int		mode;
 	int		aux;
-	char	*name;
 
 	mode = 0;
 	before_prepare(shell);
@@ -71,17 +67,12 @@ int	prepare(t_shell *shell, t_token *x)
 	{
 		if (x->type == REDIRECT)
 		{
-			if (ft_strcmp(x->content, "<") == 0)
+			if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
+				aux = ft_write_open(x, shell, x->next->content);
+			else if (ft_strcmp(x->content, "<") == 0)
 				aux = ft_read_open(x, shell, "<");
 			if (aux == -1)
 				return (aux);
-			if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
-			{
-				name = x->next->content;
-				aux = ft_write_open(x, shell, name);
-				if (aux == -1)
-					return (aux);
-			}
 			mode++;
 			x = x->next;
 		}
