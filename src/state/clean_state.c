@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * @param shell Puntero a la estructura shell
@@ -19,13 +21,20 @@
  */
 void	clean_end_state(t_shell *shell)
 {
-	free(shell->input);
+	if (shell->input != NULL)
+	{
+		free(shell->input);
+		shell->input = NULL;
+	}
 	free_tokens(shell->tokens);
 	shell->tokens = NULL;
 	shell->input = NULL;
 	shell->read = NULL;
 	shell->write = NULL;
+<<<<<<< HEAD
 //	if (shell->here != NULL)
 //	free(shell->here);
+=======
+>>>>>>> serferna
 	shell->is_done = TRUE;
 }

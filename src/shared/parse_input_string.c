@@ -176,7 +176,7 @@ void	parse_splitter_tokens(char *input, const char **split,
 	aux->result[aux->result_idx] = NULL;
 }
 
-char	**split_input(char *input, const char **split, const char **s_split)
+char	**special_split(char *input, const char **split, const char **s_split)
 {
 	uint64_t	token_count;
 	t_splitter	*aux;
@@ -202,18 +202,4 @@ char	**split_input(char *input, const char **split, const char **s_split)
 	result = aux->result;
 	free(aux);
 	return (result);
-}
-
-void	free_split_result(char **result)
-{
-	int64_t	i;
-
-	if (result == NULL)
-		return ;
-	i = 0;
-	while (result[i] != NULL)
-	{
-		free(result[i]);
-		i++;
-	}
 }

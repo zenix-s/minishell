@@ -14,28 +14,20 @@
 
 void	check_redirect_newline_error_state(t_shell *shell)
 {
-	int			i;
 	t_token		*current;
-	const char	*redirects[] = {">>", ">", "<<", "<", NULL};
 
-	// TODO Extraer a estructura shell
 	current = shell->tokens;
 	while (current)
 	{
-		i = 0;
-		while (current->type == REDIRECT && redirects[i])
+		if (is_string_redirect(current->content))
 		{
-			if (!ft_strcmp(current->content, redirects[i]))
+			if (!current->next)
 			{
-				if (!current->next)
-				{
-					shell->error_message = ERR_UNEXPECTED_TOKEN_NEWLINE;
-					shell->exit_of_failure = FALSE;
-					shell->execute = fail_state;
-					return ;
-				}
+				shell->error_message = ERR_UNEXPECTED_TOKEN_NEWLINE;
+				shell->exit_of_failure = FALSE;
+				shell->execute = fail_state;
+				return ;
 			}
-			i++;
 		}
 		current = current->next;
 	}

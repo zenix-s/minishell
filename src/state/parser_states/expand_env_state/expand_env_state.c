@@ -13,17 +13,13 @@
 #include "../../../../include/minishell.h"
 #include "../../../../include/parser.h"
 
-
-static t_bool	is_valid_init_char(char c)
-{
-	return (ft_isalpha(c) || c == '_' || c == '?');
-}
-
-t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
+static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 {
 	char	*new_value;
+	char	tmp;
 
-	if (st->start > 0 && token->content[st->start - ft_strlen(st->var_name) - 2] != '=')
+	tmp = token->content[st->start - ft_strlen(st->var_name) - 2];
+	if (st->start > 0 && tmp != '=')
 	{
 		st->idiot = TRUE;
 		return (TRUE);
@@ -40,7 +36,8 @@ t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 	return (TRUE);
 }
 
-static char *get_env_final_value(const t_env_token *env, t_expand_env_state *st, t_token *token)
+static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
+		t_token *token)
 {
 	if (ft_strcmp(st->var_name, "?") == 0)
 		return ("1");

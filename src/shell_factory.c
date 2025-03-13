@@ -16,7 +16,7 @@ t_shell	*shell_factory(char **env)
 {
 	t_shell	*shell;
 
-	shell = (t_shell *) ft_calloc(1, sizeof(t_shell));
+	shell = (t_shell *)ft_calloc(1, sizeof(t_shell));
 	if (!shell)
 		return (NULL);
 	shell->is_done = FALSE;

@@ -12,11 +12,15 @@
 
 #include "../include/minishell.h"
 #include "../include/parser.h"
+#include <stdio.h>
+#include <string.h>
 
 void	print_tokens(t_token *tokens)
 {
 	t_token	*current;
 
+	if (tokens == NULL)
+		return ;
 	current = tokens;
 	while (current)
 	{
@@ -86,7 +90,7 @@ void	main_loop(t_shell *shell)
 	{
 		shell->is_done = FALSE;
 		shell->execute = readline_state;
-		while (!shell->is_done)
+		while (shell != NULL && !shell->is_done)
 		{
 			shell->execute(shell);
 		}
