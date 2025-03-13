@@ -12,17 +12,17 @@
 
 #include "../../include/minishell.h"
 
-void	her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode)
+void	her_d(char **line_arraid)
 {
 	int		x;
 	char	*line;
 	int		text;
 
-	text = open("file.txt", O_CREAT | O_WRONLY |O_TRUNC, 0644);
+	text = open ("file.txt", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	x = 0;
 	while (x == 0)
 	{
-		line = readline("");
+		line = readline(">");
 		if (line && *line != '\0')
 		{
 			if (ft_strcmp(line_arraid[0], line) == 0)
@@ -33,9 +33,14 @@ void	her_d(char **line_arraid, t_token *env_aux, t_shell *aux, int mode)
 		free(line);
 	}
 	close(text);
-	if (mode == 1)
-		stnd_in(env_aux, aux, mode);
-	if (mode == 5)
-		unlink("file.txt");
+	unlink("file.txt");
 	ft_free(line_arraid);
+}
+
+void	all_heredoc(t_token *l_token)
+{
+	t_token	*aux_token;
+
+	aux_token = l_token->next;
+	her_d(ft_split(aux_token->content, ' '));
 }

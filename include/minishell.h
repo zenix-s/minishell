@@ -97,7 +97,7 @@ typedef struct s_shell
 	char				*read;
 	char				*write;
 	int					mode;
-	char				**here;
+	//char				*here;
 	// Error handling
 	char				*error_message;
 	t_bool				exit_of_failure;
@@ -164,8 +164,8 @@ int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
 int						use_redirect(t_shell *shell);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux); //
-void					her_d(char **line_arraid, t_token *env_aux,
-							t_shell *aux, int mode);
+void					all_heredoc(t_token *l_token);
+void					her_d(char **line_arraid);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						new_stnd_in(t_shell *shell);
@@ -209,10 +209,7 @@ void					s_child(int *fd, int pid2, char **l_arraid,
 void					middle_child(int fdp[2], int fd[2], t_token *list_aux,
 							t_shell *shell);
 void					change_fd(int fdp[2], int fd[2]);
-char					**previusline(t_shell *shell);
 char					**postline(t_shell *shell);
-// int						pre_line_int(t_shell **shell);
-// int						post_line_int(t_shell **shell);
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);

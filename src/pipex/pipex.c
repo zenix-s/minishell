@@ -12,10 +12,29 @@
 
 #include "../../include/minishell.h"
 
+char	**postline(t_shell *shell)
+{
+	t_token	*aux;
+	t_token	*prev;
+	char	**result;
+
+	aux = shell->tokens;
+	while (aux)
+	{
+		if (ft_strcmp(aux->content, "|") == 0)
+		{
+			prev = aux->next;
+			result = (ft_split(prev->content, ' '));
+			return (result);
+		}
+		aux = aux->next;
+	}
+	return (NULL);
+}
+
 static t_token	*real_search(t_shell *shell)
 {
 	t_token	*result;
-
 
 	result = shell->tokens;
 	while (result)
@@ -43,8 +62,8 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
-		if (prepare (shell, aux_token) == -1)
-			return ;
+//		if (prepare (shell, aux_token) == -1)
+//			return ;
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
 		if (pipex_redirect(shell, aux_token) == 0)
@@ -72,8 +91,8 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-		if (prepare (shell, aux_token) == -1)
-			return ;
+//		if (prepare (shell, aux_token) == -1)
+//			return ;
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		if (pipex_redirect(shell, aux_token) == 0)
@@ -101,7 +120,6 @@ void	pipex(t_shell *shell)
 	pid_t		pid2;
 	char		**line_arraid;
 
-	prepare_in_loop(shell);
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
 		ft_error("No command found");

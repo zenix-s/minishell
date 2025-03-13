@@ -40,7 +40,7 @@ int	stnd_in(t_token *env_aux, t_shell *aux, int mode)
 	return (10);
 }
 
-int new_stnd_in(t_shell *shell)
+int	new_stnd_in(t_shell *shell)
 {
 	char	**cmd;
 	int		file;
