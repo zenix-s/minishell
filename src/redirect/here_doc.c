@@ -37,10 +37,18 @@ void	her_d(char **line_arraid)
 	ft_free(line_arraid);
 }
 
-void	all_heredoc(t_token *l_token)
+void	all_heredoc(t_shell *shell)
 {
 	t_token	*aux_token;
 
-	aux_token = l_token->next;
-	her_d(ft_split(aux_token->content, ' '));
+	aux_token = shell->tokens;
+	while (aux_token)
+	{
+		if (ft_strcmp(aux_token->content, "<<") == 0)
+		{
+			aux_token = aux_token->next;
+			her_d(ft_split(aux_token->content, ' '));
+		}
+		aux_token = aux_token->next;
+	}
 }

@@ -164,7 +164,7 @@ int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
 int						use_redirect(t_shell *shell);
 //int						little_redirect(t_shell *shell);
 int						follow_mode(t_token *env_aux); //
-void					all_heredoc(t_token *l_token);
+void					all_heredoc(t_shell *shell);
 void					her_d(char **line_arraid);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
