@@ -31,6 +31,10 @@ void	clean_end_state(t_shell *shell)
 	shell->input = NULL;
 	shell->read = NULL;
 	shell->write = NULL;
-	// ft_free(shell->here);
+<<<<<<< HEAD
+//	if (shell->here != NULL)
+//	free(shell->here);
+=======
+>>>>>>> serferna
 	shell->is_done = TRUE;
 }

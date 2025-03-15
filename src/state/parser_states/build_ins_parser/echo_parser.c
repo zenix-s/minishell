@@ -25,7 +25,7 @@ static t_bool	is_valid_quoting(uint64_t *i, char *line, t_quote in_quotes)
 char	*echo_parser(char *line)
 {
 	char		*new_line;
-	t_quote		in_quotes;
+	int		in_quotes;
 	uint64_t	i;
 	uint64_t	j;
 

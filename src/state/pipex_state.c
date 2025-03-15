@@ -14,6 +14,10 @@
 
 void	select_pipex(t_shell *shell, int mode)
 {
+	int	x;
+
+	x = 0;
+	prepare_in_loop(shell);
 	if (mode == 1)
 		pipex(shell);
 	if (mode != 1)
@@ -28,7 +32,7 @@ void	pipex_state(t_shell *shell)
 
 	env_aux = shell->tokens;
 	mode = 0;
-	if (env_aux->next)
+	if (env_aux && env_aux->next)
 	{
 		while (env_aux)
 		{
@@ -41,8 +45,8 @@ void	pipex_state(t_shell *shell)
 	}
 	if (mode == 0)
 	{
-		env_aux = shell->tokens;
-		prepare(shell, env_aux);
+//		env_aux = shell->tokens;
+//		prepare(shell, env_aux);
 		shell->execute = redirect_state;
 	}
 }

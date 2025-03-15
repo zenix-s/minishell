@@ -27,15 +27,15 @@ typedef struct s_parse_state
 
 typedef struct s_expand_env_state
 {
-	uint64_t	len;
-	char		*var_name;
-	char		*value;
-	uint64_t	start;
-	char		new_content[1024];
-	uint64_t	i;
-	t_quote		quote;
-	t_bool		idiot;
-}				t_expand_env_state;
+	uint64_t		len;
+	char			*var_name;
+	char			*value;
+	uint64_t		start;
+	char			new_content[1024];
+	uint64_t		i;
+	int			quote;
+	t_bool			idiot;
+}					t_expand_env_state;
 
 t_token			*create_token(char *content);
 t_bool			add_token(t_token **head, char *content);

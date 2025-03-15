@@ -32,7 +32,7 @@ void	print_tokens(t_token *tokens)
 int	has_unclosed_quotes(const char *line)
 {
 	size_t	i;
-	t_quote	quote_state;
+	int	quote_state;
 
 	i = 0;
 	quote_state = NONE;
