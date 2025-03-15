@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-t_quote	get_quote_type(t_quote quote_state, char chr)
+int	get_quote_type(t_quote quote_state, char chr)
 {
 	if (chr == '"' && quote_state != SINGLE)
 	{

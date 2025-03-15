@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prepare_redirect.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/11 21:42:38 by lortega-          #+#    #+#             */
+/*   Updated: 2025/03/11 21:42:41 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -9,7 +20,10 @@ int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
 	{
 		file = open(aux_token->next->content, O_RDONLY);
 		if (file == -1)
+		{
+			redirect_error(aux_token->next, 1);
 			return (-1);
+		}
 		shell->read = aux_token->next->content;
 		close (file);
 	}
@@ -20,24 +34,18 @@ int	ft_write_open(t_token *aux_token, t_shell *shell, char *name)
 {
 	int		file;
 
+	file = 0;
 	if (ft_strcmp(aux_token->content, ">") == 0)
-	{
-		file = open(name, O_CREAT | O_WRONLY |O_TRUNC, 0644);
-		if (file == -1)
-			return (-1);
-		shell->write = name;
-		shell->mode = 1;
-		close (file);
-	}
+		file = ft_open(shell, file, name, 1);
 	else if (ft_strcmp(aux_token->content, ">>") == 0)
+		file = ft_open(shell, file, name, 1);
+	if (file == -1)
 	{
-		file = open(name, O_CREAT | O_WRONLY |O_TRUNC, 0644);
-		if (file == -1)
-			return (-1);
-		shell->write = name;
-		shell->mode = 2;
-		close (file);
+		redirect_error(aux_token->next, 1);
+		return (-1);
 	}
+	shell->write = name;
+	close (file);
 	return (0);
 }
 
@@ -46,35 +54,29 @@ static void	before_prepare(t_shell *shell)
 	shell->mode = 0;
 	shell->write = NULL;
 	shell->read = NULL;
-	if (shell->here)
-		ft_free(shell->here);
 }
 
-int	prepare(t_shell *shell, t_token *aux_token)
+int	prepare(t_shell *shell, t_token *x)
 {
 	int		mode;
 	int		aux;
-	char	*name;
 
 	mode = 0;
 	before_prepare(shell);
-	while (aux_token && aux_token->type != PIPE)
+	while (x && x->type != PIPE)
 	{
-		if (aux_token->type == REDIRECT)
+		if (x->type == REDIRECT)
 		{
-			if (ft_strcmp(aux_token->content, "<<") == 0)
-				shell->here[0] = aux_token->next->content;
-			aux = ft_read_open(aux_token, shell, "<");
+			if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
+				aux = ft_write_open(x, shell, x->next->content);
+			else if (ft_strcmp(x->content, "<") == 0)
+				aux = ft_read_open(x, shell, "<");
 			if (aux == -1)
-				return (-1);
-			name = aux_token->next->content;
-			aux = ft_write_open(aux_token, shell, name);
-			if (aux == -1)
-				return (-1);
+				return (aux);
 			mode++;
-			aux_token = aux_token->next;
+			x = x->next;
 		}
-		aux_token = aux_token->next;
+		x = x->next;
 	}
 	return (mode);
 }

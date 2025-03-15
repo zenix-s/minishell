@@ -20,7 +20,7 @@ static void	skip_spaces(const char *content, int *i)
 
 static void	trim_node(t_token *token)
 {
-	t_quote	quote_state;
+	int	quote_state;
 	int		i;
 	int		j;
 

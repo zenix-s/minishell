@@ -22,9 +22,9 @@ void	stnd_out(t_token *env_aux, t_shell *aux, int mode)
 	cmd = ft_split(env_aux->content, ' ');
 	name = env_aux->next->next->content;
 	if (mode == 2)
-		file = open(name, O_CREAT | O_WRONLY |O_TRUNC, 0644);
+		file = open(name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (mode == 3)
-		file = open(name, O_CREAT | O_WRONLY |O_APPEND, 0644);
+		file = open(name, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	stdout_copy = dup(STDOUT_FILENO);
 	if (file == -1)
 		ft_error("Error opening file");

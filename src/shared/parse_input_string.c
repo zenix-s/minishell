@@ -54,7 +54,7 @@ int	count_tokens(char *input, const char **split, const char **s_split)
 {
 	uint64_t	count;
 	uint64_t	i;
-	t_quote		quote_state;
+	int		quote_state;
 	t_bool		in_token;
 	uint64_t	split_len;
 
