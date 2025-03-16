@@ -31,3 +31,24 @@ int	is_separator(const char *line, size_t *sep_len)
 	}
 	return (0);
 }
+
+uint64_t	is_special_token(const char *str)
+{
+	const char	*search[] = {"<<", ">>", "<", ">", "|", NULL};
+
+	return (is_string_in_array(str, search));
+}
+
+uint64_t	is_string_redirect(const char *str)
+{
+	const char	*search[] = {">>", "<<", ">", "<", NULL};
+
+	return (is_string_in_array(str, search));
+}
+
+uint64_t	is_string_pipe(const char *str)
+{
+	const char	*search[] = {"|", NULL};
+
+	return (is_string_in_array(str, search));
+}

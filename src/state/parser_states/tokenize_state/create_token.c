@@ -26,5 +26,6 @@ t_token	*create_token(char *content)
 		return (NULL);
 	}
 	new_token->next = NULL;
+	new_token->prev = NULL;
 	return (new_token);
 }

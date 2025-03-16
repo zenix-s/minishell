@@ -21,7 +21,13 @@ void	error_state(int mod)
 void	fail_state(t_shell *shell)
 {
 	if (shell->error_message != NULL)
-		printf("minishell: %s\n", shell->error_message);
+	{
+		if (ft_strcmp(shell->error_message, ERR_UNEXPECTED_TOKEN) == 0)
+			printf("syntax error near unexpected token `%s'\n",
+				shell->unexpected_token);
+		else
+			printf("minishell: %s\n", shell->error_message);
+	}
 	if (shell->exit_of_failure)
 	{
 		free_shell(shell);

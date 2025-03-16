@@ -21,8 +21,8 @@ static void	skip_spaces(const char *content, int *i)
 static void	trim_node(t_token *token)
 {
 	int	quote_state;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -55,5 +55,5 @@ void	trim_nodes_state(t_shell *shell)
 		trim_node(current);
 		current = current->next;
 	}
-	shell->execute = check_redirect_newline_error_state;
+	shell->execute = check_redirect_error_state;
 }
