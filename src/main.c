@@ -81,6 +81,7 @@ void readline_state(t_shell *shell)
 		if (!manage_unclosed_quotes(&shell->input))
 			break ;
 	}
+	add_history(shell->input);
 	shell->execute = tokenize_state;
 }
 
@@ -105,7 +106,10 @@ static void	signal_handler(int sig, siginfo_t *info, void *context)
 	}
 	if (sig == SIGINT)
 	{
-		printf("Ctrl + C.\n");
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 	(void)context;
 	(void)info;

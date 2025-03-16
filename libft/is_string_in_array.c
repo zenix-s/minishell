@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <sys/types.h>
 
 uint64_t	is_string_in_array(const char *str, const char *search[])
 {
@@ -29,16 +28,4 @@ uint64_t	is_string_in_array(const char *str, const char *search[])
 		i++;
 	}
 	return (0);
-}
-
-u_int64_t is_string_redirect(const char *str)
-{
-	const char *search[] = {">>", "<<", ">", "<", NULL};
-	return (is_string_in_array(str, search));
-}
-
-u_int64_t is_string_pipe(const char *str)
-{
-	const char *search[] = {"|", NULL};
-	return (is_string_in_array(str, search));
 }
