@@ -68,6 +68,7 @@ void	full_redirect(t_shell *shell, char **cmd)
 	int		stdin_copy;
 	int		stdout_copy;
 
+	printf("patata\n");
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
 		return ;
@@ -95,6 +96,7 @@ void	redirect_state(t_shell *shell)
 	char	**cmd;
 	t_token	*aux_token;
 
+	printf("%s\n", shell->tokens->content);
 	aux_token = shell->tokens;
 	shell->execute = clean_end_state;
 	if (prepare(shell, aux_token) == -1)
