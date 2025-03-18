@@ -142,7 +142,7 @@ u_int64_t				is_string_pipe(const char *str);
 uint64_t				is_special_token(const char *str);
 
 //----------------------------------------------------------------------------//
-//                                Estate
+//                                state
 //----------------------------------------------------------------------------//
 void					clean_end_state(t_shell *shell);
 void					error_state(int mod);
@@ -177,6 +177,7 @@ void					her_d(char **line_arraid);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						new_stnd_in(t_shell *shell);
+void					new_new_stdn_in(t_shell *shell, t_token *aux_token);
 int	finish_redirect(t_shell *shell, t_token *aux_shell); //
 void					read_alone(t_shell *shell, char **cmd);
 void					write_alone(t_shell *shell, char **cmd);

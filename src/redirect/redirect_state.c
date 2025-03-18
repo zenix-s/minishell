@@ -36,6 +36,7 @@ void	write_alone(t_shell *shell, char **cmd)
 	int		file_out;
 	int		stdout_copy;
 
+	printf("  |   write alone   |   \n");
 	if (shell->mode == 1)
 		file_out = open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (shell->mode == 2)
@@ -44,7 +45,10 @@ void	write_alone(t_shell *shell, char **cmd)
 		ft_error("Error abriendo el archivo de salida");
 	stdout_copy = dup(STDOUT_FILENO);
 	if (dup2(file_out, STDOUT_FILENO) == -1)
-		ft_error("Error redirigiendo la salida estándar");
+	{
+		printf("Error redirigiendo la salida estándar\n");
+		return ; 
+	}
 	if (cmd != NULL && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdout_copy, STDOUT_FILENO);
@@ -96,11 +100,12 @@ void	redirect_state(t_shell *shell)
 	char	**cmd;
 	t_token	*aux_token;
 
-	printf("%s\n", shell->tokens->content);
 	aux_token = shell->tokens;
 	shell->execute = clean_end_state;
 	if (prepare(shell, aux_token) == -1)
 		return ;
+	printf("read =>%s\n", shell->read);
+	printf("write => %s\n", shell->write);
 	if (shell->tokens && shell->tokens->content)
 		cmd = ft_split(shell->tokens->content, ' ');
 	else
@@ -116,3 +121,25 @@ void	redirect_state(t_shell *shell)
 	if (shell->read == NULL && shell->write == NULL)
 		shell->execute = select_all;
 }
+
+
+// void	redirect_state(t_shell *shell)
+// {
+// 	t_token	*aux_token;
+// 	int		aux;
+
+// 	aux = 0;
+// 	aux_token = shell->tokens;
+// 	while (aux_token)
+// 	{
+// 		if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
+// 			aux++;
+// 		else if (ft_strcmp(x->content, "<") == 0)
+// 			new_new_stdn_in(shell, aux_token);
+// 		if (aux == -1)
+// 			return (aux);
+// 		aux_token = aux_token->next;
+// 	}
+// 	shell->execute = clean_end_state;
+// 	shell->execute = select_all;
+// }
