@@ -67,14 +67,10 @@ int	prepare(t_shell *shell, t_token *x)
 	{
 		if (x->type == REDIRECT)
 		{
-			printf("---1-----read => %s\n", shell->read);
-			printf("---1-----write => %s\n", shell->write);
-			if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
+			if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>") == 0)
 				aux = ft_write_open(x, shell, x->next->content);
 			else if (ft_strcmp(x->content, "<") == 0)
 				aux = ft_read_open(x, shell, "<");
-			printf("---2-----read => %s\n", shell->read);
-			printf("---2-----write => %s\n", shell->write);
 			if (aux == -1)
 				return (aux);
 			mode++;
