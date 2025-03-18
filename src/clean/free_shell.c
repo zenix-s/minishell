@@ -14,13 +14,14 @@
 
 void	free_shell(t_shell *shell)
 {
-	if (shell->tokens)
+	if (shell->tokens != NULL)
 		free_tokens(shell->tokens);
-	if (shell->env)
+	if (shell->env != NULL)
 		free_env_tokens(shell->env);
-	if (shell->input)
+	if (shell->input != NULL)
+	{
 		free(shell->input);
-	if (shell->error_message)
-		free(shell->error_message);
+		shell->input = NULL;
+	}
 	free(shell);
 }

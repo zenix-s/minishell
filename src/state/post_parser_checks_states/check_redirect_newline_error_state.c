@@ -12,30 +12,55 @@
 
 #include "../../../include/minishell.h"
 
-void	check_redirect_newline_error_state(t_shell *shell)
+static void	check_redirect_newline_error_state(t_shell *shell, t_token *current)
 {
-	int			i;
-	t_token		*current;
-	const char	*redirects[] = {">>", ">", "<<", "<", NULL};
+	if (!current->next)
+	{
+		shell->error_message = ERR_UNEXPECTED_TOKEN_NEWLINE;
+		shell->exit_of_failure = FALSE;
+		shell->execute = fail_state;
+		return ;
+	}
+	if (is_special_token(current->next->content))
+	{
+		shell->error_message = ERR_UNEXPECTED_TOKEN;
+		shell->unexpected_token = current->next->content;
+		shell->exit_of_failure = FALSE;
+		shell->execute = fail_state;
+		return ;
+	}
+}
 
-	// TODO Extraer a estructura shell
+static void	check_pipe_error_state(t_shell *shell, t_token *current)
+{
+	if (current->prev == NULL)
+	{
+		shell->error_message = ERR_UNEXPECTED_TOKEN;
+		shell->unexpected_token = current->content;
+		shell->exit_of_failure = FALSE;
+		shell->execute = fail_state;
+		return ;
+	}
+}
+
+void	check_redirect_error_state(t_shell *shell)
+{
+	t_token	*current;
+
 	current = shell->tokens;
 	while (current)
 	{
-		i = 0;
-		while (current->type == REDIRECT && redirects[i])
+		if (is_string_redirect(current->content))
 		{
-			if (!ft_strcmp(current->content, redirects[i]))
-			{
-				if (!current->next)
-				{
-					shell->error_message = ERR_UNEXPECTED_TOKEN_NEWLINE;
-					shell->exit_of_failure = FALSE;
-					shell->execute = fail_state;
-					return ;
-				}
-			}
-			i++;
+			check_redirect_newline_error_state(shell, current);
+			if (shell->execute == fail_state)
+				return ;
+		}
+		if (is_string_pipe(current->content))
+		{
+			check_pipe_error_state(shell, current);
+			if (shell->execute == fail_state)
+				return ;
 		}
 		current = current->next;
 	}

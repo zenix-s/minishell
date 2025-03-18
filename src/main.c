@@ -12,11 +12,15 @@
 
 #include "../include/minishell.h"
 #include "../include/parser.h"
+#include <stdio.h>
+#include <string.h>
 
 void	print_tokens(t_token *tokens)
 {
 	t_token	*current;
 
+	if (tokens == NULL)
+		return ;
 	current = tokens;
 	while (current)
 	{
@@ -28,7 +32,7 @@ void	print_tokens(t_token *tokens)
 int	has_unclosed_quotes(const char *line)
 {
 	size_t	i;
-	t_quote	quote_state;
+	int	quote_state;
 
 	i = 0;
 	quote_state = NONE;
@@ -77,6 +81,7 @@ void readline_state(t_shell *shell)
 		if (!manage_unclosed_quotes(&shell->input))
 			break ;
 	}
+	add_history(shell->input);
 	shell->execute = tokenize_state;
 }
 
@@ -86,7 +91,7 @@ void	main_loop(t_shell *shell)
 	{
 		shell->is_done = FALSE;
 		shell->execute = readline_state;
-		while (!shell->is_done)
+		while (shell != NULL && !shell->is_done)
 		{
 			shell->execute(shell);
 		}
@@ -101,7 +106,10 @@ static void	signal_handler(int sig, siginfo_t *info, void *context)
 	}
 	if (sig == SIGINT)
 	{
-		printf("Ctrl + C.\n");
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 	(void)context;
 	(void)info;

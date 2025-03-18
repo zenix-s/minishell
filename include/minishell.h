@@ -14,10 +14,10 @@
 
 # define MINISHELL_H
 
-# include "errors.h"
-//
 # include <stdio.h>
-//
+// No eliminar comentario impiede
+// que el formater base stdio.h por debajo de readline
+# include "errors.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -76,6 +76,7 @@ typedef struct s_token
 	t_cmd_type			type;
 	t_built_in_type		built_in;
 	struct s_token		*next;
+	struct s_token		*prev;
 }						t_token;
 
 typedef struct s_env_token
@@ -84,7 +85,6 @@ typedef struct s_env_token
 	char				*value;
 	struct s_env_token	*next;
 }						t_env_token;
-
 
 typedef struct s_shell
 {
@@ -97,9 +97,10 @@ typedef struct s_shell
 	char				*read;
 	char				*write;
 	int					mode;
-	//char				*here;
+	// char				*here;
 	// Error handling
 	char				*error_message;
+	char				*unexpected_token;
 	t_bool				exit_of_failure;
 }						t_shell;
 
@@ -122,7 +123,7 @@ void					ft_error(char *texto);
 
 void					segurity_state(t_shell *shell);
 void					parse_line(t_shell *shell);
-t_quote					get_quote_type(t_quote quote_state, char c);
+int						get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);
 char					*echo_parser(char *line);
@@ -133,8 +134,12 @@ void					head(void);
 
 void					parser_end_state(t_shell *shell);
 
-char					**split_input(char *input, const char **split,
+char					**special_split(char *input, const char **split,
 							const char **s_split);
+
+u_int64_t				is_string_redirect(const char *str);
+u_int64_t				is_string_pipe(const char *str);
+uint64_t				is_special_token(const char *str);
 
 //----------------------------------------------------------------------------//
 //                                Estate
@@ -144,14 +149,14 @@ void					error_state(int mod);
 void					fail_state(t_shell *shell);
 void					exit_state(t_shell *shell);
 // Builds
-void 					create_files_state(t_shell *shell);
+void					create_files_state(t_shell *shell);
 //  select
 void					select_all(t_shell *shell);
 // int						select_build(t_shell **shell, char **line_arraid);
 int						s_build(t_shell *shell, char **line_arraid);
 void					execute_cmd(char **l_arraid, t_env_token *list_env);
 
-void					check_redirect_newline_error_state(t_shell *shell);
+void					check_redirect_error_state(t_shell *shell);
 
 //----------------------------------------------------------------------------//
 //                                Redirect
@@ -159,21 +164,26 @@ void					check_redirect_newline_error_state(t_shell *shell);
 void					redirect_state(t_shell *shell);
 void					prepare_in_loop(t_shell *shell);
 int						prepare(t_shell *shell, t_token *aux_token);
-int 					ft_read_open(t_token *aux_token, t_shell *shell, char *s);
-int						ft_write_open(t_token *aux_token, t_shell *shell, char *name);
+int						ft_read_open(t_token *aux_token, t_shell *shell,
+							char *s);
+int						ft_write_open(t_token *aux_token, t_shell *shell,
+							char *name);
+int						ft_open(t_shell *shell, int file, char *name, int mode);
 int						use_redirect(t_shell *shell);
-//int						little_redirect(t_shell *shell);
-int						follow_mode(t_token *env_aux); //
+// int						little_redirect(t_shell *shell);
+int	follow_mode(t_token *env_aux); //
 void					all_heredoc(t_shell *shell);
 void					her_d(char **line_arraid);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						new_stnd_in(t_shell *shell);
-int						finish_redirect(t_shell *shell, t_token *aux_shell); //
+int	finish_redirect(t_shell *shell, t_token *aux_shell); //
 void					read_alone(t_shell *shell, char **cmd);
 void					write_alone(t_shell *shell, char **cmd);
 int						new_open(t_shell *shell);
 void					full_redirect(t_shell *shell, char **cmd);
+void					redirect_error(t_token *list, int mode);
+
 // expecific comand
 void					use_unset(t_shell *shell, char **line_arraid);
 void					use_pwd(void);
@@ -252,5 +262,7 @@ int						ft_super_strcat(char **dest, const char *src);
 char					**delete_string_on_array(char *arr[], int pos);
 char					**insert_string_on_array(char *arr[], char *str,
 							int pos);
+t_bool					string_is_null_or_whitespace(const char *str);
+t_bool					is_space(char c);
 
 #endif

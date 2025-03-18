@@ -17,20 +17,20 @@ char	*get_first_word(const char *content)
 {
 	uint64_t	start;
 	uint64_t	end;
-	t_quote		quote;
+	int		quote;
 
 	start = 0;
 	start = 0;
-	while (content[start] && is_parse_space(content[start]))
+	while (content[start] && is_space(content[start]))
 		start++;
 	quote = get_quote_type(NONE, content[start]);
 	if (content[start] == '\'' || content[start] == '"')
 		start++;
 	end = start;
-	while (content[end] && (quote != NONE || !is_parse_space(content[end])))
+	while (content[end] && (quote != NONE || !is_space(content[end])))
 	{
 		quote = get_quote_type(quote, content[end]);
-		if (quote == NONE && is_parse_space(content[end]))
+		if (quote == NONE && is_space(content[end]))
 			break ;
 		end++;
 	}

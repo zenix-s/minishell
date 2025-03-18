@@ -45,8 +45,8 @@ void	pipex_state(t_shell *shell)
 	}
 	if (mode == 0)
 	{
-		env_aux = shell->tokens;
-		prepare(shell, env_aux);
+//		env_aux = shell->tokens;
+//		prepare(shell, env_aux);
 		shell->execute = redirect_state;
 	}
 }
