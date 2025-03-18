@@ -22,7 +22,8 @@ void	free_tokens(t_token *tokens)
 	{
 		temp = current;
 		current = current->next;
-		free(temp->content);
+		if (temp->content)
+			free(temp->content);
 		free(temp);
 	}
 }

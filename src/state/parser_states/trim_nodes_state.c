@@ -14,15 +14,15 @@
 
 static void	skip_spaces(const char *content, int *i)
 {
-	while (is_parse_space(content[*i]) && content[*i] != '\0')
+	while (is_space(content[*i]) && content[*i] != '\0')
 		(*i)++;
 }
 
 static void	trim_node(t_token *token)
 {
-	t_quote	quote_state;
-	int		i;
-	int		j;
+	int	quote_state;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -31,7 +31,7 @@ static void	trim_node(t_token *token)
 	while (token->content[i] != '\0')
 	{
 		quote_state = get_quote_type(quote_state, token->content[i]);
-		if (quote_state == NONE && is_parse_space(token->content[i]))
+		if (quote_state == NONE && is_space(token->content[i]))
 		{
 			if (j > 0 && token->content[j - 1] != ' ')
 				token->content[j++] = ' ';
@@ -40,7 +40,7 @@ static void	trim_node(t_token *token)
 		else
 			token->content[j++] = token->content[i++];
 	}
-	while (j > 0 && is_parse_space(token->content[j - 1]))
+	while (j > 0 && is_space(token->content[j - 1]))
 		j--;
 	token->content[j] = '\0';
 }
@@ -55,5 +55,5 @@ void	trim_nodes_state(t_shell *shell)
 		trim_node(current);
 		current = current->next;
 	}
-	shell->execute = check_redirect_newline_error_state;
+	shell->execute = check_redirect_error_state;
 }

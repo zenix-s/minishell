@@ -23,4 +23,3 @@ uint64_t	expand_variale(char *new_content, uint64_t i, const char *value)
 		new_content[i++] = value[j++];
 	return (i);
 }
-
