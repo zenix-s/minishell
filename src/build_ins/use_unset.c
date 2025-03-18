@@ -19,7 +19,7 @@ static t_env_token	*prev(t_env_token **list_env, char *line)
 	l_aux = *list_env;
 	while (l_aux)
 	{
-		if (ft_strcmp (l_aux->next->key, line) != 0)
+		if (strcmp (l_aux->next->key, line) != 0)
 			l_aux = l_aux->next;
 		else
 			return (l_aux);
@@ -39,7 +39,7 @@ static t_env_token	*search_a(t_env_token *list_env, char *line)
 	while (l_aux)
 	{
 		char_env = l_aux->key;
-		if (ft_strcmp(line, char_env) == 0)
+		if (strcmp(line, char_env) == 0)
 			return (l_aux);
 		l_aux = l_aux->next;
 	}

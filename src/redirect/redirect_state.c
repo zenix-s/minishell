@@ -36,7 +36,6 @@ void	write_alone(t_shell *shell, char **cmd)
 	int		file_out;
 	int		stdout_copy;
 
-	printf("  |   write alone   |   \n");
 	if (shell->mode == 1)
 		file_out = open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (shell->mode == 2)
@@ -118,25 +117,3 @@ void	redirect_state(t_shell *shell)
 	if (shell->read == NULL && shell->write == NULL)
 		shell->execute = select_all;
 }
-
-
-// void	redirect_state(t_shell *shell)
-// {
-// 	t_token	*aux_token;
-// 	int		aux;
-
-// 	aux = 0;
-// 	aux_token = shell->tokens;
-// 	while (aux_token)
-// 	{
-// 		if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
-// 			aux++;
-// 		else if (ft_strcmp(x->content, "<") == 0)
-// 			new_new_stdn_in(shell, aux_token);
-// 		if (aux == -1)
-// 			return (aux);
-// 		aux_token = aux_token->next;
-// 	}
-// 	shell->execute = clean_end_state;
-// 	shell->execute = select_all;
-// }

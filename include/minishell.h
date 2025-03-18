@@ -233,7 +233,7 @@ void					print_env(t_env_token *list_env);
 
 // library
 t_token					*ft_lstnew(void *content);
-int						ft_strcmp(const char *s1, const char *s2);
+int						strcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t count, size_t size);
 void					ft_bzero(void *s, unsigned int n);
 t_token					*ft_lstlast(t_token *lst);

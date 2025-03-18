@@ -25,7 +25,7 @@ void	her_d(char **line_arraid)
 		line = readline(">");
 		if (line && *line != '\0')
 		{
-			if (ft_strcmp(line_arraid[0], line) == 0)
+			if (strcmp(line_arraid[0], line) == 0)
 				x++;
 			write(text, line, ft_strlen(line));
 			write(text, "\n", 1);
@@ -44,7 +44,7 @@ void	all_heredoc(t_shell *shell)
 	aux_token = shell->tokens;
 	while (aux_token)
 	{
-		if (ft_strcmp(aux_token->content, "<<") == 0)
+		if (strcmp(aux_token->content, "<<") == 0)
 		{
 			aux_token = aux_token->next;
 			her_d(ft_split(aux_token->content, ' '));

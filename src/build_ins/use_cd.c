@@ -90,7 +90,7 @@ static void	go_home(t_env_token *list_env, t_shell *shell)
 	home = NULL;
 	while (l_aux)
 	{
-		if (ft_strcmp(l_aux->key, "HOME") == 0)
+		if (strcmp(l_aux->key, "HOME") == 0)
 			home = l_aux->value;
 		l_aux = l_aux->next;
 	}

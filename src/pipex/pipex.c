@@ -21,7 +21,7 @@ char	**postline(t_shell *shell)
 	aux = shell->tokens;
 	while (aux)
 	{
-		if (ft_strcmp(aux->content, "|") == 0)
+		if (strcmp(aux->content, "|") == 0)
 		{
 			prev = aux->next;
 			result = (ft_split(prev->content, ' '));
@@ -62,8 +62,8 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
-//		if (prepare (shell, aux_token) == -1)
-//			return ;
+		if (prepare (shell, aux_token) == -1)
+			return ;
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
 		if (pipex_redirect(shell, aux_token) == 0)
@@ -91,8 +91,8 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-//		if (prepare (shell, aux_token) == -1)
-//			return ;
+		if (prepare (shell, aux_token) == -1)
+			return ;
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		if (pipex_redirect(shell, aux_token) == 0)
