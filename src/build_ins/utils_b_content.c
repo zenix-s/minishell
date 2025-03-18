@@ -19,7 +19,7 @@ char	*obtain_content(char *search, t_env_token *list_env)
 {
 	while (list_env)
 	{
-		if (strcmp(list_env->key, search) == 0)
+		if (newcmp(list_env->key, search) == 0)
 			return ((char *)list_env->value);
 		list_env = list_env->next;
 	}
@@ -34,7 +34,7 @@ void	change_content(t_env_token *list_env, char *key, char *newcont)
 	l_aux = list_env;
 	while (l_aux)
 	{
-		if (strcmp(l_aux->key, key) == 0)
+		if (newcmp(l_aux->key, key) == 0)
 		{
 			free(l_aux->value);
 			l_aux->value = ft_strdup(newcont);

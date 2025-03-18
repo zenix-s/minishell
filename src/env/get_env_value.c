@@ -16,7 +16,7 @@ char	*get_env_value(const t_env_token *env, const char *key)
 {
 	while (env)
 	{
-		if (strcmp(env->key, key) == 0)
+		if (newcmp(env->key, key) == 0)
 			return (env->value);
 		env = env->next;
 	}

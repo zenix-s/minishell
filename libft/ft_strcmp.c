@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strcmp.c                                        :+:      :+:    :+:   */
+/*   newcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-int	strcmp(const char *s1, const char *s2)
+int	newcmp(const char *s1, const char *s2)
 {
 	int		dif;
 	size_t	x;

@@ -97,7 +97,6 @@ typedef struct s_shell
 	char				*read;
 	char				*write;
 	int					mode;
-	// char				*here;
 	// Error handling
 	char				*error_message;
 	char				*unexpected_token;
@@ -221,6 +220,8 @@ void					middle_child(int fdp[2], int fd[2], t_token *list_aux,
 							t_shell *shell);
 void					change_fd(int fdp[2], int fd[2]);
 char					**postline(t_shell *shell);
+int						cont_pids(t_shell *shell);
+
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);
@@ -233,7 +234,7 @@ void					print_env(t_env_token *list_env);
 
 // library
 t_token					*ft_lstnew(void *content);
-int						strcmp(const char *s1, const char *s2);
+int						newcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t count, size_t size);
 void					ft_bzero(void *s, unsigned int n);
 t_token					*ft_lstlast(t_token *lst);

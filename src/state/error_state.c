@@ -22,7 +22,7 @@ void	fail_state(t_shell *shell)
 {
 	if (shell->error_message != NULL)
 	{
-		if (strcmp(shell->error_message, ERR_UNEXPECTED_TOKEN) == 0)
+		if (newcmp(shell->error_message, ERR_UNEXPECTED_TOKEN) == 0)
 			printf("syntax error near unexpected token `%s'\n",
 				shell->unexpected_token);
 		else

@@ -41,19 +41,19 @@ char	*get_first_word(const char *content)
 
 t_built_in_type	get_built_in_type(const char *str)
 {
-	if (strcmp(str, "echo") == 0)
+	if (newcmp(str, "echo") == 0)
 		return (ECHO);
-	if (strcmp(str, "cd") == 0)
+	if (newcmp(str, "cd") == 0)
 		return (CD);
-	if (strcmp(str, "pwd") == 0)
+	if (newcmp(str, "pwd") == 0)
 		return (PWD);
-	if (strcmp(str, "export") == 0)
+	if (newcmp(str, "export") == 0)
 		return (EXPORT);
-	if (strcmp(str, "unset") == 0)
+	if (newcmp(str, "unset") == 0)
 		return (UNSET);
-	if (strcmp(str, "env") == 0)
+	if (newcmp(str, "env") == 0)
 		return (ENV);
-	if (strcmp(str, "exit") == 0)
+	if (newcmp(str, "exit") == 0)
 		return (EXIT);
 	return (-1);
 }
@@ -84,7 +84,7 @@ void	assign_type_state(t_shell *shell)
 			set_token_type(token, BUILT_IN, get_built_in_type(first_word));
 		else if (is_string_in_array(token->content, separators))
 			set_token_type(token, REDIRECT, UNDEFINED);
-		else if (strcmp(token->content, "|") == 0)
+		else if (newcmp(token->content, "|") == 0)
 			set_token_type(token, PIPE, UNDEFINED);
 		else
 			set_token_type(token, EXE, UNDEFINED);

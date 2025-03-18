@@ -104,9 +104,11 @@ void	big_pipex(t_shell *shell)
 {
 	int		fd[2];
 	pid_t	pid;
+//	pid_t	*pids;
 	char	**line_arraid;
 	t_token	*l_aux;
 
+//	(pid_t*) malloc(num_procesos * sizeof(pid_t));
 	l_aux = shell->tokens;
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])

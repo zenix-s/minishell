@@ -21,7 +21,7 @@ char	**postline(t_shell *shell)
 	aux = shell->tokens;
 	while (aux)
 	{
-		if (strcmp(aux->content, "|") == 0)
+		if (newcmp(aux->content, "|") == 0)
 		{
 			prev = aux->next;
 			result = (ft_split(prev->content, ' '));

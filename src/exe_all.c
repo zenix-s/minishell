@@ -85,7 +85,7 @@ void	exe_all(char **command, t_env_token *list_env)
 	{
 		while (list_env)
 		{
-			if (strcmp(list_env->key, "PATH") == 0)
+			if (newcmp(list_env->key, "PATH") == 0)
 				path = list_env->value;
 			list_env = list_env->next;
 		}
