@@ -11,55 +11,16 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-// int	follow_mode(t_token *env_aux)
-// {
-// 	int	x;
-
-// 	x = 0;
-// 	while (env_aux)
-// 	{
-// 		if (ft_strcmp(env_aux->content, "<<") == 0)
-// 		{
-// 			if (x == 0)
-// 				return (5);
-// 			return (1);
-// 		}
-// 		if (ft_strcmp(env_aux->content, ">") == 0)
-// 			return (2);
-// 		if (ft_strcmp(env_aux->content, ">>") == 0)
-// 			return (3);
-// 		if (ft_strcmp(env_aux->content, "<") == 0)
-// 			return (4);
-// 		env_aux = env_aux->next;
-// 		x++;
-// 	}
-// 	return (0);
-// }
-
-// int	finish_redirect(t_shell *shell, t_token *aux_shell)
-// {
-// 	t_token	*env_aux;
-// 	int		mod;
-
-// 	env_aux = aux_shell;
-// 	mod = follow_mode(env_aux);
-// 	if (mod == 1 || mod == 5)
-// 		her_d(ft_split(env_aux->next->next->content, ' '), env_aux, shell, mod);
-// 	if (mod == 2 || mod == 3)
-// 		stnd_out(env_aux, shell, mod);
-// 	if (mod == 4)
-// 		stnd_in(env_aux, shell, mod);
-// 	return (mod);
-// }
 
 void	read_alone(t_shell *shell, char **cmd)
 {
 	int		file_in;
 	int		stdin_copy;
 
+	printf("paso por read_alone\n");
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
-		return ;
+		perror("no open");
 	stdin_copy = dup(STDIN_FILENO);
 	if (dup2(file_in, STDIN_FILENO) == -1)
 		ft_error("Error redirigiendo la entrada estándar");
@@ -133,17 +94,23 @@ void	redirect_state(t_shell *shell)
 {
 	char	**cmd;
 
-	if (shell->tokens->content)
+	if (shell->tokens && shell->tokens->content)
 		cmd = ft_split(shell->tokens->content, ' ');
 	else
 		cmd = NULL;
+//	printf("paso redirect\n");
+//	printf(".----> %s\n", shell->read);
 	if (shell->read != NULL && shell->write == NULL)
+	{
+//		printf("paso por la comprobacion\n");
 		read_alone(shell, cmd);
+	}
 	else if (shell->read == NULL && shell->write != NULL)
 		write_alone(shell, cmd);
 	else if (shell->read != NULL && shell->write != NULL)
 		full_redirect(shell, cmd);
-	ft_free(cmd);
+	if (cmd)
+		ft_free(cmd);
 	shell->execute = clean_end_state;
 	if (shell->read == NULL && shell->write == NULL)
 		shell->execute = select_all;

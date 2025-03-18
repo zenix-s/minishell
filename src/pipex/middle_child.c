@@ -18,18 +18,22 @@ void	middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell)
 
 	aux = shell->env;
 	l_arraid = ft_split(list_aux->content, ' ');
-	printf("hijo middle_child l_arraid --> %s\n", l_arraid[0]);
 	pid = fork();
 	if (pid < 0)
 		ft_error("fork");
 	if (pid == 0)
 	{
+		if (prepare (shell, list_aux) == -1)
+			ft_error("dont prepare");
 		if (pipex_redirect(shell, list_aux) == 0)
 		{
-			change_fd(fdp, fd);
-			if (s_build(shell, l_arraid) == 5)
-				exe_all(l_arraid, aux);
-			exit(0);
+			if (list_aux->type == BUILT_IN || list_aux->type == EXE)
+			{
+				change_fd(fdp, fd);
+				if (s_build(shell, l_arraid) == 5)
+					exe_all(l_arraid, aux);
+				exit(0);
+			}
 		}
 	}
 	shell->execute = clean_end_state;

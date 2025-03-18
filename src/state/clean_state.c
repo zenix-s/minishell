@@ -25,6 +25,7 @@ void	clean_end_state(t_shell *shell)
 	shell->input = NULL;
 	shell->read = NULL;
 	shell->write = NULL;
-	//ft_free(shell->here);
+//	if (shell->here != NULL)
+//	free(shell->here);
 	shell->is_done = TRUE;
 }
