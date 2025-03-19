@@ -56,8 +56,8 @@ TODO
 ----> union de gran pipex con redirecciones
 
 ----> dejar las redirecciones bien del todo... 
-
-		- ahora mismo en las redirecciones ls >a <b | grep >b <a e 
-					-> lo hace bien pero no da los mensajes de errores bien
+			sleep 3 <asd | ls
+			-->cuando <asd no existe no cierra el hilo
+		
 
 

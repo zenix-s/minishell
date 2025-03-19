@@ -119,7 +119,9 @@ void	pipex(t_shell *shell)
 	pid_t		pid1;
 	pid_t		pid2;
 	char		**line_arraid;
+	int			status;
 
+	status = 0;
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
 		ft_error("No command found");
@@ -134,6 +136,7 @@ void	pipex(t_shell *shell)
 	ft_free(line_arraid);
 	close(fd[READ_END]);
 	close(fd[WRITE_END]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	waitpid(pid1, &status, 0);
+	waitpid(pid2, &status, 0);
+	//con este estatus hay que modificar las señales
 }

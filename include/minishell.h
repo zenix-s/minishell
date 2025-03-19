@@ -220,6 +220,7 @@ void					middle_child(int fdp[2], int fd[2], t_token *list_aux,
 							t_shell *shell);
 void					change_fd(int fdp[2], int fd[2]);
 char					**postline(t_shell *shell);
+//---------------------waitpid-------------------------------------//
 int						cont_pids(t_shell *shell);
 
 

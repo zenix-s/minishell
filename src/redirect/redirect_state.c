@@ -17,7 +17,6 @@ void	read_alone(t_shell *shell, char **cmd)
 	int		file_in;
 	int		stdin_copy;
 
-	printf("paso por read_alone\n");
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
 		perror("no open");
