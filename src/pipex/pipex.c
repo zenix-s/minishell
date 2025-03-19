@@ -92,7 +92,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 	if (pid1 == 0)
 	{
 		if (prepare (shell, aux_token) == -1)
-			return ;
+			exit (1) ;
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		if (pipex_redirect(shell, aux_token) == 0)
