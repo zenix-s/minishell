@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 void	print_tokens(t_token *tokens)
 {
 	t_token	*current;
@@ -102,13 +103,13 @@ static void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	if (sig == SIGQUIT)
 	{
-		printf("Ctrl + \\.\n");
+		// printf("Ctrl + \\.\n");
 	}
 	if (sig == SIGINT)
 	{
 		printf("\n");
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
 	}
 	(void)context;
