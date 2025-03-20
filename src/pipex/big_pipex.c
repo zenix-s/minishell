@@ -24,7 +24,7 @@ static t_token	*next_pipex(t_token *list_token)
 	return (l_aux);
 }
 
-static void	last_child(int fd[2], t_shell *shell, t_token *list_aux)
+static pid_t	last_child(int fd[2], t_shell *shell, t_token *list_aux)
 {
 	pid_t		pidf;
 	t_env_token	*aux;
@@ -51,10 +51,11 @@ static void	last_child(int fd[2], t_shell *shell, t_token *list_aux)
 				ft_free(line_arraid);
 			}
 		}
+		exit (0);
 	}
 	shell->execute = clean_end_state;
-	waitpid(pidf, NULL, 0);
 	close(fd[WRITE_END]);
+	return (pidf);
 }
 
 static int	contpipex(t_token *list_aux)
@@ -73,31 +74,37 @@ static int	contpipex(t_token *list_aux)
 	return (size);
 }
 
-static void	process(int fdp[2], t_shell *shell, t_token *list_token, int size)
+static pid_t	*process(int fdp[2], t_shell *shell, int size)
 {
 	int		fd[2];
-	t_token	*list_aux;
+	t_token	*token_aux;
 	int		aux[2];
+	int		i;
+	pid_t	*pids;
 
+	pids = ft_calloc(size + 1, sizeof(pid_t));
+	i = 0;
+	token_aux = next_pipex(shell->tokens);
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-	middle_child(fdp, fd, list_token, shell);
-	list_aux = list_token;
-	while (size >= 0)
+	pids[i++] = middle_child(fdp, fd, token_aux, shell);
+	size --;
+	while (size > 0)
 	{
-		list_aux = next_pipex(list_aux);
+		token_aux = next_pipex(token_aux);
 		aux[0] = fd[0];
 		aux[1] = fd[1];
 		if (size == 1)
-			last_child(fd, shell, list_aux);
-		else if (size > 1)
+			pids[i++] = last_child(fd, shell, token_aux);
+		else
 		{
 			if (pipe(fd) == -1)
 				ft_error("pipe_more");
-			middle_child(aux, fd, list_aux, shell);
+			pids[i++] = middle_child(aux, fd, token_aux, shell);
 		}
 		size--;
 	}
+	return(pids);
 }
 
 void	big_pipex(t_shell *shell)
@@ -105,9 +112,12 @@ void	big_pipex(t_shell *shell)
 	int		fd[2];
 	pid_t	pid;
 	char	**line_arraid;
-	t_token	*l_aux;
+	t_token	*token_aux;
+	int		status;
+	pid_t	*child_pids;
+	int		i;
+	int		num_pipes;
 
-	l_aux = shell->tokens;
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
 		ft_error("No command found");
@@ -117,8 +127,16 @@ void	big_pipex(t_shell *shell)
 	f_child(fd, pid, line_arraid, shell);
 	ft_free(line_arraid);
 	close(fd[WRITE_END]);
-	l_aux = next_pipex(l_aux);
-	process(fd, shell, l_aux, contpipex(l_aux));
-	waitpid(pid, NULL, 0);
+	token_aux = shell->tokens;
+	num_pipes = contpipex(token_aux);
+	child_pids = process(fd, shell, contpipex(token_aux));
+	waitpid(pid, &status, 0);
+	i = 0;
+	while (i < num_pipes)
+	{
+		waitpid(child_pids[i], &status, 0);
+		i++;
+	}
+	free(child_pids);
 	close(fd[READ_END]);
 }

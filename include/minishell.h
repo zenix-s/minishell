@@ -97,7 +97,6 @@ typedef struct s_shell
 	char				*read;
 	char				*write;
 	int					mode;
-	// char				*here;
 	// Error handling
 	char				*error_message;
 	char				*unexpected_token;
@@ -142,7 +141,7 @@ u_int64_t				is_string_pipe(const char *str);
 uint64_t				is_special_token(const char *str);
 
 //----------------------------------------------------------------------------//
-//                                Estate
+//                                state
 //----------------------------------------------------------------------------//
 void					clean_end_state(t_shell *shell);
 void					error_state(int mod);
@@ -177,6 +176,7 @@ void					her_d(char **line_arraid);
 void					stnd_out(t_token *env_aux, t_shell *aux, int mode);
 int						stnd_in(t_token *env_aux, t_shell *aux, int mode);
 int						new_stnd_in(t_shell *shell);
+void					new_new_stdn_in(t_shell *shell, t_token *aux_token);
 int	finish_redirect(t_shell *shell, t_token *aux_shell); //
 void					read_alone(t_shell *shell, char **cmd);
 void					write_alone(t_shell *shell, char **cmd);
@@ -216,10 +216,12 @@ void					f_child(int *fd, int pid1, char **l_arraid,
 							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_shell *shell);
-void					middle_child(int fdp[2], int fd[2], t_token *list_aux,
-							t_shell *shell);
+pid_t					middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell);
 void					change_fd(int fdp[2], int fd[2]);
 char					**postline(t_shell *shell);
+//---------------------waitpid-------------------------------------//
+int						cont_pids(t_shell *shell);
+
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);
@@ -232,7 +234,7 @@ void					print_env(t_env_token *list_env);
 
 // library
 t_token					*ft_lstnew(void *content);
-int						ft_strcmp(const char *s1, const char *s2);
+int						newcmp(const char *s1, const char *s2);
 void					*ft_calloc(size_t count, size_t size);
 void					ft_bzero(void *s, unsigned int n);
 t_token					*ft_lstlast(t_token *lst);

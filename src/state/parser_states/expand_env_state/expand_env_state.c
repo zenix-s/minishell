@@ -39,7 +39,7 @@ static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 		t_token *token)
 {
-	if (ft_strcmp(st->var_name, "?") == 0)
+	if (newcmp(st->var_name, "?") == 0)
 		return ("1");
 	st->value = ft_strdup(get_env_value(env, st->var_name));
 	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value

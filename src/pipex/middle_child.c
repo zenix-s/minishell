@@ -10,7 +10,7 @@ void	change_fd(int fdp[2], int fd[2])
 	close(fd[1]);
 }
 
-void	middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell)
+pid_t	middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell)
 {
 	pid_t		pid;
 	t_env_token	*aux;
@@ -34,11 +34,14 @@ void	middle_child(int fdp[2], int fd[2], t_token *list_aux, t_shell *shell)
 					exe_all(l_arraid, aux);
 				exit(0);
 			}
+			else
+				exit (0);
 		}
+		exit(0);
 	}
 	shell->execute = clean_end_state;
 	close(fdp[READ_END]);
 	close(fd[WRITE_END]);
-	waitpid(pid, NULL, 0);
 	ft_free(l_arraid);
+	return (pid);
 }

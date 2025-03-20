@@ -1,14 +1,3 @@
-TO DO 
-
--pipex para las redirecciones que esta medio hecho
--redirecciones
-
-
--borrar comentarios que no he borrado por pena de use_echo
-
-
-
-
 
 # minishell
 
@@ -67,11 +56,8 @@ TODO
 ----> union de gran pipex con redirecciones
 
 ----> dejar las redirecciones bien del todo... 
-			---> si haces ls < archivo que no existe. da leaks
-			
-			---> en caasos como cat << aaa   . este ultimo aaa se queda como parte de lo que tiene que repetir, eso esta mal. pues no tendria que aparecer
-			---> cuando se hace << aaa tiene que salir por pantalla normal no por archivo aleatorio
+			sleep 3 <asd | ls
+			-->cuando <asd no existe no cierra el hilo
+		
 
-			---> tecnicamente en << pa se tiene que añadir todo el comando al historial pero no se como hacerlo 
 
-			----> grep e < to | > te funciona y da leaks...

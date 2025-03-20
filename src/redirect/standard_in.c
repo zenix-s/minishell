@@ -37,7 +37,7 @@ int	stnd_in(t_token *env_aux, t_shell *aux, int mode)
 	close(stdin_copy);
 	close(file);
 	ft_free(cmd);
-	return (10);
+	return (0);
 }
 
 int	new_stnd_in(t_shell *shell)
@@ -64,3 +64,15 @@ int	new_stnd_in(t_shell *shell)
 	ft_free(cmd);
 	return (0);
 }
+
+// new_new_stdn_in(t_shell *shell, t_token *aux_token)
+// {
+// 	char	*name;
+// 	int		file_in;
+// 	int		stdin_copy;
+
+// 	name = aux_tokens->next->content;
+// 	file_in = open(name, O_RDONLY);
+// 	if (file_in == -1)
+// 		perror("no open");
+// }

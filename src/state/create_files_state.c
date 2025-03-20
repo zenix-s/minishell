@@ -5,11 +5,11 @@ static void	segurity_loop(t_token *env_aux, int fd)
 {
 	while (env_aux->type != PIPE)
 	{
-		if (ft_strcmp(env_aux->content, ">") == 0)
+		if (newcmp(env_aux->content, ">") == 0)
 			fd = open(env_aux->next->content, O_RDONLY);
-		else if (ft_strcmp(env_aux->content, ">") == 0)
+		else if (newcmp(env_aux->content, ">") == 0)
 			fd = open(env_aux->next->content, O_CREAT, 0644);
-		else if (ft_strcmp(env_aux->content, ">>") == 0)
+		else if (newcmp(env_aux->content, ">>") == 0)
 			fd = open(env_aux->next->content, O_CREAT, 0644);
 		if (fd == -1)
 		{

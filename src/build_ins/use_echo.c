@@ -36,7 +36,7 @@ void	use_echo(char **line_arraid)
 	bool = 0;
 	if (!line_arraid[1])
 		return ;
-	if (ft_strcmp(cut, "-") == 0)
+	if (newcmp(cut, "-") == 0)
 	{
 		arg = 2;
 		bool = 1;

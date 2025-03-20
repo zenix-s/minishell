@@ -17,7 +17,6 @@ void	read_alone(t_shell *shell, char **cmd)
 	int		file_in;
 	int		stdin_copy;
 
-	printf("paso por read_alone\n");
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
 		perror("no open");
@@ -44,7 +43,10 @@ void	write_alone(t_shell *shell, char **cmd)
 		ft_error("Error abriendo el archivo de salida");
 	stdout_copy = dup(STDOUT_FILENO);
 	if (dup2(file_out, STDOUT_FILENO) == -1)
-		ft_error("Error redirigiendo la salida estándar");
+	{
+		printf("Error redirigiendo la salida estándar\n");
+		return ; 
+	}
 	if (cmd != NULL && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdout_copy, STDOUT_FILENO);
@@ -68,7 +70,6 @@ void	full_redirect(t_shell *shell, char **cmd)
 	int		stdin_copy;
 	int		stdout_copy;
 
-	printf("patata\n");
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
 		return ;
@@ -96,7 +97,6 @@ void	redirect_state(t_shell *shell)
 	char	**cmd;
 	t_token	*aux_token;
 
-	printf("%s\n", shell->tokens->content);
 	aux_token = shell->tokens;
 	shell->execute = clean_end_state;
 	if (prepare(shell, aux_token) == -1)

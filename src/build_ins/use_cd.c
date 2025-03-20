@@ -16,7 +16,7 @@ static int	create_new_rute(char *rute, char *step)
 {
 	char	*aux;
 
-	if (strcmp(step, "..") == 0)
+	if (newcmp(step, "..") == 0)
 		rute = ft_substr(rute, 0, ft_strrint(rute, '/'));
 	else
 	{
@@ -90,7 +90,7 @@ static void	go_home(t_env_token *list_env, t_shell *shell)
 	home = NULL;
 	while (l_aux)
 	{
-		if (ft_strcmp(l_aux->key, "HOME") == 0)
+		if (newcmp(l_aux->key, "HOME") == 0)
 			home = l_aux->value;
 		l_aux = l_aux->next;
 	}

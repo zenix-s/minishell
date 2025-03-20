@@ -16,7 +16,7 @@ int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
 {
 	int	file;
 
-	if (ft_strcmp(aux_token->content, s) == 0)
+	if (newcmp(aux_token->content, s) == 0)
 	{
 		file = open(aux_token->next->content, O_RDONLY);
 		if (file == -1)
@@ -35,10 +35,10 @@ int	ft_write_open(t_token *aux_token, t_shell *shell, char *name)
 	int		file;
 
 	file = 0;
-	if (ft_strcmp(aux_token->content, ">") == 0)
+	if (newcmp(aux_token->content, ">") == 0)
 		file = ft_open(shell, file, name, 1);
-	else if (ft_strcmp(aux_token->content, ">>") == 0)
-		file = ft_open(shell, file, name, 1);
+	else if (newcmp(aux_token->content, ">>") == 0)
+		file = ft_open(shell, file, name, 2);
 	if (file == -1)
 	{
 		redirect_error(aux_token->next, 1);
@@ -67,14 +67,13 @@ int	prepare(t_shell *shell, t_token *x)
 	{
 		if (x->type == REDIRECT)
 		{
-			if (ft_strcmp(x->content, ">") == 0 || ft_strcmp(x->content, ">>"))
+			if (newcmp(x->content, ">") == 0 || newcmp(x->content, ">>") == 0)
 				aux = ft_write_open(x, shell, x->next->content);
-			else if (ft_strcmp(x->content, "<") == 0)
+			else if (newcmp(x->content, "<") == 0)
 				aux = ft_read_open(x, shell, "<");
 			if (aux == -1)
 				return (aux);
 			mode++;
-			x = x->next;
 		}
 		x = x->next;
 	}
