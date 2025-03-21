@@ -12,8 +12,11 @@
 
 #include "../include/minishell.h"
 #include "../include/parser.h"
+#include <readline/readline.h>
 #include <stdio.h>
 #include <string.h>
+#include <termios.h>
+
 
 void	print_tokens(t_token *tokens)
 {
@@ -102,29 +105,38 @@ static void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	if (sig == SIGQUIT)
 	{
-		printf("Ctrl + \\.\n");
+		printf("%s%s", "minishell: ", rl_line_buffer);
+		rl_redisplay();
 	}
 	if (sig == SIGINT)
 	{
 		printf("\n");
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
 	}
 	(void)context;
 	(void)info;
 }
 
+void	setup_term(void)
+{
+	struct termios	t;
+
+	tcgetattr(0, &t);
+	t.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &t);
+}
+
 static void	init_sigaction(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_sigaction = &signal_handler;
-	sigemptyset(&sa.sa_mask);
-	sigaddset(&sa.sa_mask, SIGQUIT);
-	sigaddset(&sa.sa_mask, SIGINT);
-	sigaction(SIGQUIT, &sa, 0);
-	sigaction(SIGINT, &sa, 0);
+	setup_term();
+	sa.sa_flags = SA_SIGINFO | SA_RESTART;
+	sa.sa_sigaction = signal_handler;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 int	main(int argc, char *argv[], char **env)

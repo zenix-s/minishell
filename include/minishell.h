@@ -140,6 +140,8 @@ u_int64_t				is_string_redirect(const char *str);
 u_int64_t				is_string_pipe(const char *str);
 uint64_t				is_special_token(const char *str);
 
+char	*remove_outer_quotes(char *str);
+
 //----------------------------------------------------------------------------//
 //                                state
 //----------------------------------------------------------------------------//
