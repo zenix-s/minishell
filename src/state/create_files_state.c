@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_files_state.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 22:18:16 by lortega-          #+#    #+#             */
+/*   Updated: 2025/02/25 22:18:22 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -18,10 +29,9 @@ static void	segurity_loop(t_token *env_aux, int fd)
 		}
 		else
 			env_aux = env_aux->next;
-		close (fd);
+		close(fd);
 	}
 }
-
 
 void	create_files_state(t_shell *shell)
 {

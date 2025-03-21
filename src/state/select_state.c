@@ -15,10 +15,10 @@
 #include <string.h>
 
 /*
-*used to parse a command line and execute the corresponding built-in function.
-*"echo", "pwd", "export", "unset", "env", and "exit" commands.
-*it attempts to execute the command as an external program.
-*/
+ *used to parse a command line and execute the corresponding built-in function.
+ *"echo", "pwd", "export", "unset", "env", and "exit" commands.
+ *it attempts to execute the command as an external program.
+ */
 
 static int	ft_all_spaces(char *world)
 {
@@ -36,9 +36,10 @@ static int	ft_all_spaces(char *world)
 
 void	select_all(t_shell *shell)
 {
-	t_shell	*aux;
-	char	**line_arraid;
-	char	*act_command;
+	const char	*split[] = {" ", NULL};
+	t_shell		*aux;
+	char		**line_arraid;
+	char		*act_command;
 
 	if (shell->tokens == NULL || ft_all_spaces(shell->tokens->content) == -1)
 	{
@@ -46,15 +47,12 @@ void	select_all(t_shell *shell)
 		return ;
 	}
 	aux = shell;
-	const char *split[] = {" ", NULL};
-	// line_arraid = ft_split(aux->tokens->content, ' ');
 	line_arraid = special_split(aux->tokens->content, split, NULL);
 	act_command = remove_outer_quotes(line_arraid[0]);
 	if (s_build(aux, line_arraid) == 5)
 	{
 		free(line_arraid[0]);
 		line_arraid[0] = ft_strdup(act_command);
-
 		execute_cmd(line_arraid, shell->env);
 	}
 	if (line_arraid)

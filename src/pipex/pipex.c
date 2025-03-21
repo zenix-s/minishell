@@ -62,7 +62,7 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
-		if (prepare (shell, aux_token) == -1)
+		if (prepare(shell, aux_token) == -1)
 			return ;
 		close(fd[WRITE_END]);
 		dup2(fd[READ_END], STDIN_FILENO);
@@ -91,8 +91,8 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
-		if (prepare (shell, aux_token) == -1)
-			exit (1) ;
+		if (prepare(shell, aux_token) == -1)
+			exit(1);
 		close(fd[READ_END]);
 		dup2(fd[WRITE_END], STDOUT_FILENO);
 		if (pipex_redirect(shell, aux_token) == 0)
@@ -104,7 +104,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 			}
 		}
 		close(fd[WRITE_END]);
-		exit (0);
+		exit(0);
 	}
 	shell->execute = clean_end_state;
 }
@@ -115,11 +115,11 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 */
 void	pipex(t_shell *shell)
 {
-	int			fd[2];
-	pid_t		pid1;
-	pid_t		pid2;
-	char		**line_arraid;
-	int			status;
+	int		fd[2];
+	pid_t	pid1;
+	pid_t	pid2;
+	char	**line_arraid;
+	int		status;
 
 	status = 0;
 	line_arraid = ft_split(shell->tokens->content, ' ');
@@ -138,5 +138,5 @@ void	pipex(t_shell *shell)
 	close(fd[WRITE_END]);
 	waitpid(pid1, &status, 0);
 	waitpid(pid2, &status, 0);
-	//con este estatus hay que modificar las señales
+	// con este estatus hay que modificar las señales
 }

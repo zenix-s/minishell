@@ -23,7 +23,6 @@ char	*shell_level(char *var)
 	level = ft_split(var, '=');
 	number = ft_atoi(level[1]);
 	number++;
-
 	aux_n = ft_itoa(number);
 	foo = ft_strjoin(level[0], "=");
 	result = ft_strjoin(foo, aux_n);
@@ -32,7 +31,8 @@ char	*shell_level(char *var)
 	ft_free(level);
 	return (result);
 }
-//no hay que liberar env[count] nuev?
+
+// no hay que liberar env[count] nuev?
 t_bool	create_list_env(char **env, t_env_token **list_env)
 {
 	t_env_token	*new_token;

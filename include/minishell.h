@@ -125,7 +125,6 @@ void					parse_line(t_shell *shell);
 int						get_quote_type(t_quote quote_state, char c);
 void					print_tokens(t_token *tokens);
 void					free_tokens(t_token *tokens);
-char					*echo_parser(char *line);
 
 void					main_loop(t_shell *shell);
 void					use_build(char *line, t_token *list_env);

@@ -17,7 +17,7 @@ char	*get_first_word(const char *content)
 {
 	uint64_t	start;
 	uint64_t	end;
-	int		quote;
+	int			quote;
 
 	start = 0;
 	start = 0;
@@ -58,11 +58,8 @@ t_built_in_type	get_built_in_type(const char *str)
 	return (-1);
 }
 
-static void	set_token_type(
-	t_token *token,
-	t_cmd_type type,
-	t_built_in_type built_in
-)
+static void	set_token_type(t_token *token, t_cmd_type type,
+		t_built_in_type built_in)
 {
 	token->type = type;
 	token->built_in = built_in;

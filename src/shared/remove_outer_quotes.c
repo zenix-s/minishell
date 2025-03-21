@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_outer_quotes.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/26 11:13:00 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:42 by serferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -32,19 +43,17 @@ static int	get_quote_amount(char *str)
 char	*remove_outer_quotes(char *str)
 {
 	char	*new_str;
-	int		amount;
 	int		i;
 	int		j;
 	t_quote	quote;
 
-	amount = get_quote_amount(str);
-	new_str = malloc(strlen(str) - (amount * 2) + 1);
+	new_str = malloc(strlen(str) - (get_quote_amount(str) * 2) + 1);
 	if (!new_str)
 		return (NULL);
-	i = 0;
+	i = -1;
 	j = 0;
 	quote = NONE;
-	while (str[i])
+	while (str[++i])
 	{
 		if ((quote == NONE && get_quote_type(quote, str[i]) != NONE)
 			|| (quote != NONE && get_quote_type(quote, str[i]) == NONE))
@@ -54,7 +63,6 @@ char	*remove_outer_quotes(char *str)
 			new_str[j] = str[i];
 			j++;
 		}
-		i++;
 	}
 	new_str[j] = '\0';
 	return (new_str);

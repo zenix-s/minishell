@@ -14,8 +14,8 @@
 
 void	read_alone(t_shell *shell, char **cmd)
 {
-	int		file_in;
-	int		stdin_copy;
+	int	file_in;
+	int	stdin_copy;
 
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
@@ -32,8 +32,8 @@ void	read_alone(t_shell *shell, char **cmd)
 
 void	write_alone(t_shell *shell, char **cmd)
 {
-	int		file_out;
-	int		stdout_copy;
+	int	file_out;
+	int	stdout_copy;
 
 	if (shell->mode == 1)
 		file_out = open(shell->write, O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -45,7 +45,7 @@ void	write_alone(t_shell *shell, char **cmd)
 	if (dup2(file_out, STDOUT_FILENO) == -1)
 	{
 		printf("Error redirigiendo la salida estándar\n");
-		return ; 
+		return ;
 	}
 	if (cmd != NULL && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
@@ -65,10 +65,10 @@ int	new_open(t_shell *shell)
 
 void	full_redirect(t_shell *shell, char **cmd)
 {
-	int		file_in;
-	int		file_out;
-	int		stdin_copy;
-	int		stdout_copy;
+	int	file_in;
+	int	file_out;
+	int	stdin_copy;
+	int	stdout_copy;
 
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
