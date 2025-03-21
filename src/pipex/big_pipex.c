@@ -80,13 +80,18 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 	t_token	*token_aux;
 	int		aux[2];
 	int		i;
+	int		use_fd[4];
 
 
 	i = 0;
 	token_aux = next_pipex(shell->tokens);
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-	pids[i] = middle_child(fdp, fd, token_aux, shell);
+	use_fd[0] = fdp[0];
+	use_fd[1] = fdp[1];
+	use_fd[2] = fd[0];
+	use_fd[3] = fd[1];
+	pids[i] = middle_child(use_fd, token_aux, shell);
 	i++;
 	size --;
 	while (size > 0)
@@ -100,7 +105,11 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 		{
 			if (pipe(fd) == -1)
 				ft_error("pipe_more");
-			pids[i++] = middle_child(aux, fd, token_aux, shell);
+			use_fd[0] = aux[0];
+			use_fd[1] = aux[1];
+			use_fd[2] = fd[0];
+			use_fd[3] = fd[1];
+			pids[i++] = middle_child(use_fd, token_aux, shell);
 		}
 		size--;
 	}
