@@ -41,4 +41,3 @@ void	ft_error(char *text)
 	perror(text);
 	exit(-1);
 }
-
