@@ -74,20 +74,20 @@ static int	contpipex(t_token *list_aux)
 	return (size);
 }
 
-static pid_t	*process(int fdp[2], t_shell *shell, int size)
+static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 {
 	int		fd[2];
 	t_token	*token_aux;
 	int		aux[2];
 	int		i;
-	pid_t	*pids;
 
-	pids = ft_calloc(size + 1, sizeof(pid_t));
+
 	i = 0;
 	token_aux = next_pipex(shell->tokens);
 	if (pipe(fd) == -1)
 		ft_error("pipe");
-	pids[i++] = middle_child(fdp, fd, token_aux, shell);
+	pids[i] = middle_child(fdp, fd, token_aux, shell);
+	i++;
 	size --;
 	while (size > 0)
 	{
@@ -104,18 +104,18 @@ static pid_t	*process(int fdp[2], t_shell *shell, int size)
 		}
 		size--;
 	}
-	return(pids);
 }
 
 void	big_pipex(t_shell *shell)
 {
 	int		fd[2];
 	pid_t	pid;
+
 	char	**line_arraid;
 	t_token	*token_aux;
 	int		status;
 	pid_t	*child_pids;
-	int		i;
+	int		size;
 	int		num_pipes;
 
 	line_arraid = ft_split(shell->tokens->content, ' ');
@@ -129,13 +129,15 @@ void	big_pipex(t_shell *shell)
 	close(fd[WRITE_END]);
 	token_aux = shell->tokens;
 	num_pipes = contpipex(token_aux);
-	child_pids = process(fd, shell, contpipex(token_aux));
+	size = contpipex(token_aux);
+	child_pids = ft_calloc(size + 1, sizeof(pid_t));
+	process(fd, shell, size, child_pids);
 	waitpid(pid, &status, 0);
-	i = 0;
-	while (i < num_pipes)
+	size = 0;
+	while (size < num_pipes)
 	{
-		waitpid(child_pids[i], &status, 0);
-		i++;
+		waitpid(child_pids[size], &status, 0);
+		size++;
 	}
 	free(child_pids);
 	close(fd[READ_END]);
