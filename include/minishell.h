@@ -218,7 +218,7 @@ void					f_child(int *fd, int pid1, char **l_arraid,
 							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_shell *shell);
-pid_t					middle_child(int use_fd[4], t_token *list_aux, t_shell *shell);
+void					middle_child(int use_fd[4], t_token *list_aux, t_shell *shell, pid_t child_pids);
 void					change_fd(int use_fd[4]);
 char					**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//

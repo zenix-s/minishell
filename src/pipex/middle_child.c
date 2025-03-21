@@ -10,18 +10,17 @@ void	change_fd(int use_fd[2])
 	close(use_fd[3]);
 }
 //int fdp[2], int fd[2]
-pid_t	middle_child(int use_fd[4], t_token *list_aux, t_shell *shell)
+void	middle_child(int use_fd[4], t_token *list_aux, t_shell *shell, pid_t child_pids)
 {
-	pid_t		pid;
 	t_env_token	*aux;
 	char		**l_arraid;
 
 	aux = shell->env;
 	l_arraid = ft_split(list_aux->content, ' ');
-	pid = fork();
-	if (pid < 0)
+	child_pids = fork();
+	if (child_pids < 0)
 		ft_error("fork");
-	if (pid == 0)
+	if (child_pids == 0)
 	{
 		if (prepare (shell, list_aux) == -1)
 			ft_error("dont prepare");
@@ -43,5 +42,4 @@ pid_t	middle_child(int use_fd[4], t_token *list_aux, t_shell *shell)
 	close(use_fd[READ_END]);
 	close(use_fd[3]);
 	ft_free(l_arraid);
-	return (pid);
 }

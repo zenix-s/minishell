@@ -24,17 +24,16 @@ static t_token	*next_pipex(t_token *list_token)
 	return (l_aux);
 }
 
-static pid_t	last_child(int fd[2], t_shell *shell, t_token *list_aux)
+static void	last_child(int fd[2], t_shell *shell, t_token *list_aux, pid_t child_pids)
 {
-	pid_t		pidf;
 	t_env_token	*aux;
 	char		**line_arraid;
 
-	pidf = fork();
-	aux = shell->env;
-	if (pidf < 0)
+	child_pids = fork();
+	if (child_pids < 0)
 		ft_error("fork");
-	if (pidf == 0)
+	aux = shell->env;
+	if (child_pids == 0)
 	{
 		dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
@@ -55,7 +54,6 @@ static pid_t	last_child(int fd[2], t_shell *shell, t_token *list_aux)
 	}
 	shell->execute = clean_end_state;
 	close(fd[WRITE_END]);
-	return (pidf);
 }
 
 static int	contpipex(t_token *list_aux)
@@ -74,7 +72,7 @@ static int	contpipex(t_token *list_aux)
 	return (size);
 }
 
-static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
+static void	process(int fdp[2], t_shell *shell, int size, pid_t *child_pids)
 {
 	int		fd[2];
 	t_token	*token_aux;
@@ -83,7 +81,7 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 	int		use_fd[4];
 
 
-	i = 0;
+	i = 2;
 	token_aux = next_pipex(shell->tokens);
 	if (pipe(fd) == -1)
 		ft_error("pipe");
@@ -91,8 +89,7 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 	use_fd[1] = fdp[1];
 	use_fd[2] = fd[0];
 	use_fd[3] = fd[1];
-	pids[i] = middle_child(use_fd, token_aux, shell);
-	i++;
+	middle_child(use_fd, token_aux, shell, child_pids[1]);
 	size --;
 	while (size > 0)
 	{
@@ -100,7 +97,7 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 		aux[0] = fd[0];
 		aux[1] = fd[1];
 		if (size == 1)
-			pids[i++] = last_child(fd, shell, token_aux);
+			last_child(fd, shell, token_aux, child_pids[i]);
 		else
 		{
 			if (pipe(fd) == -1)
@@ -109,41 +106,37 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *pids)
 			use_fd[1] = aux[1];
 			use_fd[2] = fd[0];
 			use_fd[3] = fd[1];
-			pids[i++] = middle_child(use_fd, token_aux, shell);
+			middle_child(use_fd, token_aux, shell, child_pids[i]);
 		}
 		size--;
+		i++;
 	}
 }
 
 void	big_pipex(t_shell *shell)
 {
 	int		fd[2];
-	pid_t	pid;
-
 	char	**line_arraid;
 	t_token	*token_aux;
 	int		status;
 	pid_t	*child_pids;
 	int		size;
-	int		num_pipes;
 
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
 		ft_error("No command found");
 	if (pipe(fd) == -1)
 		ft_error("pipe:");
-	pid = fork();
-	f_child(fd, pid, line_arraid, shell);
-	ft_free(line_arraid);
-	close(fd[WRITE_END]);
 	token_aux = shell->tokens;
-	num_pipes = contpipex(token_aux);
 	size = contpipex(token_aux);
 	child_pids = ft_calloc(size + 1, sizeof(pid_t));
+	child_pids[0] = fork();
+	f_child(fd, child_pids[0], line_arraid, shell);
+	ft_free(line_arraid);
+	close(fd[WRITE_END]);
 	process(fd, shell, size, child_pids);
-	waitpid(pid, &status, 0);
 	size = 0;
-	while (size < num_pipes)
+	while (size < contpipex(token_aux) + 1)
 	{
 		waitpid(child_pids[size], &status, 0);
 		size++;
