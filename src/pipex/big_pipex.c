@@ -35,7 +35,10 @@ static void	last_child(int fd[2], t_shell *shell, t_token *list_aux, pid_t child
 	aux = shell->env;
 	if (child_pids == 0)
 	{
-		dup2(fd[READ_END], STDIN_FILENO);
+		line_arraid = ft_split(list_aux->content, ' ');
+//		printf ("%s\n", line_arraid[0]);
+		if (newcmp(line_arraid[0], "ls") != 0)
+			dup2(fd[READ_END], STDIN_FILENO);
 		close(fd[READ_END]);
 		close(fd[WRITE_END]);
 		if (prepare (shell, list_aux) == -1)
@@ -44,7 +47,6 @@ static void	last_child(int fd[2], t_shell *shell, t_token *list_aux, pid_t child
 		{
 			if (list_aux->type == BUILT_IN || list_aux->type == EXE)
 			{
-				line_arraid = ft_split(list_aux->content, ' ');
 				if (s_build(shell, line_arraid) == 5)
 					exe_all(line_arraid, aux);
 				ft_free(line_arraid);
@@ -111,6 +113,7 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *child_pids)
 		size--;
 		i++;
 	}
+	close(fd[READ_END]);
 }
 
 void	big_pipex(t_shell *shell)
@@ -118,9 +121,9 @@ void	big_pipex(t_shell *shell)
 	int		fd[2];
 	char	**line_arraid;
 	t_token	*token_aux;
-	int		status;
 	pid_t	*child_pids;
 	int		size;
+	int		status;
 
 	line_arraid = ft_split(shell->tokens->content, ' ');
 	if (!line_arraid || !line_arraid[0])
@@ -135,7 +138,8 @@ void	big_pipex(t_shell *shell)
 	ft_free(line_arraid);
 	close(fd[WRITE_END]);
 	process(fd, shell, size, child_pids);
-	size = 0;
+	close(fd[READ_END]);
+	size = 0;	
 	while (size < contpipex(token_aux) + 1)
 	{
 		waitpid(child_pids[size], &status, 0);

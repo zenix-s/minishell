@@ -9,7 +9,6 @@ void	change_fd(int use_fd[2])
 	close(use_fd[2]);
 	close(use_fd[3]);
 }
-//int fdp[2], int fd[2]
 void	middle_child(int use_fd[4], t_token *list_aux, t_shell *shell, pid_t child_pids)
 {
 	t_env_token	*aux;
@@ -26,15 +25,14 @@ void	middle_child(int use_fd[4], t_token *list_aux, t_shell *shell, pid_t child_
 			ft_error("dont prepare");
 		if (pipex_redirect(shell, list_aux) == 0)
 		{
+			if (newcmp(l_arraid[0], "ls") != 0)
+				change_fd(use_fd);
 			if (list_aux->type == BUILT_IN || list_aux->type == EXE)
 			{
-				change_fd(use_fd);
 				if (s_build(shell, l_arraid) == 5)
 					exe_all(l_arraid, aux);
 				exit(0);
 			}
-			else
-				exit (0);
 		}
 		exit(0);
 	}
