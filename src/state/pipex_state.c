@@ -14,9 +14,6 @@
 
 void	select_pipex(t_shell *shell, int mode)
 {
-	// int	x;
-
-	// x = 0;
 	prepare_in_loop(shell);
 	if (mode == 1)
 		pipex(shell);
