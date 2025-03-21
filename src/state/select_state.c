@@ -69,13 +69,13 @@ int	s_build(t_shell *shell, char **line_arraid)
 	if (newcmp(line_arraid[0], "pwd") == 0)
 		use_pwd();
 	else if (newcmp(line_arraid[0], "env") == 0)
-		print_env(shell->env);
+		print_env(shell->env, FALSE);
 	else if (newcmp(line_arraid[0], "echo") == 0)
 		use_echo(line_arraid);
 	else if (newcmp(line_arraid[0], "export") == 0)
 	{
 		if (!line_arraid[1])
-			print_env(shell->env);
+			print_env(shell->env, TRUE);
 		else
 			use_export(&shell, line_arraid);
 	}

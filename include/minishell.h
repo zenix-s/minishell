@@ -232,7 +232,7 @@ t_bool					env_list_add_back(t_env_token **head,
 char					**split_env(char *env);
 t_env_token				*new_env_token(char *content);
 t_bool					create_list_env(char **env, t_env_token **list_env);
-void					print_env(t_env_token *list_env);
+void					print_env(t_env_token *list_env, t_bool is_export);
 
 // library
 t_token					*ft_lstnew(void *content);
