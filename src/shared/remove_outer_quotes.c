@@ -47,7 +47,7 @@ char	*remove_outer_quotes(char *str)
 	int		j;
 	t_quote	quote;
 
-	new_str = malloc(strlen(str) - (get_quote_amount(str) * 2) + 1);
+	new_str = malloc(strlen(str) - get_quote_amount(str) + 1);
 	if (!new_str)
 		return (NULL);
 	i = -1;
