@@ -229,9 +229,8 @@ void					f_child(int *fd, int pid1, char **l_arraid,
 							t_shell *shell);
 void					s_child(int *fd, int pid2, char **l_arraid,
 							t_shell *shell);
-pid_t					middle_child(int fdp[2], int fd[2], t_token *list_aux,
-							t_shell *shell);
-void					change_fd(int fdp[2], int fd[2]);
+void					middle_child(int use_fd[4], t_token *list_aux, t_shell *shell, pid_t child_pids);
+void					change_fd(int use_fd[4]);
 char					**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int						cont_pids(t_shell *shell);
@@ -243,7 +242,7 @@ t_bool					env_list_add_back(t_env_token **head,
 char					**split_env(char *env);
 t_env_token				*new_env_token(char *content);
 t_bool					create_list_env(char **env, t_env_token **list_env);
-void					print_env(t_env_token *list_env);
+void					print_env(t_env_token *list_env, t_bool is_export);
 
 // library
 t_token					*ft_lstnew(void *content);
