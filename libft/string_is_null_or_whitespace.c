@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-t_bool string_is_null_or_whitespace(const char *str)
+t_bool	string_is_null_or_whitespace(const char *str)
 {
 	while (*str)
 	{
