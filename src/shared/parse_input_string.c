@@ -1,14 +1,7 @@
 
 #include "../../include/minishell.h"
-
-// Allocate memory for result array
-char	**allocate_result_array(uint64_t token_count)
-{
-	char	**result;
-
-	result = (char **)malloc((token_count + 1) * sizeof(char *));
-	return (result);
-}
+#include <stdio.h>
+#include <stdlib.h>
 
 void	add_splitter_token(t_splitter *splitter, char *input, int64_t start,
 		int64_t len)
@@ -36,6 +29,7 @@ void	process_regular_splitter(t_splitter *splitter, char *input, int64_t i)
 {
 	if (splitter->start != -1)
 	{
+		printf(
 		add_splitter_token(splitter, input, splitter->start, i
 			- splitter->start);
 		splitter->start = -1;
@@ -100,7 +94,7 @@ char	**special_split(char *input, const char **split, const char **s_split)
 	aux = (t_splitter *)malloc(sizeof(t_splitter));
 	if (!aux)
 		return (NULL);
-	aux->result = allocate_result_array(token_count);
+	aux->result = malloc((token_count + 1) * sizeof(char *));
 	if (aux->result == NULL)
 	{
 		free(aux);

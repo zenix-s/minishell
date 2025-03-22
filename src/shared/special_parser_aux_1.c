@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-t_bool	count_tokens_not_none_quotes(t_bool *in_token, uint64_t *count,
+t_bool	count_tokens_in_quotes(t_bool *in_token, uint64_t *count,
 		uint64_t *i, t_quote quote_state)
 {
 	if (quote_state == NONE)
@@ -40,25 +40,42 @@ t_bool	count_tokens_special_split(t_bool *in_token, uint64_t *count,
 	return (TRUE);
 }
 
-void	count_tokens_regular_split_found(t_bool *in_token, uint64_t *i,
-		const uint64_t split_len)
+// void	count_tokens_regular_split_found(t_bool *in_token, uint64_t *i,
+// 		const uint64_t split_len)
+// {
+// 	if (*in_token)
+// 	{
+// 		*in_token = FALSE;
+// 	}
+// 	(*i) += split_len;
+// }
+
+// void	count_tokens_regular_split_not_found(t_bool *in_token, uint64_t *count,
+// 		uint64_t *i)
+// {
+// 	if (!*in_token)
+// 	{
+// 		*in_token = TRUE;
+// 		(*count)++;
+// 	}
+// 	(*i)++;
+// }
+//
+
+void	count_tokens_regular_split(t_bool *in_token, uint64_t *count,
+		uint64_t *i, uint64_t split_len)
 {
 	if (*in_token)
-	{
 		*in_token = FALSE;
-	}
-	(*i) += split_len;
-}
-
-void	count_tokens_regular_split_not_found(t_bool *in_token, uint64_t *count,
-		uint64_t *i)
-{
-	if (!*in_token)
+	else
 	{
 		*in_token = TRUE;
 		(*count)++;
-	}
-	(*i)++;
+	};
+	if (split_len > 0)
+		(*i) += split_len;
+	else
+		(*i)++;
 }
 
 int	count_tokens(char *input, const char **split, const char **s_split)
@@ -76,16 +93,13 @@ int	count_tokens(char *input, const char **split, const char **s_split)
 	while (input[i])
 	{
 		quote_state = get_quote_type(quote_state, input[i]);
-		if (count_tokens_not_none_quotes(&in_token, &count, &i, quote_state))
+		if (count_tokens_in_quotes(&in_token, &count, &i, quote_state))
 			continue ;
 		split_len = is_string_in_array(input + i, s_split);
 		if (count_tokens_special_split(&in_token, &count, &i, split_len))
 			continue ;
 		split_len = is_string_in_array(input + i, split);
-		if (split_len > 0)
-			count_tokens_regular_split_found(&in_token, &i, split_len);
-		else
-			count_tokens_regular_split_not_found(&in_token, &count, &i);
+		count_tokens_regular_split(&in_token, &count, &i, split_len);
 	}
 	return (count);
 }
