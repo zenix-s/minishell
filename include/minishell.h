@@ -103,6 +103,16 @@ typedef struct s_shell
 	t_bool				exit_of_failure;
 }						t_shell;
 
+typedef struct s_splitter
+{
+	char				**result;
+	uint64_t			result_idx;
+	int64_t				start;
+	t_quote				q_state;
+
+	int64_t				i;
+}						t_splitter;
+
 //----------------------------------------------------------------------------//
 //                                    SHELL
 //----------------------------------------------------------------------------//
@@ -132,6 +142,8 @@ void					head(void);
 
 void					parser_end_state(t_shell *shell);
 
+int						count_tokens(char *input, const char **split,
+							const char **s_split);
 char					**special_split(char *input, const char **split,
 							const char **s_split);
 
@@ -139,7 +151,7 @@ u_int64_t				is_string_redirect(const char *str);
 u_int64_t				is_string_pipe(const char *str);
 uint64_t				is_special_token(const char *str);
 
-char	*remove_outer_quotes(char *str);
+char					*remove_outer_quotes(char *str);
 
 //----------------------------------------------------------------------------//
 //                                state
@@ -222,7 +234,6 @@ void					change_fd(int use_fd[4]);
 char					**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int						cont_pids(t_shell *shell);
-
 
 // ENV
 char					*get_env_value(const t_env_token *env, const char *key);
