@@ -60,12 +60,14 @@ void	parse_splitter_tokens(char *input, const char **split,
 	while (input[aux->i])
 	{
 		n_q_state = get_quote_type(aux->q_state, input[aux->i]);
-		if (n_q_state != NONE)
+		if (aux->q_state == NONE && n_q_state != NONE && aux->start == -1)
+			aux->start = aux->i;
+		if (aux->q_state != NONE)
 		{
 			if (aux->start == -1)
 				aux->start = aux->i;
-			aux->q_state = n_q_state;
 			aux->i++;
+			aux->q_state = n_q_state;
 			continue ;
 		}
 		if (handle_special_split(aux, input, s_split))
@@ -75,6 +77,7 @@ void	parse_splitter_tokens(char *input, const char **split,
 		if (aux->start == -1)
 			aux->start = aux->i;
 		aux->i++;
+		aux->q_state = n_q_state;
 	}
 	finalize_token(aux, input, aux->i);
 	aux->result[aux->result_idx] = NULL;
