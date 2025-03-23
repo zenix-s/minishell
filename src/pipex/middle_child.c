@@ -1,7 +1,7 @@
 
 #include "../../include/minishell.h"
 
-void	change_fd(int use_fd[2])
+void	change_fd(int use_fd[4])
 {
 	dup2(use_fd[READ_END], STDIN_FILENO);
 	dup2(use_fd[3], STDOUT_FILENO);
