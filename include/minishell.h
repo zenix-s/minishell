@@ -52,6 +52,7 @@ void		free_env_tokens(t_env_token *env);
 void		free_shell(t_shell *shell);
 void		ft_free(char **lst);
 void		ft_error(char *texto);
+void		ft_pipe(int fd[2], char *text);
 //----------------------------------------------------------------------------//
 //                                   PARSER
 //----------------------------------------------------------------------------//
@@ -159,6 +160,7 @@ void		m_child(int use_fd[4], t_token *t_aux, t_shell *shell,
 void		change_fd(int use_fd[4]);
 int			contpipex(t_token *list_aux);
 t_token		*next_pipex(t_token *list_token);
+t_token		*prepare_next_time(t_token *token_aux, int aux[2], int fd[2]);
 void		ft_waitpid(t_token	*token_aux, pid_t *child_pids);
 char		**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//

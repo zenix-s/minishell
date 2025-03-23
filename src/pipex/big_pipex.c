@@ -26,7 +26,6 @@ static void	exe_l_child(t_shell *shell, t_token *list_aux)
 
 static void	las_child(int fd[2], t_shell *shell, t_token *list_aux, pid_t child)
 {
-
 	child = fork();
 	if (child < 0)
 		ft_error("fork");
@@ -66,24 +65,19 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *child_pids)
 
 	i = 2;
 	token_aux = next_pipex(shell->tokens);
-	if (pipe(fd) == -1)
-		ft_error("pipe");
+	ft_pipe(fd, "first pipe the middle");
 	change_use_fd(use_fd, fdp, fd);
 	m_child(use_fd, token_aux, shell, child_pids[1]);
-	size --;
 	while (size > 0)
 	{
-		token_aux = next_pipex(token_aux);
-		aux[0] = fd[0];
-		aux[1] = fd[1];
+		token_aux = prepare_next_time(token_aux, aux, fd);
 		if (size == 1)
 			las_child(fd, shell, token_aux, child_pids[i++]);
 		else
 		{
-			if (pipe(fd) == -1)
-				ft_error("pipe_more");
+			ft_pipe(fd, "pipe the middle");
 			change_use_fd(use_fd, aux, fd);
-			m_child(use_fd, token_aux, shell, child_pids[i++]);//
+			m_child(use_fd, token_aux, shell, child_pids[i++]);
 		}
 		size--;
 	}
@@ -108,9 +102,8 @@ void	big_pipex(t_shell *shell)
 	f_child(fd, child_pids[0], line_arraid, shell);
 	ft_free(line_arraid);
 	close(fd[WRITE_END]);
-	process(fd, shell, contpipex(token_aux), child_pids);
+	process(fd, shell, contpipex(token_aux) - 1, child_pids);
 	close(fd[READ_END]);
 	ft_waitpid(token_aux, child_pids);
 	free(child_pids);
-	//close(fd[READ_END]);
 }

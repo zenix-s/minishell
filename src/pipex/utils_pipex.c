@@ -39,3 +39,11 @@ int	contpipex(t_token *list_aux)
 	}
 	return (size);
 }
+
+t_token	*prepare_next_time(t_token *token_aux, int aux[2], int fd[2])
+{
+	token_aux = next_pipex(token_aux);
+	aux[0] = fd[0];
+	aux[1] = fd[1];
+	return (token_aux);
+}

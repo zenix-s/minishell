@@ -41,3 +41,9 @@ void	ft_error(char *text)
 	perror(text);
 	exit(-1);
 }
+
+void	ft_pipe(int fd[2], char *text)
+{
+	if (pipe(fd) == -1)
+		ft_error(text);
+}
