@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   middle_child.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/23 15:48:59 by lortega-          #+#    #+#             */
+/*   Updated: 2025/03/23 15:49:04 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
@@ -9,31 +20,37 @@ void	change_fd(int use_fd[4])
 	close(use_fd[2]);
 	close(use_fd[3]);
 }
-void	middle_child(int use_fd[4], t_token *list_aux, t_shell *shell, pid_t child_pids)
+
+static void	chill(int use_fd[4], t_shell *shell, t_token *t_aux, char **arraid)
 {
 	t_env_token	*aux;
-	char		**l_arraid;
 
 	aux = shell->env;
-	l_arraid = ft_split(list_aux->content, ' ');
+	if (prepare (shell, t_aux) == -1)
+		ft_error("dont prepare");
+	if (pipex_redirect(shell, t_aux) == 0)
+	{
+		change_fd(use_fd);
+		if (t_aux->type == BUILT_IN || t_aux->type == EXE)
+		{
+			if (s_build(shell, arraid) == 5)
+				exe_all(arraid, aux);
+			exit(0);
+		}
+	}
+}
+
+void	m_child(int use_fd[4], t_token *t_aux, t_shell *shell, pid_t child_pids)
+{
+	char		**l_arraid;
+
+	l_arraid = ft_split(t_aux->content, ' ');
 	child_pids = fork();
 	if (child_pids < 0)
 		ft_error("fork");
 	if (child_pids == 0)
 	{
-		if (prepare (shell, list_aux) == -1)
-			ft_error("dont prepare");
-		if (pipex_redirect(shell, list_aux) == 0)
-		{
-			if (newcmp(l_arraid[0], "ls") != 0)
-				change_fd(use_fd);
-			if (list_aux->type == BUILT_IN || list_aux->type == EXE)
-			{
-				if (s_build(shell, l_arraid) == 5)
-					exe_all(l_arraid, aux);
-				exit(0);
-			}
-		}
+		chill(use_fd, shell, t_aux, l_arraid);
 		exit(0);
 	}
 	shell->execute = clean_end_state;
