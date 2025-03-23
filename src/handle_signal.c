@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_signal.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/11 23:43:21 by serferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	if (sig == SIGQUIT)
 	{
-		printf("%s%s", "minishell: ", rl_line_buffer);
+		rl_on_new_line();
 		rl_redisplay();
 	}
 	if (sig == SIGINT)

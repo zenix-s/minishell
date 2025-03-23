@@ -1,12 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   readline_state.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/11 23:43:21 by serferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
 
-
 int	has_unclosed_quotes(const char *line)
 {
 	size_t	i;
-	int	quote_state;
+	int		quote_state;
 
 	i = 0;
 	quote_state = NONE;
@@ -42,7 +52,7 @@ int	manage_unclosed_quotes(char **line)
 	return (1);
 }
 
-void readline_state(t_shell *shell)
+void	readline_state(t_shell *shell)
 {
 	shell->input = readline("minishell: ");
 	if (!shell->input)

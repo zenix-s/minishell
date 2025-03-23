@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
 
 void	finalize_token(t_splitter *splitter, char *input, int64_t end)
 {
@@ -64,8 +65,6 @@ void	parse_splitter_tokens(char *input, const char **split,
 			aux->start = aux->i;
 		if (aux->q_state != NONE)
 		{
-			if (aux->start == -1)
-				aux->start = aux->i;
 			aux->i++;
 			aux->q_state = n_q_state;
 			continue ;
