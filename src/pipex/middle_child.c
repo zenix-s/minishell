@@ -28,9 +28,9 @@ static void	chill(int use_fd[4], t_shell *shell, t_token *t_aux, char **arraid)
 	aux = shell->env;
 	if (prepare (shell, t_aux) == -1)
 		ft_error("dont prepare");
+	change_fd(use_fd);
 	if (pipex_redirect(shell, t_aux) == 0)
 	{
-		change_fd(use_fd);
 		if (t_aux->type == BUILT_IN || t_aux->type == EXE)
 		{
 			if (s_build(shell, arraid) == 5)
