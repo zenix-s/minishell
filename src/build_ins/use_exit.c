@@ -15,6 +15,7 @@
 void	use_exit(t_shell *shell)
 {
 	printf("exit\n");
+	g_exit_status = 10;
 	free_shell(shell);
-	exit(0);
+	exit(10);
 }

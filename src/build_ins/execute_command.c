@@ -15,7 +15,9 @@
 void	execute_cmd(char **l_arraid, t_env_token *list_env)
 {
 	pid_t	pid;
+	int		status;
 
+	status = 0;
 	pid = fork();
 	if (pid < 0)
 	{
@@ -24,6 +26,9 @@ void	execute_cmd(char **l_arraid, t_env_token *list_env)
 	}
 	if (pid == 0)
 		exe_all(l_arraid, list_env);
-	else
-		waitpid(pid, NULL, 0);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		g_exit_status = WTERMSIG(status) + 128;
 }
