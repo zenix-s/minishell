@@ -69,6 +69,7 @@ void	readline_state(t_shell *shell)
 	char	**temp;
 	char	**tokens;
 
+	init_sigaction();
 	if (shell->pending_inputs != NULL
 		&& get_array_string_size(shell->pending_inputs) > 0)
 	{
@@ -102,6 +103,11 @@ void	readline_state(t_shell *shell)
 	{
 		if (!manage_unclosed_quotes(&shell->input))
 			break ;
+	}
+	if (string_is_null_or_whitespace(shell->input))
+	{
+		shell->execute = clean_end_state;
+		return ;
 	}
 	tokens = ft_split(shell->input, '\n');
 	if (tokens == NULL)
