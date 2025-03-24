@@ -131,7 +131,7 @@ void		redirect_error(t_token *list, int mode);
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
 void		use_pwd(void);
-void		use_exit(t_shell *shell);
+void		use_exit(t_shell *shell, char **line_arraid);
 void		use_export(t_shell **shell, char **line_arraid);
 void		use_echo(char **line_arraid);
 void		use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);

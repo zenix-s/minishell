@@ -23,9 +23,12 @@ char	**postline(t_shell *shell)
 	{
 		if (newcmp(aux->content, "|") == 0)
 		{
-			prev = aux->next;
-			result = (ft_split(prev->content, ' '));
-			return (result);
+			if (aux->next != NULL)
+			{
+				prev = aux->next;
+				result = (ft_split(prev->content, ' '));
+				return (result);
+			}
 		}
 		aux = aux->next;
 	}
