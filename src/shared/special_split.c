@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
 
 void	finalize_token(t_splitter *splitter, char *input, int64_t end)
 {
