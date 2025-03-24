@@ -12,10 +12,14 @@
 
 #include "../../include/minishell.h"
 
-void	use_exit(t_shell *shell)
+void	use_exit(t_shell *shell, char **line_arraid)
 {
+
 	printf("exit\n");
 	g_exit_status = 10;
 	free_shell(shell);
-	exit(10);
+	if (line_arraid[1])
+		exit(ft_atoi(line_arraid[1]));
+	else
+		exit(0);
 }
