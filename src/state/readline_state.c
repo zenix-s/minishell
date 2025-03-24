@@ -57,6 +57,7 @@ void	readline_state(t_shell *shell)
 	shell->input = readline("minishell: ");
 	if (!shell->input)
 	{
+		printf("exit\n");
 		free_shell(shell);
 		exit(EXIT_SUCCESS);
 	}
