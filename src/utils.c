@@ -39,7 +39,7 @@ void	ft_free(char **lst)
 void	ft_error(char *text)
 {
 	perror(text);
-	exit(-1);
+	exit(127);
 }
 
 void	ft_pipe(int fd[2], char *text)

@@ -36,8 +36,8 @@ char	*search(char *object, char **command)
 		cont++;
 	}
 	ft_free(path);
-	perror("error on function search");
-	exit(1);
+	perror(command[0]);
+	exit(127);
 	return (NULL);
 }
 
@@ -94,7 +94,7 @@ void	exe_all(char **command, t_env_token *list_env)
 	execve(path, command, env_now);
 	free(path);
 	ft_free(env_now);
-	ft_error("exe");
+	ft_error("patata");
 }
 
 

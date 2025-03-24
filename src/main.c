@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-uint8_t g_exit_status;
+int	g_exit_status;
 
 void	print_tokens(t_token *tokens)
 {

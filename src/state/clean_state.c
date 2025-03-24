@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <string.h>
 
 /**
  * @param shell Puntero a la estructura shell

@@ -26,9 +26,7 @@ int	env_is_absolute(char **cmd, char **env_now)
 	while (env_now[cont])
 	{
 		if (ft_strncmp(env_now[cont], "PATH=", 5) == 0)
-		{
 			return (0);
-		}
 		cont++;
 	}
 	if (access(cmd[0], F_OK) == 0)
