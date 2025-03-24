@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <stdio.h>
 
 static void	signal_handler(int sig)
 {
@@ -20,6 +21,7 @@ static void	signal_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_exit_status++;
 	}
 }
 

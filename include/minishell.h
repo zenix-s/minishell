@@ -39,6 +39,7 @@
 
 # include <stdlib.h>
 
+
 //----------------------------------------------------------------------------//
 //                                    SHELL
 //----------------------------------------------------------------------------//
@@ -176,5 +177,7 @@ void		print_env(t_env_token *list_env, t_bool is_export);
 t_bool		is_valid_env_key(char *key);
 
 // library
+//
+extern uint8_t g_exit_status;
 
 #endif
