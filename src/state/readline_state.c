@@ -52,8 +52,45 @@ int	manage_unclosed_quotes(char **line)
 	return (1);
 }
 
+uint64_t	get_array_string_size(char **array)
+{
+	uint64_t	i;
+
+	if (array == NULL)
+		return (0);
+	i = 0;
+	while (array[i] != NULL)
+		i++;
+	return (i);
+}
+
 void	readline_state(t_shell *shell)
 {
+	char	**temp;
+	char	**tokens;
+
+	if (shell->pending_inputs != NULL
+		&& get_array_string_size(shell->pending_inputs) > 0)
+	{
+		shell->input = ft_strdup(shell->pending_inputs[0]);
+		temp = delete_string_on_array(shell->pending_inputs, 0);
+		if (temp == NULL)
+		{
+			shell->error_message = ERR_MALLOC;
+			shell->execute = fail_state;
+			return ;
+		}
+		free(shell->pending_inputs[0]);
+		free(shell->pending_inputs);
+		shell->pending_inputs = temp;
+		shell->execute = tokenize_state;
+		return ;
+	}
+	if (shell->pending_inputs != NULL)
+	{
+		ft_free(shell->pending_inputs);
+		shell->pending_inputs = NULL;
+	}
 	shell->input = readline("minishell: ");
 	if (!shell->input)
 	{
@@ -66,6 +103,24 @@ void	readline_state(t_shell *shell)
 		if (!manage_unclosed_quotes(&shell->input))
 			break ;
 	}
+	tokens = ft_split(shell->input, '\n');
+	if (tokens == NULL)
+	{
+		shell->execute = clean_end_state;
+		return ;
+	}
+	free(shell->input);
+	shell->input = ft_strdup(tokens[0]);
+	temp = delete_string_on_array(tokens, 0);
+	if (temp == NULL)
+	{
+		shell->error_message = ERR_MALLOC;
+		shell->execute = fail_state;
+		return ;
+	}
+	free(tokens[0]);
+	free(tokens);
+	shell->pending_inputs = temp;
 	add_history(shell->input);
 	shell->execute = tokenize_state;
 }
