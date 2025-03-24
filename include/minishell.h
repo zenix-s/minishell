@@ -33,7 +33,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-
 # define READ_END 0
 # define WRITE_END 1
 # define MAX_INPUT_LENGTH 1024
@@ -53,6 +52,7 @@ void		free_env_tokens(t_env_token *env);
 void		free_shell(t_shell *shell);
 void		ft_free(char **lst);
 void		ft_error(char *texto);
+void		ft_pipe(int fd[2], char *text);
 //----------------------------------------------------------------------------//
 //                                   PARSER
 //----------------------------------------------------------------------------//
@@ -155,9 +155,13 @@ void		pipex(t_shell *shell);
 void		big_pipex(t_shell *shell);
 void		f_child(int *fd, int pid1, char **l_arraid, t_shell *shell);
 void		s_child(int *fd, int pid2, char **l_arraid, t_shell *shell);
-void		middle_child(int use_fd[4], t_token *list_aux, t_shell *shell,
+void		m_child(int use_fd[4], t_token *t_aux, t_shell *shell,
 				pid_t child_pids);
 void		change_fd(int use_fd[4]);
+int			contpipex(t_token *list_aux);
+t_token		*next_pipex(t_token *list_token);
+t_token		*prepare_next_time(t_token *token_aux, int aux[2], int fd[2]);
+void		ft_waitpid(t_token	*token_aux, pid_t *child_pids);
 char		**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int			cont_pids(t_shell *shell);
