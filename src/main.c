@@ -49,7 +49,6 @@ int	main(int argc, char *argv[], char **env)
 	(void)argv;
 	g_exit_status = 0;
 	head();
-	init_sigaction();
 	shell = shell_factory(env);
 	main_loop(shell);
 	free_shell(shell);

@@ -27,6 +27,7 @@ t_shell	*shell_factory(char **env)
 	shell->exit_of_failure = FALSE;
 	shell->read = NULL;
 	shell->write = NULL;
+	shell->pending_inputs = NULL;
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
 	return (shell);
