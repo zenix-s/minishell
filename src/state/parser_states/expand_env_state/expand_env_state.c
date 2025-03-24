@@ -40,7 +40,7 @@ static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 		t_token *token)
 {
 	if (newcmp(st->var_name, "?") == 0)
-		return ("1");
+		return (ft_strdup("1"));
 	st->value = ft_strdup(get_env_value(env, st->var_name));
 	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
 		&& !st->idiot && !process_value_for_export(st, token))
