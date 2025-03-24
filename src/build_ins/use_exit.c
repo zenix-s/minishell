@@ -1,38 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_is_absolute.c                                  :+:      :+:    :+:   */
+/*   use_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 19:33:35 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/08 19:33:36 by lortega-         ###   ########.fr       */
+/*   Created: 2025/03/24 00:14:27 by lortega-          #+#    #+#             */
+/*   Updated: 2025/03/24 00:14:29 by lortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	env_is_absolute(char **cmd, char **env_now)
+void	use_exit(t_shell *shell)
 {
-	int	cont;
-
-	cont = 0;
-	if (ft_strncmp("/", cmd[0], 1) == 0)
-		return (1);
-	if (ft_strncmp("./", cmd[0], 2) == 0)
-		return (1);
-	if (ft_strncmp("../", cmd[0], 3) == 0)
-		return (1);
-	while (env_now[cont])
-	{
-		if (ft_strncmp(env_now[cont], "PATH=", 5) == 0)
-		{
-			printf("dsas\n");
-			return (0);
-		}
-		cont++;
-	}
-	if (access(cmd[0], F_OK) == 0)
-		return (1);
-	return (0);
+	printf("exit\n");
+	free_shell(shell);
+	exit(0);
 }

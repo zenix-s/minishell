@@ -131,6 +131,7 @@ void		redirect_error(t_token *list, int mode);
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
 void		use_pwd(void);
+void		use_exit(t_shell *shell);
 void		use_export(t_shell **shell, char **line_arraid);
 void		use_echo(char **line_arraid);
 void		use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
@@ -142,7 +143,7 @@ char		*search(char *object, char **command);
 // utils_build
 t_token		*new_env(t_token *list_env, char **env);
 char		**obtain_env(t_env_token *list_env);
-int			env_is_absolute(char **cmd);
+int			env_is_absolute(char **cmd, char **env_now);
 
 char		*obtain_content(char *search, t_env_token *list_env);
 void		change_content(t_env_token *list_env, char *oldcont, char *newcont);

@@ -42,7 +42,7 @@ t_bool	create_list_env(char **env, t_env_token **list_env)
 	*list_env = NULL;
 	while (env[count])
 	{
-		if (ft_strncmp(env[count], "SHLVL=", 5) == 0)
+		if (ft_strncmp(env[count], "SHLVL=", 6) == 0)
 			env[count] = shell_level(env[count]);
 		new_token = new_env_token(env[count]);
 		if (!new_token)

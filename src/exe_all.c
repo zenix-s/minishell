@@ -75,7 +75,7 @@ void	exe_all(char **command, t_env_token *list_env)
 	char	**env_now;
 
 	env_now = obtain_env(list_env);
-	if (env_is_absolute(command) == 1)
+	if (env_is_absolute(command, env_now) == 1)
 	{
 		path = command[0];
 		if (access(path, F_OK) == -1)
@@ -96,3 +96,39 @@ void	exe_all(char **command, t_env_token *list_env)
 	ft_free(env_now);
 	ft_error("exe");
 }
+
+
+
+
+
+// void	exe_all(char **command, t_env_token *list_env)
+// {
+// 	char	*path;
+// 	char	**env_now;
+
+// 	path = NULL;
+// 	while (list_env)
+// 	{
+// 		if (newcmp(list_env->key, "PATH") == 0)
+// 		{
+// 			env_now = obtain_env(list_env);
+// 			path = list_env->value;
+// 		}
+// 		list_env = list_env->next;
+// 	}
+// 	if (path == NULL)
+// 	{
+// 		if (env_is_absolute(command) == 1)
+// 		{
+// 			path = command[0];
+// 			if (access(path, F_OK) == -1)
+// 				ft_error("No such file or directory");
+// 		}
+// 	}
+// 	else
+// 		path = search(path, command);
+// 	execve(path, command, env_now);
+// 	free(path);
+// 	ft_free(env_now);
+// 	ft_error("exe");
+// }
