@@ -11,7 +11,7 @@ HEADERS	= -I ./include
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -g3
 CCLANG = -lreadline
 
 SOURCE = $(shell find . -iname "*.c")
