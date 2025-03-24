@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <string.h>
 
 /*
  *used to parse a command line and execute the corresponding built-in function.
