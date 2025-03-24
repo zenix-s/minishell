@@ -12,6 +12,25 @@
 
 #include "../../include/minishell.h"
 
+t_bool	is_valid_env_key(char *key)
+{
+	int	i;
+
+	i = 0;
+	if (!key)
+		return (FALSE);
+	if (!ft_isalpha(key[i]) && key[i] != '_')
+		return (FALSE);
+	i++;
+	while (key[i] != '\0' && key[i] != '=')
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
 t_env_token	*new_env_token(char *content)
 {
 	t_env_token	*new_token;

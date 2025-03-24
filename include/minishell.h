@@ -39,6 +39,7 @@
 
 # include <stdlib.h>
 
+
 //----------------------------------------------------------------------------//
 //                                    SHELL
 //----------------------------------------------------------------------------//
@@ -162,7 +163,7 @@ void		change_fd(int use_fd[4]);
 int			contpipex(t_token *list_aux);
 t_token		*next_pipex(t_token *list_token);
 t_token		*prepare_next_time(t_token *token_aux, int aux[2], int fd[2]);
-void		ft_waitpid(t_token	*token_aux, pid_t *child_pids);
+void		ft_waitpid(t_token *token_aux, pid_t *child_pids);
 char		**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int			cont_pids(t_shell *shell);
@@ -174,7 +175,10 @@ char		**split_env(char *env);
 t_env_token	*new_env_token(char *content);
 t_bool		create_list_env(char **env, t_env_token **list_env);
 void		print_env(t_env_token *list_env, t_bool is_export);
+t_bool		is_valid_env_key(char *key);
 
 // library
+//
+extern uint8_t g_exit_status;
 
 #endif
