@@ -22,7 +22,7 @@ void	read_alone(t_shell *shell, char **cmd)
 		perror("no open");
 	stdin_copy = dup(STDIN_FILENO);
 	if (dup2(file_in, STDIN_FILENO) == -1)
-		ft_error("Error redirigiendo la entrada estándar");
+		ft_error("Error redirecting standard input");
 	if (cmd && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdin_copy, STDIN_FILENO);
@@ -40,13 +40,10 @@ void	write_alone(t_shell *shell, char **cmd)
 	if (shell->mode == 2)
 		file_out = open(shell->write, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (file_out == -1)
-		ft_error("Error abriendo el archivo de salida");
+		ft_error("Error opening output file");
 	stdout_copy = dup(STDOUT_FILENO);
 	if (dup2(file_out, STDOUT_FILENO) == -1)
-	{
-		printf("Error redirigiendo la salida estándar\n");
-		return ;
-	}
+		ft_error("Error redirecting standard output");
 	if (cmd != NULL && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdout_copy, STDOUT_FILENO);
@@ -75,13 +72,13 @@ void	full_redirect(t_shell *shell, char **cmd)
 		return ;
 	stdin_copy = dup(STDIN_FILENO);
 	if (stdin_copy == -1 || dup2(file_in, STDIN_FILENO) == -1)
-		ft_error("Error redirigiendo la entrada estándar");
+		ft_error("Error redirecting standard input");
 	file_out = new_open(shell);
 	if (file_out == -1)
-		ft_error("Error abriendo el archivo de salida");
+		ft_error("Error opening output file");
 	stdout_copy = dup(STDOUT_FILENO);
 	if (dup2(file_out, STDOUT_FILENO) == -1)
-		ft_error("Error redirigiendo la salida estándar");
+		ft_error("Error redirecting standard output");
 	if (cmd && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdin_copy, STDIN_FILENO);

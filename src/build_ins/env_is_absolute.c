@@ -27,7 +27,6 @@ int	env_is_absolute(char **cmd, char **env_now)
 	{
 		if (ft_strncmp(env_now[cont], "PATH=", 5) == 0)
 		{
-			printf("dsas\n");
 			return (0);
 		}
 		cont++;
