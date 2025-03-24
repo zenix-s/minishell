@@ -23,7 +23,7 @@ static int	remplace(t_env_token **list_env, char *line)
 	l_aux = *list_env;
 	while (l_aux)
 	{
-		if (ft_strncmp(l_aux->key, aux_line_k, ft_strlen(l_aux->key)) == 0)
+		if (newcmp(l_aux->key, aux_line_k) == 0 )
 		{
 			free(l_aux->key);
 			free(l_aux->value);
