@@ -19,6 +19,9 @@
 
 void	exit_state(t_shell *shell)
 {
+	int exit_status;
+
+	exit_status = shell->exit_status;
 	free_shell(shell);
-	exit(EXIT_SUCCESS);
+	exit(exit_status);
 }

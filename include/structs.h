@@ -73,6 +73,9 @@ typedef struct s_shell
 	t_token				*tokens;
 	t_env_token			*env;
 	char				**pending_inputs;
+	t_bool				is_here_doc;
+	// exit
+	int 				exit_status;
 	// redirect
 	char				*read;
 	char				*write;

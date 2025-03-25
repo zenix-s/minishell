@@ -84,6 +84,7 @@ char		*remove_outer_quotes(char *str);
 //----------------------------------------------------------------------------//
 void		init_sigaction(void);
 void		set_sigaction_for_child(void);
+void		set_signal_interactive_child(void);
 
 //----------------------------------------------------------------------------//
 //                                state

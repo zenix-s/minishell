@@ -62,16 +62,6 @@ char	**obtain_env(t_env_token *list_env)
 	return (env_now);
 }
 
-void	set_signal_interactive_child(void)
-{
-	struct sigaction	act;
-
-	act.sa_handler = SIG_DFL;
-	act.sa_flags = 0;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-}
-
 /*
 * si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
  * @path -> En esta funcion es un (char *) con todas las rutas
@@ -79,7 +69,6 @@ void	set_signal_interactive_child(void)
  * @env_now es un (char **) sacado con el contenido de las listas
 
 */
-// signal(SIGINT, SIG_DFL); // -> he quitado esto de antes del primer if
 void	exe_all(char **command, t_env_token *list_env)
 {
 	char	*path;
