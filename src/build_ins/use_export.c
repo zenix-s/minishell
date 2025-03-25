@@ -102,14 +102,12 @@ static t_bool	is_valid_export(char *content, int *status)
 	return (FALSE);
 }
 
-void	use_export(t_shell **shell, char **line_arraid)
+void	use_export(t_shell **shell, char **line_arraid, int count)
 {
-	int		count;
 	char	*real_value;
 	int		exit_status;
 
 	exit_status = 0;
-	count = 0;
 	while (line_arraid[++count])
 	{
 		if (!is_valid_export(line_arraid[count], &exit_status))

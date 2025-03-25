@@ -30,10 +30,12 @@ void	print_env(t_env_token *list_env, t_bool is_export)
 				printf("%s=%s\n", list_env->key, list_env->value);
 				list_env = list_env->next;
 			}
+			ft_free(env_now);
 			return ;
 		}
 		cont++;
 	}
+	ft_free(env_now);
 	printf("minishell: env: No such file or directory\n");
 	g_exit_status = 127;
 }
