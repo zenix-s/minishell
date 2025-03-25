@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
+int	ft_read_open(t_token *aux_token, t_shell *shell)
 {
 	int	file;
 
-	if (newcmp(aux_token->content, s) == 0)
+	if (newcmp(aux_token->content, "<") == 0)
 	{
 		file = open(aux_token->next->content, O_RDONLY);
 		if (file == -1)
@@ -26,6 +26,12 @@ int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
 		}
 		shell->read = aux_token->next->content;
 		close (file);
+	}
+	if (newcmp(aux_token->content, "<<") == 0)
+	{
+		char *file_name = ft_strdup("file");
+		ft_super_strcat(&file_name, ft_itoa(shell->n_pipex));
+		shell->read = file_name;
 	}
 	return (0);
 }
@@ -69,8 +75,8 @@ int	prepare(t_shell *shell, t_token *x)
 		{
 			if (newcmp(x->content, ">") == 0 || newcmp(x->content, ">>") == 0)
 				aux = ft_write_open(x, shell, x->next->content);
-			else if (newcmp(x->content, "<") == 0)
-				aux = ft_read_open(x, shell, "<");
+			else if (newcmp(x->content, "<") == 0 || newcmp(x->content, "<<") == 0)
+				aux = ft_read_open(x, shell);
 			if (aux == -1)
 				return (aux);
 			mode++;
@@ -91,6 +97,9 @@ void	prepare_in_loop(t_shell *shell)
 		while (token_aux && token_aux->type != PIPE)
 			token_aux = token_aux->next;
 		if (token_aux && token_aux->type == PIPE)
+		{
+			shell->n_pipex++;
 			token_aux = token_aux->next;
+		}
 	}
 }
