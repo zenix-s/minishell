@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../include/libft.h"
 
 int	ft_strcat(char *dest, const char *src)
 {
@@ -29,4 +29,32 @@ int	ft_strcat(char *dest, const char *src)
 	}
 	dest[i] = '\0';
 	return (i);
+}
+
+int	ft_super_strcat(char **dest, const char *src)
+{
+	size_t	i;
+	size_t	j;
+	char	*aux;
+
+	aux = malloc(sizeof(char) * (ft_strlen(src) + ft_strlen(*dest) + 1));
+	if (!aux)
+		return (0);
+	i = -1;
+	j = 0;
+	while ((*dest)[++i])
+	{
+		aux[j] = (*dest)[i];
+		j++;
+	}
+	i = -1;
+	while (src[++i])
+	{
+		aux[j] = src[i];
+		j++;
+	}
+	aux[j] = '\0';
+	free(*dest);
+	*dest = aux;
+	return (j);
 }

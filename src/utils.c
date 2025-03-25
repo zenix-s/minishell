@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/23 13:53:18 by lortega-          #+#    #+#             */
+/*   Updated: 2025/02/23 13:53:22 by lortega-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/minishell.h"
 
@@ -25,8 +36,14 @@ void	ft_free(char **lst)
 	free(lst);
 }
 
-void	ft_error(char *texto)
+void	ft_error(char *text)
 {
-	perror(texto);
-	exit(-1);
+	perror(text);
+	exit(127);
+}
+
+void	ft_pipe(int fd[2], char *text)
+{
+	if (pipe(fd) == -1)
+		ft_error(text);
 }

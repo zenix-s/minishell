@@ -18,7 +18,7 @@ SOURCE = $(shell find . -iname "*.c")
 
 %.o: %.c
 				@echo "${BLUE} ◎ $(YELLOW)Compiling   ${RED}→   $(GREEN)$< $(DEF_COLOR)"
-				${CC} ${CFLAGS} -c $< -o $@ ${HEADERS}
+				@ ${CC} ${CFLAGS} -c $< -o $@ ${HEADERS}
 
 
 OBJS = ${SOURCE:.c=.o}
@@ -26,7 +26,7 @@ OBJS = ${SOURCE:.c=.o}
 all: ${NAME}
 
 ${NAME}: ${OBJS}
-				$(CC) ${CFLAGS} $^ -o  $@ ${CCLANG}
+				@ $(CC) ${CFLAGS} $^ -o  $@ ${CCLANG}
 				@echo "\n$(GREEN) Created $(NAME) ✓$(DEF_COLOR)\n"
 				@echo "$(YELLOW)    _       _       _$(DEF_COLOR)"
 				@echo "$(YELLOW) __(.)<  __(.)>  __(.)=    $(DEF_COLOR)Cuak!"
@@ -39,7 +39,7 @@ clean:
 fclean:
 				@${RM} ${NAME}
 				@${RM} ${OBJS}
-				@echo -e "\n${GRAY} ◎ $(RED)All objects and executable cleaned successfully${GRAY} ◎$(DEF_COLOR)\n"
+				@echo "\n${GRAY} ◎ $(RED)All objects and executable cleaned successfully${GRAY} ◎$(DEF_COLOR)\n"
 
 re: fclean all
 
