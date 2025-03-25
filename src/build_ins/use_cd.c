@@ -39,6 +39,8 @@ static int	search_rute(char *line_arraid, int count)
 	char	cwd[1024];
 	char	**step;
 
+//	if (newcmp(line_arraid, "~") == 0)
+//		chdir("/");
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		perror("usecd");
 	step = ft_split(line_arraid, '/');
