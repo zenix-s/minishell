@@ -23,7 +23,7 @@ static int	remplace(t_env_token **list_env, char *line)
 	l_aux = *list_env;
 	while (l_aux)
 	{
-		if (newcmp(l_aux->key, aux_line_k) == 0 )
+		if (newcmp(l_aux->key, aux_line_k) == 0)
 		{
 			free(l_aux->key);
 			free(l_aux->value);
@@ -105,12 +105,10 @@ static t_bool	is_valid_export(char *content, int *status)
 void	use_export(t_shell **shell, char **line_arraid)
 {
 	int		count;
-	t_shell	*t_aux;
 	char	*real_value;
 	int		exit_status;
 
 	exit_status = 0;
-	t_aux = *shell;
 	count = 0;
 	while (line_arraid[++count])
 	{
@@ -119,14 +117,14 @@ void	use_export(t_shell **shell, char **line_arraid)
 		real_value = prepared(line_arraid[count]);
 		if (real_value != NULL)
 		{
-			if (remplace(&t_aux->env, real_value) == 1)
-				create_var(&t_aux->env, real_value);
+			if (remplace(&(*shell)->env, real_value) == 1)
+				create_var(&(*shell)->env, real_value);
 			free(real_value);
 		}
 		else
 		{
-			if (remplace(&t_aux->env, line_arraid[count]) == 1)
-				create_var(&t_aux->env, line_arraid[count]);
+			if (remplace(&(*shell)->env, line_arraid[count]) == 1)
+				create_var(&(*shell)->env, line_arraid[count]);
 		}
 	}
 	g_exit_status = exit_status;

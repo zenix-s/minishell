@@ -39,7 +39,6 @@
 
 # include <stdlib.h>
 
-
 //----------------------------------------------------------------------------//
 //                                    SHELL
 //----------------------------------------------------------------------------//
@@ -84,6 +83,7 @@ char		*remove_outer_quotes(char *str);
 //                               signal
 //----------------------------------------------------------------------------//
 void		init_sigaction(void);
+void		set_sigaction_for_child(void);
 
 //----------------------------------------------------------------------------//
 //                                state
@@ -179,6 +179,6 @@ t_bool		is_valid_env_key(char *key);
 
 // library
 //
-extern int g_exit_status;
+extern int	g_exit_status;
 
 #endif
