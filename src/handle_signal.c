@@ -19,6 +19,11 @@ static void	signal_handler(int sig, siginfo_t *info, void *ucontext)
 	(void)ucontext;
 	if (sig == SIGINT)
 	{
+		if (g_exit_status == 258)
+		{
+			write(1, "\n", 1);
+			return ;
+		}
 		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();

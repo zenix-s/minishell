@@ -25,7 +25,7 @@ void	her_d(char **line_arraid)
 		line = readline(">");
 		if (!line)
 		{
-			printf("boom\n");
+			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", line_arraid[0]);
 			close(text);
 			unlink("file.txt");
 			ft_free(line_arraid);
