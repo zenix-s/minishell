@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   use_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 19:26:30 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/08 19:26:32 by lortega-         ###   ########.fr       */
+/*   Created: 2025/03/24 00:14:27 by lortega-          #+#    #+#             */
+/*   Updated: 2025/03/24 00:14:29 by lortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-void	ft_lstdelone(t_token *lst, void (*del)(void*))
+void	use_exit(t_shell *shell, char **line_arraid)
 {
-	if (lst == NULL || del == NULL)
-		return ;
-	del(lst->content);
-	free(lst);
-	lst = NULL;
+	printf("exit\n");
+	free_shell(shell);
+	if (line_arraid[1])
+		exit(ft_atoi(line_arraid[1]));
+	else
+		exit(0);
 }

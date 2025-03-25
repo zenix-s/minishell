@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <string.h>
 
 /*
  *used to parse a command line and execute the corresponding built-in function.
@@ -82,10 +80,7 @@ int	s_build(t_shell *shell, char **line_arraid)
 	else if (newcmp(line_arraid[0], "cd") == 0)
 		use_cd(shell->env, line_arraid, shell);
 	else if (newcmp(line_arraid[0], "exit") == 0)
-	{
-		free_shell(shell);
-		exit(0);
-	}
+		use_exit(shell, line_arraid);
 	else
 		return (5);
 	return (1);

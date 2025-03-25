@@ -36,4 +36,5 @@ void	use_echo(char **line_arraid)
 	}
 	if (!n_flag)
 		printf("\n");
+	g_exit_status = 0;
 }

@@ -26,7 +26,7 @@ char	*search(char *object, char **command)
 		finish = ft_strjoin(path[cont], "/");
 		temp = finish;
 		finish = ft_strjoin(finish, command[0]);
-		free (temp);
+		free(temp);
 		if (access(finish, F_OK) == 0)
 		{
 			ft_free(path);
@@ -36,8 +36,8 @@ char	*search(char *object, char **command)
 		cont++;
 	}
 	ft_free(path);
-	perror("error on function search");
-	exit(1);
+	perror(command[0]);
+	exit(127);
 	return (NULL);
 }
 
@@ -62,20 +62,31 @@ char	**obtain_env(t_env_token *list_env)
 	return (env_now);
 }
 
+void	set_signal_interactive_child(void)
+{
+	struct sigaction	act;
+
+	act.sa_handler = SIG_DFL;
+	act.sa_flags = 0;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
+}
+
 /*
 * si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
- * @path -> En esta funcion es un (char *) con todas las rutas 
+ * @path -> En esta funcion es un (char *) con todas las rutas
  * @command -> Es un (char **) con los comandos ingresados
- * @env_now es un (char **) sacado con el contenido de las listas 
+ * @env_now es un (char **) sacado con el contenido de las listas
 
 */
+// signal(SIGINT, SIG_DFL); // -> he quitado esto de antes del primer if
 void	exe_all(char **command, t_env_token *list_env)
 {
 	char	*path;
 	char	**env_now;
 
 	env_now = obtain_env(list_env);
-	if (env_is_absolute(command) == 1)
+	if (env_is_absolute(command, env_now) == 1)
 	{
 		path = command[0];
 		if (access(path, F_OK) == -1)
@@ -91,8 +102,9 @@ void	exe_all(char **command, t_env_token *list_env)
 		}
 		path = search(path, command);
 	}
+	set_signal_interactive_child();
 	execve(path, command, env_now);
 	free(path);
 	ft_free(env_now);
-	ft_error("exe");
+	ft_error("No such file or directory");
 }

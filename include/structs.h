@@ -72,6 +72,7 @@ typedef struct s_shell
 	char				*input;
 	t_token				*tokens;
 	t_env_token			*env;
+	char				**pending_inputs;
 	// redirect
 	char				*read;
 	char				*write;

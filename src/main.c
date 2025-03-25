@@ -12,6 +12,8 @@
 
 #include "../include/minishell.h"
 
+int	g_exit_status;
+
 void	print_tokens(t_token *tokens)
 {
 	t_token	*current;
@@ -45,8 +47,8 @@ int	main(int argc, char *argv[], char **env)
 
 	(void)argc;
 	(void)argv;
+	g_exit_status = 0;
 	head();
-	init_sigaction();
 	shell = shell_factory(env);
 	main_loop(shell);
 	free_shell(shell);

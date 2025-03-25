@@ -33,12 +33,12 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-
 # define READ_END 0
 # define WRITE_END 1
 # define MAX_INPUT_LENGTH 1024
 
 # include <stdlib.h>
+
 
 //----------------------------------------------------------------------------//
 //                                    SHELL
@@ -53,6 +53,7 @@ void		free_env_tokens(t_env_token *env);
 void		free_shell(t_shell *shell);
 void		ft_free(char **lst);
 void		ft_error(char *texto);
+void		ft_pipe(int fd[2], char *text);
 //----------------------------------------------------------------------------//
 //                                   PARSER
 //----------------------------------------------------------------------------//
@@ -130,6 +131,7 @@ void		redirect_error(t_token *list, int mode);
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
 void		use_pwd(void);
+void		use_exit(t_shell *shell, char **line_arraid);
 void		use_export(t_shell **shell, char **line_arraid);
 void		use_echo(char **line_arraid);
 void		use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
@@ -141,7 +143,7 @@ char		*search(char *object, char **command);
 // utils_build
 t_token		*new_env(t_token *list_env, char **env);
 char		**obtain_env(t_env_token *list_env);
-int			env_is_absolute(char **cmd);
+int			env_is_absolute(char **cmd, char **env_now);
 
 char		*obtain_content(char *search, t_env_token *list_env);
 void		change_content(t_env_token *list_env, char *oldcont, char *newcont);
@@ -155,9 +157,13 @@ void		pipex(t_shell *shell);
 void		big_pipex(t_shell *shell);
 void		f_child(int *fd, int pid1, char **l_arraid, t_shell *shell);
 void		s_child(int *fd, int pid2, char **l_arraid, t_shell *shell);
-void		middle_child(int use_fd[4], t_token *list_aux, t_shell *shell,
+void		m_child(int use_fd[4], t_token *t_aux, t_shell *shell,
 				pid_t child_pids);
 void		change_fd(int use_fd[4]);
+int			contpipex(t_token *list_aux);
+t_token		*next_pipex(t_token *list_token);
+t_token		*prepare_next_time(t_token *token_aux, int aux[2], int fd[2]);
+void		ft_waitpid(t_token *token_aux, pid_t *child_pids);
 char		**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int			cont_pids(t_shell *shell);
@@ -169,7 +175,10 @@ char		**split_env(char *env);
 t_env_token	*new_env_token(char *content);
 t_bool		create_list_env(char **env, t_env_token **list_env);
 void		print_env(t_env_token *list_env, t_bool is_export);
+t_bool		is_valid_env_key(char *key);
 
 // library
+//
+extern int g_exit_status;
 
 #endif

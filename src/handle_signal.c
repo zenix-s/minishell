@@ -1,24 +1,38 @@
-#include "../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_signal.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
+/*   Updated: 2025/02/11 23:43:21 by serferna         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void	signal_handler(int sig, siginfo_t *info, void *context)
+#include "../include/minishell.h"
+#include <stdio.h>
+
+static void	signal_handler(int sig, siginfo_t *info, void *ucontext)
 {
-	if (sig == SIGQUIT)
-	{
-		printf("%s%s", "minishell: ", rl_line_buffer);
-		rl_redisplay();
-	}
+	(void)info;
+	(void)ucontext;
 	if (sig == SIGINT)
 	{
 		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_exit_status = 130;
 	}
-	(void)context;
-	(void)info;
+	if (sig == SIGQUIT)
+	{
+		printf("minishell: %s", rl_line_buffer);
+		rl_redisplay();
+	}
 }
 
-void	setup_term(void)
+static void	setup_term(void)
 {
 	struct termios	t;
 
@@ -29,11 +43,13 @@ void	setup_term(void)
 
 void	init_sigaction(void)
 {
-	struct sigaction	sa;
+	struct sigaction	act;
+
+	act.sa_sigaction = signal_handler;
+	// act.sa_handler = signal_handler;
+	act.sa_flags = 0;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 
 	setup_term();
-	sa.sa_flags = SA_SIGINFO | SA_RESTART;
-	sa.sa_sigaction = signal_handler;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
 }

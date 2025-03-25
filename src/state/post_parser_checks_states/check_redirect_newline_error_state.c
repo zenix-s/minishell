@@ -33,13 +33,20 @@ static void	check_redirect_newline_error_state(t_shell *shell, t_token *current)
 
 static void	check_pipe_error_state(t_shell *shell, t_token *current)
 {
-	if (current->prev == NULL)
+	if (current->prev == NULL || current->next == NULL)
 	{
 		shell->error_message = ERR_UNEXPECTED_TOKEN;
 		shell->unexpected_token = current->content;
 		shell->exit_of_failure = FALSE;
 		shell->execute = fail_state;
-		return ;
+	}
+	else if (is_special_token(current->prev->content)
+		|| is_special_token(current->next->content))
+	{
+		shell->error_message = ERR_UNEXPECTED_TOKEN;
+		shell->unexpected_token = current->content;
+		shell->exit_of_failure = FALSE;
+		shell->execute = fail_state;
 	}
 }
 

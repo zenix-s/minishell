@@ -18,5 +18,6 @@
 # define ERR_UNEXPECTED_TOKEN_NEWLINE \
 	"syntax error near \
 unexpected token `newline'"
+# define ERR_MALLOC "Memory allocation error"
 
 #endif

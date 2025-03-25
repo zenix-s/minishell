@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_waitpid.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lortega- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 19:26:30 by lortega-          #+#    #+#             */
-/*   Updated: 2025/02/08 19:26:32 by lortega-         ###   ########.fr       */
+/*   Created: 2025/03/23 16:21:14 by lortega-          #+#    #+#             */
+/*   Updated: 2025/03/23 16:21:16 by lortega-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-void	ft_lstdelone(t_token *lst, void (*del)(void*))
+void	ft_waitpid(t_token	*token_aux, pid_t *child_pids)
 {
-	if (lst == NULL || del == NULL)
-		return ;
-	del(lst->content);
-	free(lst);
-	lst = NULL;
+	int		status;
+	int		size;
+	int		cont;
+
+	status = 0;
+	size = contpipex(token_aux) + 1;
+	cont = 0;
+	while (cont < size)
+	{
+		waitpid(child_pids[cont], &status, 0);
+		cont++;
+	}
 }

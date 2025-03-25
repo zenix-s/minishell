@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <unistd.h>
 
 void	free_shell(t_shell *shell)
 {
@@ -23,5 +24,7 @@ void	free_shell(t_shell *shell)
 		free(shell->input);
 		shell->input = NULL;
 	}
+	if (shell->pending_inputs != NULL)
+		ft_free(shell->pending_inputs);
 	free(shell);
 }
