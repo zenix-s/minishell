@@ -21,25 +21,13 @@ void	reset_term(void)
 	tcsetattr(0, TCSANOW, &t);
 }
 
-void set_sigaction_for_child(void)
-{
-	struct sigaction	act;
-
-	act.sa_handler = SIG_IGN;
-	act.sa_flags = 0;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-}
-
 void	execute_cmd(char **l_arraid, t_env_token *list_env)
 {
 	pid_t	pid;
 	int		status;
 
 	status = 0;
-	// signal(SIGINT, SIG_IGN);
 	set_sigaction_for_child();
-	// reset_term();
 	pid = fork();
 	if (pid < 0)
 	{

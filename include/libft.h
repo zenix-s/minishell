@@ -48,5 +48,6 @@ char		**delete_string_on_array(char *arr[], int pos);
 char		**insert_string_on_array(char *arr[], char *str, int pos);
 t_bool		string_is_null_or_whitespace(const char *str);
 t_bool		is_space(char c);
+uint64_t	get_array_string_size(char **array);
 
 #endif
