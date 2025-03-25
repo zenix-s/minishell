@@ -23,6 +23,14 @@ void	her_d(char **line_arraid)
 	while (x == 0)
 	{
 		line = readline(">");
+		if (!line)
+		{
+			printf("boom\n");
+			close(text);
+			unlink("file.txt");
+			ft_free(line_arraid);
+			return;
+		}
 		if (line && *line != '\0')
 		{
 			if (newcmp(line_arraid[0], line) == 0)

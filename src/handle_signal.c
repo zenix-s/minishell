@@ -32,12 +32,25 @@ static void	signal_handler(int sig, siginfo_t *info, void *ucontext)
 	}
 }
 
+void	set_signal_interactive_child(void)
+{
+	struct sigaction	act;
+
+	act.sa_handler = SIG_DFL;
+	act.sa_flags = 0;
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
+}
+
 void	set_sigaction_for_child(void)
 {
 	struct sigaction	act;
 
 	act.sa_handler = SIG_IGN;
 	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+	sigaddset(&act.sa_mask, SIGINT);
+	sigaddset(&act.sa_mask, SIGQUIT);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 }
@@ -57,6 +70,9 @@ void	init_sigaction(void)
 
 	act.sa_sigaction = signal_handler;
 	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+	sigaddset(&act.sa_mask, SIGINT);
+	sigaddset(&act.sa_mask, SIGQUIT);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 	setup_term();
