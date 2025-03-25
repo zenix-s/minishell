@@ -20,7 +20,7 @@ char	*obtain_content(char *search, t_env_token *list_env)
 	while (list_env)
 	{
 		if (newcmp(list_env->key, search) == 0)
-			return ((char *)list_env->value);
+			return (list_env->value);
 		list_env = list_env->next;
 	}
 	return (NULL);
