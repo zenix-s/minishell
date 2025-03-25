@@ -14,9 +14,7 @@
 
 void	use_exit(t_shell *shell, char **line_arraid)
 {
-
 	printf("exit\n");
-	g_exit_status = 10;
 	free_shell(shell);
 	if (line_arraid[1])
 		exit(ft_atoi(line_arraid[1]));

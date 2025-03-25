@@ -23,6 +23,7 @@ static void	signal_handler(int sig, siginfo_t *info, void *ucontext)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_exit_status = 130;
 	}
 	if (sig == SIGQUIT)
 	{
