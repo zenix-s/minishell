@@ -15,7 +15,13 @@
 void	use_exit(t_shell *shell, char **line_arraid)
 {
 	printf("exit\n");
-	free_shell(shell);
+	if (get_array_string_size(line_arraid) >= 2 &&
+		ft_isalpha(atoi(line_arraid[1])) == 0)
+	{
+		printf("minishell: exit: numeric argument required\n");
+		shell->exit_status = 2;
+		exit_state(shell);
+	}
 	if (get_array_string_size(line_arraid) >= 3)
 	{
 		printf("minishell: exit: too many arguments\n");
@@ -23,10 +29,13 @@ void	use_exit(t_shell *shell, char **line_arraid)
 		return ;
 	}
 	else if (get_array_string_size(line_arraid) == 2)
-		if (ft_isalpha(atoi(line_arraid[1])) == 0)
-			printf("pito\n");
-		else
-			exit(ft_atoi(line_arraid[1]));
+	{
+		shell->exit_status = ft_atoi(line_arraid[1]);
+		exit_state(shell);
+	}
 	else
-		exit(0);
+	{
+		shell->exit_status = 0;
+		exit_state(shell);
+	}
 }
