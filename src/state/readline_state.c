@@ -111,9 +111,9 @@ t_bool	handle_input(t_shell *shell)
 
 void	readline_state(t_shell *shell)
 {
+	init_sigaction();
 	if (handle_pending_input(shell))
 		return ;
-	init_sigaction();
 	shell->input = readline("minishell: ");
 	if (!shell->input)
 	{

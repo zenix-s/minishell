@@ -23,6 +23,14 @@ void	her_d(char **line_arraid)
 	while (x == 0)
 	{
 		line = readline(">");
+		if (!line)
+		{
+			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", line_arraid[0]);
+			close(text);
+			unlink("file.txt");
+			ft_free(line_arraid);
+			return;
+		}
 		if (line && *line != '\0')
 		{
 			if (newcmp(line_arraid[0], line) == 0)
