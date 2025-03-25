@@ -93,11 +93,12 @@ static char	*prepared(char *line)
 	return (result);
 }
 
-static t_bool	is_valid_export(char *content)
+static t_bool	is_valid_export(char *content, int *status)
 {
 	if (is_valid_env_key(content))
 		return (TRUE);
 	printf("minishell: export: `%s': not a valid identifier\n", content);
+	*status = 1;
 	return (FALSE);
 }
 
@@ -106,12 +107,14 @@ void	use_export(t_shell **shell, char **line_arraid)
 	int		count;
 	t_shell	*t_aux;
 	char	*real_value;
+	int exit_status;
 
+	exit_status = 0;
 	t_aux = *shell;
 	count = 0;
 	while (line_arraid[++count])
 	{
-		if (!is_valid_export(line_arraid[count]))
+		if (!is_valid_export(line_arraid[count], &exit_status))
 			continue ;
 		real_value = prepared(line_arraid[count]);
 		if (real_value != NULL)
@@ -126,4 +129,5 @@ void	use_export(t_shell **shell, char **line_arraid)
 				create_var(&t_aux->env, line_arraid[count]);
 		}
 	}
+	g_exit_status = exit_status;
 }

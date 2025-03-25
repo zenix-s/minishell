@@ -31,5 +31,10 @@ int	env_is_absolute(char **cmd, char **env_now)
 	}
 	if (access(cmd[0], F_OK) == 0)
 		return (1);
+	else
+	{
+		ft_error(cmd[0]);
+		return (1);
+	}
 	return (0);
 }

@@ -62,14 +62,6 @@ char	**obtain_env(t_env_token *list_env)
 	return (env_now);
 }
 
-/*
-* si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
- * @path -> En esta funcion es un (char *) con todas las rutas
- * @command -> Es un (char **) con los comandos ingresados
- * @env_now es un (char **) sacado con el contenido de las listas
-
-*/
-
 void	set_signal_interactive_child(void)
 {
 	struct sigaction	act;
@@ -80,12 +72,19 @@ void	set_signal_interactive_child(void)
 	sigaction(SIGQUIT, &act, NULL);
 }
 
+/*
+* si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
+ * @path -> En esta funcion es un (char *) con todas las rutas
+ * @command -> Es un (char **) con los comandos ingresados
+ * @env_now es un (char **) sacado con el contenido de las listas
+
+*/
+// signal(SIGINT, SIG_DFL); // -> he quitado esto de antes del primer if
 void	exe_all(char **command, t_env_token *list_env)
 {
 	char	*path;
 	char	**env_now;
 
-	// signal(SIGINT, SIG_DFL); //
 	env_now = obtain_env(list_env);
 	if (env_is_absolute(command, env_now) == 1)
 	{
