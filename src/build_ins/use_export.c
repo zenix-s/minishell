@@ -107,7 +107,7 @@ void	use_export(t_shell **shell, char **line_arraid)
 	int		count;
 	t_shell	*t_aux;
 	char	*real_value;
-	int exit_status;
+	int		exit_status;
 
 	exit_status = 0;
 	t_aux = *shell;
