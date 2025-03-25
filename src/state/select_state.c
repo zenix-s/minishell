@@ -73,7 +73,7 @@ int	s_build(t_shell *shell, char **line_arraid)
 		if (!line_arraid[1])
 			print_env(shell->env, TRUE);
 		else
-			use_export(&shell, line_arraid);
+			use_export(&shell, line_arraid, 0);
 	}
 	else if (newcmp(line_arraid[0], "unset") == 0)
 		use_unset(shell, line_arraid);

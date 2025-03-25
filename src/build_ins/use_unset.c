@@ -26,7 +26,6 @@ static t_env_token	*prev(t_env_token **list_env, char *line)
 	}
 	return (NULL);
 }
-//me da el nodo que estoy buscando para procesar su eliminación
 
 static t_env_token	*search_a(t_env_token *list_env, char *line)
 {

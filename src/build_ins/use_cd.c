@@ -75,7 +75,7 @@ static void	obtain_new_oldpwd(t_env_token *list_env, t_shell *shell)
 		aux = ft_split("FOO OLDPWD FOO", ' ');
 		if (aux)
 		{
-			use_unset (shell, aux);
+			use_unset(shell, aux);
 			ft_free(aux);
 		}
 	}
@@ -114,7 +114,7 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 
 	l_aux = l_env;
 	pwd = obtain_content("PWD", l_env);
-	if (!line_arraid[1])
+	if (!line_arraid[1] || newcmp(line_arraid[1], "~") == 0)
 		go_home(l_env, shell);
 	else
 	{
