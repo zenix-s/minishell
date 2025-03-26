@@ -37,15 +37,12 @@ void	clean_heredoc_files(t_shell *shell)
  */
 void	clean_end_state(t_shell *shell)
 {
-	int64_t	i;
 
 	if (shell->input != NULL)
 	{
 		free(shell->input);
 		shell->input = NULL;
 	}
-	if (shell->pending_inputs != NULL)
-		ft_free(shell->pending_inputs);
 	clean_heredoc_files(shell);
 	if (shell->read != NULL)
 		free(shell->read);
