@@ -12,9 +12,25 @@
 
 #include "../../include/minishell.h"
 
+static void	specific(t_shell *shell, char **line_arraid)
+{
+	if (line_arraid[1] && newcmp(line_arraid[1], "--") == 0)
+	{
+		shell->exit_status = 0;
+		exit_state(shell);
+	}
+	if (line_arraid[1] && newcmp(line_arraid[1], "-") == 0)
+	{
+		printf("minishell: exit: numeric argument required\n");
+		shell->exit_status = 2;
+		exit_state(shell);
+	}
+}
+
 void	use_exit(t_shell *shell, char **line_arraid)
 {
 	printf("exit\n");
+	specific(shell, line_arraid);
 	if (get_array_string_size(line_arraid) >= 2 &&
 		!is_string_numeric(line_arraid[1]))
 	{

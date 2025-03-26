@@ -15,14 +15,17 @@
 #include <dirent.h>
 
 
-static int is_directory(const char *path) {
-    DIR *dir = opendir(path); // Intentamos abrir el path como un directorio
-    if (dir) {
-        closedir(dir); // Si la apertura fue exitosa, cerramos el directorio
-        return 1; // Es un directorio
-    } else {
-        return 0; // No es un directorio o hubo un error
-    }
+static int	is_directory(const char *path)
+{
+	DIR	*dir = opendir(path);
+
+	if (dir)
+	{
+		closedir(dir);
+		return (1);
+	}
+	else
+		return (0);
 }
 
 void	execute_cmd(char **l_arraid, t_env_token *list_env)
