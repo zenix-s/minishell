@@ -11,13 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
+#include <unistd.h>
 
 int	ft_read_open(t_token *aux_token, t_shell *shell)
 {
 	int		file;
-	char	*file_name;
-	char	*num;
 
 	if (newcmp(aux_token->content, "<") == 0)
 	{
@@ -27,16 +25,16 @@ int	ft_read_open(t_token *aux_token, t_shell *shell)
 			redirect_error(aux_token->next, 1);
 			return (-1);
 		}
+		if (shell->read != NULL)
+			free(shell->read);
 		shell->read = ft_strdup(aux_token->next->content);
 		close(file);
 	}
 	if (newcmp(aux_token->content, "<<") == 0)
 	{
-		file_name = ft_strdup("file");
-		num = ft_itoa(shell->n_pipex);
-		ft_super_strcat(&file_name, num);
-		free(num);
-		shell->read = file_name;
+		if (shell->read != NULL)
+			free(shell->read);
+		shell->read = generate_here_doc_file_name(shell->n_pipex);
 	}
 	return (0);
 }
@@ -64,6 +62,8 @@ static void	before_prepare(t_shell *shell)
 {
 	shell->mode = 0;
 	shell->write = NULL;
+	if (shell->read != NULL)
+		free(shell->read);
 	shell->read = NULL;
 }
 

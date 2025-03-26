@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdint.h>
-#include <unistd.h>
 
 void	free_shell(t_shell *shell)
 {
