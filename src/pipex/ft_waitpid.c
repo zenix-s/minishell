@@ -24,6 +24,8 @@ void	ft_waitpid(t_token	*token_aux, pid_t *child_pids)
 	while (cont < size)
 	{
 		waitpid(child_pids[cont], &status, 0);
+		if (cont == size - 1)
+			ft_status(status);
 		cont++;
 	}
 }

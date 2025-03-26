@@ -127,14 +127,16 @@ void		write_alone(t_shell *shell, char **cmd);
 int			new_open(t_shell *shell);
 void		full_redirect(t_shell *shell, char **cmd);
 void		redirect_error(t_token *list, int mode);
+char 		*generate_here_doc_file_name(int64_t n_pipe);
 
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
-void		use_pwd(void);
+void		use_pwd(char **line_arraid);
 void		use_exit(t_shell *shell, char **line_arraid);
 void		use_export(t_shell **shell, char **line_arraid, int count);
 void		use_echo(char **line_arraid);
 void		use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
+void		use_env(t_env_token *list_env, char **line_arraid, t_bool is_export);
 
 // except
 void		exe_all(char **command, t_env_token *list_env);
@@ -167,7 +169,7 @@ void		ft_waitpid(t_token *token_aux, pid_t *child_pids);
 char		**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int			cont_pids(t_shell *shell);
-
+void		ft_status(int status);
 // ENV
 char		*get_env_value(const t_env_token *env, const char *key);
 t_bool		env_list_add_back(t_env_token **head, t_env_token *new_env);

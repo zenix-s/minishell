@@ -11,10 +11,11 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <unistd.h>
 
 void	free_shell(t_shell *shell)
 {
+	int64_t	i;
+
 	if (shell->tokens != NULL)
 		free_tokens(shell->tokens);
 	if (shell->env != NULL)
@@ -24,7 +25,21 @@ void	free_shell(t_shell *shell)
 		free(shell->input);
 		shell->input = NULL;
 	}
+	if (shell->heredoc_files != NULL)
+	{
+		i = 0;
+		while (shell->heredoc_files[i] != NULL)
+		{
+			unlink(shell->heredoc_files[i]);
+			free(shell->heredoc_files[i]);
+			i++;
+		}
+		free(shell->heredoc_files);
+		shell->heredoc_files = NULL;
+	}
 	if (shell->pending_inputs != NULL)
 		ft_free(shell->pending_inputs);
+	if (shell->read != NULL)
+		free(shell->read);
 	free(shell);
 }

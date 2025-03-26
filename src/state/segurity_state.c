@@ -18,9 +18,7 @@ void	segurity_state(t_shell *shell)
 	{
 		if (ft_strlen(shell->input) > MAX_INPUT_LENGTH)
 			ft_error("Error: line so long.\n");
-		g_exit_status = 258;
 		all_heredoc(shell);
-		g_exit_status = 0;
 		shell->execute = pipex_state;
 	}
 	else
