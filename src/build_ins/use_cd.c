@@ -12,53 +12,6 @@
 
 #include "../../include/minishell.h"
 
-static void	go_back(char **steps)
-{
-	char	*rute;
-	char	cwd[1024];
-	int		c;
-	char	*aux;
-
-	c = 0;
-	while (steps[c])
-	{
-		rute = getcwd(cwd, 1024);
-//		printf("%s\n", rute);
-		aux = ft_substr(rute, 0, ft_strrint(rute, '/'));
-		if (chdir(aux) == -1)
-		{
-			chdir("/");
-			//free(rute);
-			free(aux);
-			return ;
-		}
-		//free(rute);
-		free(aux);
-		c++;
-	}
-	return ;
-}
-
-static int	verify_backwards_rute(char *line_arraid)
-{
-	char	**steps;
-	int		count;
-
-	count = 0;
-	steps = ft_split(line_arraid, '/');
-	while (steps[count])
-	{
-		if (newcmp(steps[count], "..") != 0)
-		{
-			ft_free(steps);
-			return (-1);
-		}
-		count++;
-	}
-	go_back(steps);
-	ft_free(steps);
-	return (1);
-}
 
 static int	create_new_rute(char *rute, char *step)
 {
@@ -74,6 +27,7 @@ static int	create_new_rute(char *rute, char *step)
 	}
 	if (chdir(rute) == -1)
 	{
+		printf("cd: no such file or directory\n");
 		free(rute);
 		return (-1);
 	}
@@ -81,19 +35,14 @@ static int	create_new_rute(char *rute, char *step)
 	return (1);
 }
 
-static int	search_rute(char *line_arraid, int count)
+static int	search_rute(char **big_arraid, char *line_arraid, int count)
 {
 	char	*rute;
 	char	cwd[1024];
 	char	**step;
 
-	if (newcmp(line_arraid, "/") == 0)
-	{
-		chdir("/");
+	if (use_slash(big_arraid, line_arraid) == 1)
 		return (1);
-	}
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
-		perror("usecd");
 	if (verify_backwards_rute(line_arraid) == 1)
 		return (1);
 	step = ft_split(line_arraid, '/');
@@ -104,7 +53,6 @@ static int	search_rute(char *line_arraid, int count)
 		{
 			if (create_new_rute(rute, step[count]) == -1)
 			{
-				printf("cd: no such file or directory: %s\n", line_arraid);
 				ft_free(step);
 				return (-1);
 			}
@@ -173,7 +121,7 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 		go_home(l_env, shell);
 	else
 	{
-		if (search_rute(line_arraid[1], 0) == -1)
+		if (search_rute(line_arraid, line_arraid[1], 0) == -1)
 			chdir(pwd);
 		else
 		{
