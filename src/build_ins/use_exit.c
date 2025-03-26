@@ -31,8 +31,8 @@ void	use_exit(t_shell *shell, char **line_arraid)
 {
 	printf("exit\n");
 	specific(shell, line_arraid);
-	if (get_array_string_size(line_arraid) >= 2 &&
-		!is_string_numeric(line_arraid[1]))
+	if (get_array_string_size(line_arraid) >= 2
+		&& !is_string_numeric(line_arraid[1]))
 	{
 		printf("minishell: exit: numeric argument required\n");
 		shell->exit_status = 2;

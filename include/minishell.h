@@ -28,6 +28,7 @@
 # include <signal.h>
 # include <stdint.h>
 # include <stdlib.h>
+# include <sys/ioctl.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -85,6 +86,7 @@ char		*remove_outer_quotes(char *str);
 void		init_sigaction(void);
 void		set_sigaction_for_child(void);
 void		set_signal_interactive_child(void);
+void		set_signal_for_heredoc(void);
 
 //----------------------------------------------------------------------------//
 //                                state
@@ -127,7 +129,7 @@ void		write_alone(t_shell *shell, char **cmd);
 int			new_open(t_shell *shell);
 void		full_redirect(t_shell *shell, char **cmd);
 void		redirect_error(t_token *list, int mode);
-char 		*generate_here_doc_file_name(int64_t n_pipe);
+char		*generate_here_doc_file_name(int64_t n_pipe);
 
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
@@ -136,7 +138,8 @@ void		use_exit(t_shell *shell, char **line_arraid);
 void		use_export(t_shell **shell, char **line_arraid, int count);
 void		use_echo(char **line_arraid);
 void		use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
-void		use_env(t_env_token *list_env, char **line_arraid, t_bool is_export);
+void		use_env(t_env_token *list_env, char **line_arraid,
+				t_bool is_export);
 
 // except
 void		exe_all(char **command, t_env_token *list_env);

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 /**
  * @param shell Puntero a la estructura shell
  * Ultimo estado de la iteracion, libera la memoria de los tokens y el input
@@ -19,7 +20,7 @@
 
 void	exit_state(t_shell *shell)
 {
-	int exit_status;
+	int	exit_status;
 
 	exit_status = shell->exit_status;
 	free_shell(shell);

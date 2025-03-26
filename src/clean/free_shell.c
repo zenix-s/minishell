@@ -12,19 +12,10 @@
 
 #include "../../include/minishell.h"
 
-void	free_shell(t_shell *shell)
+static void	free_heredoc_files(t_shell *shell)
 {
 	int64_t	i;
 
-	if (shell->tokens != NULL)
-		free_tokens(shell->tokens);
-	if (shell->env != NULL)
-		free_env_tokens(shell->env);
-	if (shell->input != NULL)
-	{
-		free(shell->input);
-		shell->input = NULL;
-	}
 	if (shell->heredoc_files != NULL)
 	{
 		i = 0;
@@ -37,6 +28,20 @@ void	free_shell(t_shell *shell)
 		free(shell->heredoc_files);
 		shell->heredoc_files = NULL;
 	}
+}
+
+void	free_shell(t_shell *shell)
+{
+	if (shell->tokens != NULL)
+		free_tokens(shell->tokens);
+	if (shell->env != NULL)
+		free_env_tokens(shell->env);
+	if (shell->input != NULL)
+	{
+		free(shell->input);
+		shell->input = NULL;
+	}
+	free_heredoc_files(shell);
 	if (shell->pending_inputs != NULL)
 		ft_free(shell->pending_inputs);
 	if (shell->read != NULL)
