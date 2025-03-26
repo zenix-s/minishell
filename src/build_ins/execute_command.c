@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 #include <dirent.h>
-#include <sys/types.h>
 
 static int	is_directory(const char *path)
 {
@@ -26,6 +25,21 @@ static int	is_directory(const char *path)
 	}
 	else
 		return (0);
+}
+
+void remove_outer_quotes_params(char **params)
+{
+	int64_t i;
+	char *aux;
+
+	i = 0;
+	while (params[i])
+	{
+		aux = remove_outer_quotes(params[i]);
+		free(params[i]);
+		params[i] = aux;
+		i++;
+	}
 }
 
 void	execute_cmd(char **l_arraid, t_env_token *list_env)
@@ -48,6 +62,7 @@ void	execute_cmd(char **l_arraid, t_env_token *list_env)
 			printf("minishell: %s: Is a directory\n", l_arraid[0]);
 			exit(126);
 		}
+		remove_outer_quotes_params(l_arraid);
 		exe_all(l_arraid, list_env);
 	}
 	waitpid(pid, &status, 0);
