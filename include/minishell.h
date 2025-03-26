@@ -127,6 +127,7 @@ void		write_alone(t_shell *shell, char **cmd);
 int			new_open(t_shell *shell);
 void		full_redirect(t_shell *shell, char **cmd);
 void		redirect_error(t_token *list, int mode);
+char 		*generate_here_doc_file_name(int64_t n_pipe);
 
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
