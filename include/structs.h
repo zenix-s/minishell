@@ -80,6 +80,8 @@ typedef struct s_shell
 	char				*read;
 	char				*write;
 	int					mode;
+	int					n_pipex;
+	char **heredoc_files;
 	// Error handling
 	char				*error_message;
 	char				*unexpected_token;
