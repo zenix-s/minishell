@@ -20,7 +20,8 @@ char	*get_var_name(const char *content, uint64_t *start)
 	len = 0;
 	while (ft_isalnum(content[*start + len])
 		|| content[*start + len] == '?'
-		|| content[*start + len] == '_')
+		|| content[*start + len] == '_'
+		|| content[*start + len] == '"')
 		len++;
 	var_name = ft_strndup(&content[*start], len);
 	if (!var_name)
