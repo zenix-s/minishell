@@ -17,20 +17,23 @@ static void	go_back(char **steps)
 	char	*rute;
 	char	cwd[1024];
 	int		c;
+	char	*aux;
 
 	c = 0;
-	rute = getcwd(cwd, 1024);
 	while (steps[c])
 	{
-		printf("%s\n", rute);
-		rute = ft_substr(rute, 0, ft_strrint(rute, '/'));
-		if (chdir(rute) == -1)
+		rute = getcwd(cwd, 1024);
+//		printf("%s\n", rute);
+		aux = ft_substr(rute, 0, ft_strrint(rute, '/'));
+		if (chdir(aux) == -1)
 		{
 			chdir("/");
-			free(rute);
+			//free(rute);
+			free(aux);
 			return ;
 		}
 		//free(rute);
+		free(aux);
 		c++;
 	}
 	return ;
