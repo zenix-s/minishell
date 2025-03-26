@@ -152,6 +152,9 @@ int			env_is_absolute(char **cmd, char **env_now);
 
 char		*obtain_content(char *search, t_env_token *list_env);
 void		change_content(t_env_token *list_env, char *oldcont, char *newcont);
+int			verify_backwards_rute(char *line_arraid);
+void		go_back(char **steps);
+int			use_slash(char **big_arraid, char *line_arraid);
 //----------------------------------------------------------------------------//
 //                                 pipex part
 //----------------------------------------------------------------------------//
