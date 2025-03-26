@@ -168,7 +168,7 @@ void		ft_waitpid(t_token *token_aux, pid_t *child_pids);
 char		**postline(t_shell *shell);
 //---------------------waitpid-------------------------------------//
 int			cont_pids(t_shell *shell);
-
+void		ft_status(int status);
 // ENV
 char		*get_env_value(const t_env_token *env, const char *key);
 t_bool		env_list_add_back(t_env_token **head, t_env_token *new_env);

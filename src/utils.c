@@ -47,3 +47,11 @@ void	ft_pipe(int fd[2], char *text)
 	if (pipe(fd) == -1)
 		ft_error(text);
 }
+
+void	ft_status(int status)
+{
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		g_exit_status = WTERMSIG(status) + 128;
+}

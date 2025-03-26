@@ -48,8 +48,5 @@ void	execute_cmd(char **l_arraid, t_env_token *list_env)
 		exe_all(l_arraid, list_env);
 	}
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		g_exit_status = WTERMSIG(status) + 128;
+	ft_status(status);
 }
