@@ -12,10 +12,19 @@
 
 #include "../../include/minishell.h"
 
-void	use_pwd(void)
+void	use_pwd(char **line_arraid)
 {
 	char	cwd[1024];
 
+	if (line_arraid[1])
+	{
+		if (line_arraid[1][0] == '-' )
+		{
+			printf("minishell pwd dont use argument\n");
+			g_exit_status = 2;
+			return ;
+		}
+	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else

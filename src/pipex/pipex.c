@@ -141,4 +141,5 @@ void	pipex(t_shell *shell)
 	close(fd[WRITE_END]);
 	waitpid(pid1, &status, 0);
 	waitpid(pid2, &status, 0);
+	ft_status(status);
 }

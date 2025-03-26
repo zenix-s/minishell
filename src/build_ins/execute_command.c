@@ -11,14 +11,21 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <sys/types.h>
+#include <dirent.h>
 
-void	reset_term(void)
+
+static int	is_directory(const char *path)
 {
-	struct termios	t;
+	DIR	*dir = opendir(path);
 
-	tcgetattr(0, &t);
-	t.c_lflag |= ECHOCTL;
-	tcsetattr(0, TCSANOW, &t);
+	if (dir)
+	{
+		closedir(dir);
+		return (1);
+	}
+	else
+		return (0);
 }
 
 void	execute_cmd(char **l_arraid, t_env_token *list_env)
@@ -35,10 +42,14 @@ void	execute_cmd(char **l_arraid, t_env_token *list_env)
 		return ;
 	}
 	if (pid == 0)
+	{
+		if (is_directory(l_arraid[0]) == 1)
+		{
+			printf("minishell: %s: Is a directory\n", l_arraid[0]);
+			exit(126);
+		}
 		exe_all(l_arraid, list_env);
+	}
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		g_exit_status = WTERMSIG(status) + 128;
+	ft_status(status);
 }
