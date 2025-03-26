@@ -25,7 +25,7 @@ void	use_exit(t_shell *shell, char **line_arraid)
 	if (get_array_string_size(line_arraid) >= 3)
 	{
 		printf("minishell: exit: too many arguments\n");
-		g_exit_status = 127;
+		g_exit_status = 1;
 		return ;
 	}
 	else if (get_array_string_size(line_arraid) == 2)

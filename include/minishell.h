@@ -130,11 +130,12 @@ void		redirect_error(t_token *list, int mode);
 
 // expecific comand
 void		use_unset(t_shell *shell, char **line_arraid);
-void		use_pwd(void);
+void		use_pwd(char **line_arraid);
 void		use_exit(t_shell *shell, char **line_arraid);
 void		use_export(t_shell **shell, char **line_arraid, int count);
 void		use_echo(char **line_arraid);
 void		use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell);
+void		use_env(t_env_token *list_env, char **line_arraid, t_bool is_export);
 
 // except
 void		exe_all(char **command, t_env_token *list_env);
