@@ -30,7 +30,7 @@ t_shell	*shell_factory(char **env)
 	shell->pending_inputs = NULL;
 	shell->is_here_doc = FALSE;
 	shell->n_pipex = 0;
-	shell->heredoc_files = ft_split("testins", ' ');
+	shell->heredoc_files = NULL;
 	if (!create_list_env(env, &(shell->env)))
 		return (0);
 	return (shell);

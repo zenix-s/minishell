@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * @param shell Puntero a la estructura shell
@@ -19,11 +22,27 @@
  */
 void	clean_end_state(t_shell *shell)
 {
+	int64_t	i;
+
 	if (shell->input != NULL)
 	{
 		free(shell->input);
 		shell->input = NULL;
 	}
+	if (shell->heredoc_files != NULL)
+	{
+		i = 0;
+		while (shell->heredoc_files[i] != NULL)
+		{
+			unlink(shell->heredoc_files[i]);
+			free(shell->heredoc_files[i]);
+			i++;
+		}
+		free(shell->heredoc_files);
+		shell->heredoc_files = NULL;
+	}
+	if (shell->read != NULL)
+		free(shell->read);
 	free_tokens(shell->tokens);
 	shell->tokens = NULL;
 	shell->input = NULL;
