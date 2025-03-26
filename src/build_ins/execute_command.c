@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <sys/types.h>
 #include <dirent.h>
-
+#include <sys/types.h>
 
 static int	is_directory(const char *path)
 {
-	DIR	*dir = opendir(path);
+	DIR	*dir;
 
+	dir = opendir(path);
 	if (dir)
 	{
 		closedir(dir);

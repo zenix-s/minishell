@@ -54,11 +54,6 @@ void	use_echo(char **line_arraid)
 	g_exit_status = 0;
 }
 
-
-
-
-
-
 // static t_bool	echo_flag(char **line_arraid, int i)
 // {
 // 	t_bool	n_flag;
