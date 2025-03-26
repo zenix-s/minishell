@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_string_numeric.c                                :+:      :+:    :+:   */
+/*   generate_here_doc_file_name.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,25 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "../../include/minishell.h"
 
-t_bool	ft_isdigit(int c)
+char	*generate_here_doc_file_name(int64_t n_pipe)
 {
-	return (c >= '0' && c <= '9');
-}
+	char	*file_name;
+	char	*n_pipestr;
 
-t_bool	is_string_numeric(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
+	file_name = ft_strdup("hdocfilesave000");
+	n_pipestr = ft_itoa(n_pipe);
+	ft_super_strcat(&file_name, n_pipestr);
+	ft_super_strcat(&file_name, ".log");
+	free(n_pipestr);
+	return (file_name);
 }

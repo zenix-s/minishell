@@ -37,7 +37,6 @@ void	clean_heredoc_files(t_shell *shell)
  */
 void	clean_end_state(t_shell *shell)
 {
-
 	if (shell->input != NULL)
 	{
 		free(shell->input);

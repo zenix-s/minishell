@@ -75,13 +75,13 @@ typedef struct s_shell
 	char				**pending_inputs;
 	t_bool				is_here_doc;
 	// exit
-	int 				exit_status;
+	int					exit_status;
 	// redirect
 	char				*read;
 	char				*write;
 	int					mode;
 	int					n_pipex;
-	char **heredoc_files;
+	char				**heredoc_files;
 	// Error handling
 	char				*error_message;
 	char				*unexpected_token;
