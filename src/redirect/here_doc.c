@@ -28,7 +28,6 @@ char	*generate_here_doc_file_name(int64_t n_pipe)
 t_bool	save_heredoc_file(t_shell *shell, char *file_name)
 {
 	char	**aux;
-	int		i;
 
 	if (shell->heredoc_files == NULL)
 	{
@@ -85,10 +84,8 @@ t_bool	manage_heredoc_line(char **line_array, int file, char *file_name,
 static void	her_d(t_shell *shell, char **line_arraid, int pipe_count)
 {
 	int		x;
-	char	*line;
 	int		text;
 	char	*file_name;
-	char	**aux;
 
 	file_name = generate_here_doc_file_name(pipe_count);
 	if (!save_heredoc_file(shell, file_name))
@@ -113,7 +110,6 @@ void	all_heredoc(t_shell *shell)
 {
 	t_token	*aux_token;
 	int		pipe_count;
-	int		i;
 
 	pipe_count = 0;
 	aux_token = shell->tokens;
