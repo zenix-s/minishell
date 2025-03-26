@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-
 static int	create_new_rute(char *rute, char *step)
 {
 	char	*aux;

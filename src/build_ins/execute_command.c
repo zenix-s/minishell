@@ -27,10 +27,10 @@ static int	is_directory(const char *path)
 		return (0);
 }
 
-void remove_outer_quotes_params(char **params)
+void	remove_outer_quotes_params(char **params)
 {
-	int64_t i;
-	char *aux;
+	int64_t	i;
+	char	*aux;
 
 	i = 0;
 	while (params[i])
