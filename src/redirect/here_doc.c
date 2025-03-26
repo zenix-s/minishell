@@ -12,20 +12,7 @@
 
 #include "../../include/minishell.h"
 
-char	*generate_here_doc_file_name(int64_t n_pipe)
-{
-	char	*file_name;
-	char	*n_pipestr;
-
-	file_name = ft_strdup("hdocfilesave000");
-	n_pipestr = ft_itoa(n_pipe);
-	ft_super_strcat(&file_name, n_pipestr);
-	ft_super_strcat(&file_name, ".log");
-	free(n_pipestr);
-	return (file_name);
-}
-
-t_bool	save_heredoc_file(t_shell *shell, char *file_name)
+static t_bool	save_heredoc_file(t_shell *shell, char *file_name)
 {
 	char	**aux;
 
@@ -53,23 +40,29 @@ t_bool	save_heredoc_file(t_shell *shell, char *file_name)
 	return (TRUE);
 }
 
-t_bool	manage_heredoc_line(char **line_array, int file, char *file_name,
-		int *x)
+static void	heredoc_error(char **line_array, int file, char *file_name,
+		char *line)
+{
+	if (line != NULL)
+	{
+		free(line);
+		printf("minishell: warning: ");
+		printf("here-document delimited by end-of-file");
+		printf(" (wanted `%s')\n", line_array[0]);
+	}
+	close(file);
+	free(file_name);
+	ft_free(line_array);
+}
+
+static t_bool	manage_heredoc_line(char **line_array, int file,
+		char *file_name, int *x)
 {
 	char	*line;
 
 	line = readline(">");
-	if (!line)
-	{
-		printf("minishell: warning: here-document \
-			delimited by end-of-file (wanted `%s')\n",
-			line_array[0]);
-		close(file);
-		unlink(file_name);
-		free(file_name);
-		ft_free(line_array);
-		return (FALSE);
-	}
+	if (g_exit_status == 330 || !line)
+		return (heredoc_error(line_array, file, file_name, line), FALSE);
 	if (line && *line != '\0')
 	{
 		if (newcmp(line_array[0], line) == 0)
@@ -97,10 +90,8 @@ static void	her_d(t_shell *shell, char **line_arraid, int pipe_count)
 	text = open(file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	x = 0;
 	while (x == 0)
-	{
 		if (!manage_heredoc_line(line_arraid, text, file_name, &x))
 			return ;
-	}
 	close(text);
 	free(file_name);
 	ft_free(line_arraid);
@@ -113,6 +104,7 @@ void	all_heredoc(t_shell *shell)
 
 	pipe_count = 0;
 	aux_token = shell->tokens;
+	set_signal_for_heredoc();
 	while (aux_token)
 	{
 		if (newcmp(aux_token->content, "|") == 0)
@@ -124,4 +116,5 @@ void	all_heredoc(t_shell *shell)
 		}
 		aux_token = aux_token->next;
 	}
+	init_sigaction();
 }
