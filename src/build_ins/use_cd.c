@@ -12,6 +12,51 @@
 
 #include "../../include/minishell.h"
 
+static void	go_back(char **steps)
+{
+	char	*rute;
+	char	cwd[1024];
+	int		c;
+
+	c = 0;
+	rute = getcwd(cwd, 1024);
+	while (steps[c])
+	{
+		printf("%s\n", rute);
+		rute = ft_substr(rute, 0, ft_strrint(rute, '/'));
+		if (chdir(rute) == -1)
+		{
+			chdir("/");
+			free(rute);
+			return ;
+		}
+		//free(rute);
+		c++;
+	}
+	return ;
+}
+
+static int	verify_backwards_rute(char *line_arraid)
+{
+	char	**steps;
+	int		count;
+
+	count = 0;
+	steps = ft_split(line_arraid, '/');
+	while (steps[count])
+	{
+		if (newcmp(steps[count], "..") != 0)
+		{
+			ft_free(steps);
+			return (-1);
+		}
+		count++;
+	}
+	go_back(steps);
+	ft_free(steps);
+	return (1);
+}
+
 static int	create_new_rute(char *rute, char *step)
 {
 	char	*aux;
@@ -46,6 +91,8 @@ static int	search_rute(char *line_arraid, int count)
 	}
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 		perror("usecd");
+	if (verify_backwards_rute(line_arraid) == 1)
+		return (1);
 	step = ft_split(line_arraid, '/');
 	while (step[count])
 	{
