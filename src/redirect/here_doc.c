@@ -93,7 +93,7 @@ void	all_heredoc(t_shell *shell)
 		i = 0;
 		while (shell->heredoc_files[i])
 		{
-			printf("file: %s\n", shell->heredoc_files[i]);
+//			printf("file: %s\n", shell->heredoc_files[i]);
 			i++;
 		}
 	}

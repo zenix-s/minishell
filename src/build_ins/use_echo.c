@@ -20,9 +20,15 @@ void	use_echo(char **line_arraid)
 
 	n_flag = FALSE;
 	i = 1;
-	if (line_arraid[1] && newcmp(line_arraid[1], "-n") == 0)
+	if (line_arraid[1] && ft_strncmp(line_arraid[1], "-n", 2) == 0)
 	{
 		n_flag = TRUE;
+		while (line_arraid[i])
+		{
+			if (newcmp(line_arraid[i], "n") == 0)
+				n_flag = FALSE;
+			i++;
+		}
 		i = 2;
 	}
 	while (line_arraid[i])
