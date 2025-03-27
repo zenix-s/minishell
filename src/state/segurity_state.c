@@ -22,12 +22,14 @@ static void	created_files(t_shell *shell)
 	{
 		if (newcmp(aux_token->content, ">") == 0)
 		{
-			file = open(aux_token->next->content, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			file = open(aux_token->next->content,
+					O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			close(file);
 		}
 		if (newcmp(aux_token->content, ">>") == 0)
 		{
-			file = open(aux_token->next->content, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			file = open(aux_token->next->content,
+					O_CREAT | O_WRONLY | O_APPEND, 0644);
 			close(file);
 		}
 		aux_token = aux_token->next;
