@@ -62,6 +62,8 @@ void	select_all(t_shell *shell)
 
 int	s_build(t_shell *shell, char **line_arraid)
 {
+	if (is_string_redirect(line_arraid[0]))
+		return (1);
 	if (newcmp(line_arraid[0], "pwd") == 0)
 		use_pwd(line_arraid);
 	else if (newcmp(line_arraid[0], "env") == 0)
