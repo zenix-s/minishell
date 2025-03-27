@@ -100,7 +100,6 @@ void		check_redirect_error_state(t_shell *shell);
 //                                Redirect
 //----------------------------------------------------------------------------//
 void		redirect_state(t_shell *shell);
-void		prepare_in_loop(t_shell *shell);
 int			prepare(t_shell *shell, t_token *aux_token);
 int			ft_read_open(t_token *aux_token, t_shell *shell);
 int			ft_write_open(t_token *aux_token, t_shell *shell, char *name);

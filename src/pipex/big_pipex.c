@@ -67,9 +67,11 @@ static void	process(int fdp[2], t_shell *shell, int size, pid_t *child_pids)
 	token_aux = next_pipex(shell->tokens);
 	ft_pipe(fd, "first pipe the middle");
 	change_use_fd(use_fd, fdp, fd);
+	shell->n_pipex = 1;
 	m_child(use_fd, token_aux, shell, child_pids[1]);
 	while (size > 0)
 	{
+		shell->n_pipex++;
 		token_aux = prepare_next_time(token_aux, aux, fd);
 		if (size == 1)
 			las_child(fd, shell, token_aux, child_pids[i++]);

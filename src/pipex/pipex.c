@@ -65,6 +65,7 @@ void	s_child(int *fd, int pid2, char **l_arraid, t_shell *shell)
 		return ;
 	if (pid2 == 0)
 	{
+		shell->n_pipex = 1;
 		if (prepare(shell, aux_token) == -1)
 			return ;
 		close(fd[WRITE_END]);
@@ -94,6 +95,7 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 		ft_error("fork:");
 	if (pid1 == 0)
 	{
+		shell->n_pipex = 0;
 		if (prepare(shell, aux_token) == -1)
 			exit(1);
 		close(fd[READ_END]);

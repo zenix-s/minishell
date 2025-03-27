@@ -91,21 +91,3 @@ int	prepare(t_shell *shell, t_token *x)
 	}
 	return (mode);
 }
-
-void	prepare_in_loop(t_shell *shell)
-{
-	t_token	*token_aux;
-
-	token_aux = shell->tokens;
-	while (token_aux)
-	{
-		prepare(shell, token_aux);
-		while (token_aux && token_aux->type != PIPE)
-			token_aux = token_aux->next;
-		if (token_aux && token_aux->type == PIPE)
-		{
-			shell->n_pipex++;
-			token_aux = token_aux->next;
-		}
-	}
-}

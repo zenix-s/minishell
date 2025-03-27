@@ -42,7 +42,8 @@ void	write_alone(t_shell *shell, char **cmd)
 	if (file_out == -1)
 		ft_error("Error opening output file");
 	stdout_copy = dup(STDOUT_FILENO);
-	dup2(file_out, STDOUT_FILENO);
+	if (dup2(file_out, STDOUT_FILENO) == -1)
+		ft_error("dup 2 error");
 	if (cmd != NULL && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdout_copy, STDOUT_FILENO);
@@ -76,7 +77,8 @@ void	full_redirect(t_shell *shell, char **cmd)
 	if (file_out == -1)
 		ft_error("Error opening output file");
 	stdout_copy = dup(STDOUT_FILENO);
-	dup2(file_out, STDOUT_FILENO);
+	if (dup2(file_out, STDOUT_FILENO) == -1)
+		ft_error("dup2 error");
 	if (cmd && s_build(shell, cmd) == 5)
 		execute_cmd(cmd, shell->env);
 	dup2(stdin_copy, STDIN_FILENO);

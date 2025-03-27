@@ -67,8 +67,11 @@ static t_bool	manage_heredoc_line(char **line_array, int file,
 	{
 		if (newcmp(line_array[0], line) == 0)
 			(*x)++;
-		write(file, line, ft_strlen(line));
-		write(file, "\n", 1);
+		else
+		{
+			write(file, line, ft_strlen(line));
+			write(file, "\n", 1);
+		}
 	}
 	free(line);
 	return (TRUE);
