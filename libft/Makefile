@@ -25,7 +25,6 @@ SRC =	./ft_isalnum.c \
 		./insert_string_on_array.c \
 		./ft_substr.c \
 		./ft_strrint.c \
-		./ft_lstdelone.c \
 		./is_string_in_array.c \
 		./ft_atoi.c \
 		./ft_bzero.c \
