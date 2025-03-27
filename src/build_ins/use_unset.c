@@ -50,11 +50,13 @@ void	use_unset(t_shell *shell, char **line_arraid)
 	int			count;
 	t_env_token	*list_aux;
 	t_env_token	*prev_aux;
+	char		*aux;
 
 	count = 1;
 	while (line_arraid[count] != NULL)
 	{
-		list_aux = search_a(shell->env, line_arraid[count]);
+		aux = remove_outer_quotes(line_arraid[count]);
+		list_aux = search_a(shell->env, aux);
 		if (list_aux)
 		{
 			prev_aux = prev(&shell->env, list_aux->key);
@@ -66,6 +68,7 @@ void	use_unset(t_shell *shell, char **line_arraid)
 			free(list_aux->value);
 			free(list_aux);
 		}
+		free(aux);
 		list_aux = shell->env;
 		count++;
 	}
