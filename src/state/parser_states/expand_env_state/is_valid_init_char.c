@@ -14,5 +14,5 @@
 
 t_bool	is_valid_init_char(char c)
 {
-	return (ft_isalpha(c) || c == '_' || c == '?' || c == '"');
+	return (ft_isalpha(c) || c == '_' || c == '?' || c == '"' || c == '\'');
 }

@@ -85,11 +85,12 @@ static void	go_home(t_env_token *list_env, t_shell *shell)
 	}
 }
 
-static void	clean_on_cd(t_env_token *l_aux, char *pwd)
+static void	clean_on_cd(t_shell *shell, t_env_token *l_aux, char *pwd)
 {
 	char		*new_pwd;
 	char		cwd[1024];
 
+	obtain_new_oldpwd(l_aux, shell);
 	new_pwd = getcwd(cwd, sizeof(cwd));
 	if (new_pwd != NULL)
 	{
@@ -117,10 +118,7 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 		if (search_rute(line_arraid, aux, 0) == -1)
 			chdir(pwd);
 		else
-		{
-			obtain_new_oldpwd(l_aux, shell);
-			clean_on_cd(l_aux, pwd);
-		}
+			clean_on_cd(shell, l_aux, pwd);
 	}
 	if (aux != NULL)
 		free(aux);
