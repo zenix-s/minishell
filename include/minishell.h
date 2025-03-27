@@ -87,6 +87,7 @@ void		set_signal_for_heredoc(void);
 //                                state
 //----------------------------------------------------------------------------//
 void		readline_state(t_shell *shell);
+t_bool		is_valid_input(t_shell *shell);
 void		clean_end_state(t_shell *shell);
 void		error_state(int mod);
 void		fail_state(t_shell *shell);
@@ -136,7 +137,7 @@ void		exe_all(char **command, t_env_token *list_env);
 char		*search(char *object, char **command);
 
 // utils_build
-t_token		*new_env(t_token *list_env, char **env);
+// t_token		*new_env(t_token *list_env, char **env);
 char		**obtain_env(t_env_token *list_env);
 int			env_is_absolute(char **cmd, char **env_now);
 

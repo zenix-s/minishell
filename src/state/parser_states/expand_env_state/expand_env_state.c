@@ -12,8 +12,6 @@
 
 #include "../../../../include/minishell.h"
 #include "../../../../include/parser.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 {
@@ -38,6 +36,18 @@ static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 	return (TRUE);
 }
 
+static t_bool add_quotes(char *value, char **new_value)
+{
+	*new_value = (char *)malloc(sizeof(char) * (ft_strlen(value) + 3));
+	if (!*new_value)
+		return (FALSE);
+	(*new_value)[0] = '"';
+	ft_strcpy(*new_value + 1, value);
+	(*new_value)[ft_strlen(value) + 1] = '"';
+	(*new_value)[ft_strlen(value) + 2] = '\0';
+	return (TRUE);
+}
+
 static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 		t_token *token)
 {
@@ -48,6 +58,8 @@ static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 	st->value = ft_strdup(get_env_value(env, st->var_name));
 	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
 		&& !st->idiot && !process_value_for_export(st, token))
+		return (NULL);
+	else if (st->quote == NONE && st->value && st->value[0] != '\0' && !add_quotes(st->value, &st->value))
 		return (NULL);
 	return (st->value);
 }

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <unistd.h>
 
 int	ft_read_open(t_token *aux_token, t_shell *shell)
 {
@@ -71,23 +70,25 @@ int	prepare(t_shell *shell, t_token *x)
 {
 	int	mode;
 	int	aux;
+	t_token *aux_tok;
 
 	mode = 0;
+	aux_tok = x;
 	before_prepare(shell);
-	while (x && x->type != PIPE)
+	while (aux_tok && aux_tok->type != PIPE)
 	{
-		if (x->type == REDIRECT)
+		if (aux_tok->type == REDIRECT)
 		{
-			if (newcmp(x->content, ">") == 0 || newcmp(x->content, ">>") == 0)
-				aux = ft_write_open(x, shell, x->next->content);
-			else if (newcmp(x->content, "<") == 0 || newcmp(x->content,
+			if (newcmp(aux_tok->content, ">") == 0 || newcmp(aux_tok->content, ">>") == 0)
+				aux = ft_write_open(x, shell, aux_tok->next->content);
+			else if (newcmp(aux_tok->content, "<") == 0 || newcmp(aux_tok->content,
 					"<<") == 0)
 				aux = ft_read_open(x, shell);
 			if (aux == -1)
 				return (aux);
 			mode++;
 		}
-		x = x->next;
+		aux_tok = aux_tok->next;
 	}
 	return (mode);
 }

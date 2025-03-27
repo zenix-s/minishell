@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
-#include "../../include/parser.h"
-#include <readline/chardefs.h>
+#include "../../../include/minishell.h"
+#include "../../../include/parser.h"
 
 int	has_unclosed_quotes(const char *line)
 {
@@ -121,6 +120,8 @@ void	readline_state(t_shell *shell)
 		free_shell(shell);
 		exit(EXIT_SUCCESS);
 	}
+	if (!is_valid_input(shell))
+		return ;
 	while (has_unclosed_quotes(shell->input))
 	{
 		if (!manage_unclosed_quotes(&shell->input))

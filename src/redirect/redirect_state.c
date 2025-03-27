@@ -19,7 +19,7 @@ void	read_alone(t_shell *shell, char **cmd)
 
 	file_in = open(shell->read, O_RDONLY);
 	if (file_in == -1)
-		perror("no open");
+		return ;
 	stdin_copy = dup(STDIN_FILENO);
 	if (dup2(file_in, STDIN_FILENO) == -1)
 		ft_error("Error redirecting standard input");

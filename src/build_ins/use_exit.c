@@ -12,25 +12,70 @@
 
 #include "../../include/minishell.h"
 
-static void	specific(t_shell *shell, char **line_arraid)
+// Custom implementation of the atoi command only 1 - or + is allowed at the beginning
+// return false for numeric arguemnt required
+static t_bool exit_atoi(char *aux, int *number)
 {
-	if (line_arraid[1] && newcmp(line_arraid[1], "--") == 0)
+	int i;
+	int sign;
+	int64_t result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	if (ft_strlen(aux) == 1 && (aux[0] == '-' || aux[0] == '+'))
+		return (FALSE);
+	if (aux[0] == '-')
 	{
+		sign = -1;
+		i++;
+	}
+	while (aux[i])
+	{
+		if (!ft_isdigit(aux[i]))
+			return (FALSE);
+		result = result * 10 + aux[i] - '0';
+		i++;
+	}
+	*number = result * sign;
+	return (TRUE);
+}
+
+static void	specific(t_shell *shell, char *ext, char **array)
+{
+	int number;
+	number = 0;
+	if (ext && newcmp(ext, "--") == 0)
+	{
+		if (get_array_string_size(array) == 3)
+		{
+			number = ft_atoi(array[2]);
+			shell->exit_status = number;
+			exit_state(shell);
+			return ;
+		}
 		shell->exit_status = 0;
 		exit_state(shell);
 	}
-	if (line_arraid[1] && newcmp(line_arraid[1], "-") == 0)
+	if (ext && !exit_atoi(ext, &number))
 	{
 		printf("minishell: exit: numeric argument required\n");
 		shell->exit_status = 2;
 		exit_state(shell);
 	}
+	shell->exit_status = number;
+	exit_state(shell);
 }
 
 void	use_exit(t_shell *shell, char **line_arraid)
 {
+	char *aux;
+
 	printf("exit\n");
-	specific(shell, line_arraid);
+	aux = NULL;
+	if (get_array_string_size(line_arraid) >= 2)
+		aux = remove_outer_quotes(line_arraid[1]);
+	specific(shell, aux, line_arraid);
 	if (get_array_string_size(line_arraid) >= 2
 		&& !is_string_numeric(line_arraid[1]))
 	{
@@ -46,7 +91,7 @@ void	use_exit(t_shell *shell, char **line_arraid)
 	}
 	else if (get_array_string_size(line_arraid) == 2)
 	{
-		shell->exit_status = ft_atoi(line_arraid[1]);
+		shell->exit_status = ft_atoi(aux);
 		exit_state(shell);
 	}
 	else
