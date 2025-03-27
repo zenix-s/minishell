@@ -116,7 +116,7 @@ t_bool is_valid_input(t_shell *shell)
 		return (FALSE);
 	if (ft_strlen(shell->input) > MAX_INPUT_LENGTH)
 	{
-		printf("minishell: line so long.\n");
+		printf("minishell: line exceeds the maximum length\n");
 		shell->execute = clean_end_state;
 		return (FALSE);
 	}
