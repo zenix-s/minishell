@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 static int	create_new_rute(char *rute, char *step)
 {
@@ -113,14 +115,18 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 	t_env_token	*l_aux;
 	char		cwd[1024];
 	char		*new_pwd;
+	char *aux;
 
+	aux = NULL;
+	if (line_arraid[1] != NULL)
+		aux = remove_outer_quotes(line_arraid[1]);
 	l_aux = l_env;
 	pwd = obtain_content("PWD", l_env);
-	if (!line_arraid[1] || newcmp(line_arraid[1], "~") == 0)
+	if (!line_arraid[1] || newcmp(aux, "~") == 0)
 		go_home(l_env, shell);
 	else
 	{
-		if (search_rute(line_arraid, line_arraid[1], 0) == -1)
+		if (search_rute(line_arraid, aux, 0) == -1)
 			chdir(pwd);
 		else
 		{
@@ -134,4 +140,6 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 			}
 		}
 	}
+	if (aux != NULL)
+		free(aux);
 }

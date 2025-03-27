@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../../../include/parser.h"
+#include <stdio.h>
 
 char	*get_var_name(const char *content, uint64_t *start)
 {
@@ -18,10 +19,9 @@ char	*get_var_name(const char *content, uint64_t *start)
 	char		*var_name;
 
 	len = 0;
-	while (ft_isalnum(content[*start + len])
-		|| content[*start + len] == '?'
-		|| content[*start + len] == '_'
-		|| content[*start + len] == '"')
+	if (content[*start] == '"' || content[*start] == '?')
+		len++;
+	while (ft_isalnum(content[*start + len]) || content[*start + len] == '_')
 		len++;
 	var_name = ft_strndup(&content[*start], len);
 	if (!var_name)

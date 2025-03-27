@@ -23,7 +23,7 @@ void	go_back(char **steps)
 	if (getcwd(cwd, sizeof(cwd)) == NULL)
 	{
 		perror(ERR_CWD_NOT_FOUND);
-		return;
+		return ;
 	}
 	while (steps[c])
 	{

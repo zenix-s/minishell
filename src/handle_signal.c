@@ -37,6 +37,9 @@ void	set_signal_interactive_child(void)
 
 	act.sa_handler = SIG_DFL;
 	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+	sigaddset(&act.sa_mask, SIGINT);
+	sigaddset(&act.sa_mask, SIGQUIT);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 }
