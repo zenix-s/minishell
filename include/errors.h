@@ -17,7 +17,9 @@
 # define ERR_UNEXPECTED_TOKEN "UnexpectedTokenError"
 # define ERR_UNEXPECTED_TOKEN_NEWLINE \
 	"syntax error near \
-unexpected token `newline'"
+unexpected token `newline'" 
 # define ERR_MALLOC "Memory allocation error"
+# define ERR_CWD_NOT_FOUND "cd: error retrieving current directory: \
+getcwd: cannot access parent directories:"
 
 #endif
