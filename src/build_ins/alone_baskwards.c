@@ -20,6 +20,11 @@ void	go_back(char **steps)
 	char	*aux;
 
 	c = 0;
+	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	{
+		perror(ERR_CWD_NOT_FOUND);
+		return;
+	}
 	while (steps[c])
 	{
 		rute = getcwd(cwd, 1024);
