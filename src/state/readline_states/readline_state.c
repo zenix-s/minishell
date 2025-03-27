@@ -83,10 +83,11 @@ t_bool	handle_pending_input(t_shell *shell)
 
 t_bool	handle_input(t_shell *shell)
 {
-	char	**tokens;
-	char	**temp;
+	char		**tokens;
+	char		**temp;
+	const char	*split[] = {"\n", NULL};
 
-	tokens = ft_split(shell->input, '\n');
+	tokens = special_split(shell->input, split, NULL);
 	if (tokens == NULL)
 	{
 		shell->execute = clean_end_state;
