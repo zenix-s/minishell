@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-static t_bool exit_atoi(char *aux, int *number)
+static t_bool	exit_atoi(char *aux, int *number)
 {
-	int i;
-	int sign;
-	int64_t result;
+	int		i;
+	int		sign;
+	int64_t	result;
 
 	i = 0;
 	sign = 1;
@@ -39,7 +39,7 @@ static t_bool exit_atoi(char *aux, int *number)
 	return (TRUE);
 }
 
-static void err_to_many_args(void)
+static void	err_to_many_args(void)
 {
 	printf("minishell: exit: too many arguments\n");
 	g_exit_status = 1;
@@ -47,7 +47,7 @@ static void err_to_many_args(void)
 
 static int	specific(t_shell *shell, char *ext, char **array)
 {
-	int number;
+	int	number;
 
 	number = 0;
 	if (ext && newcmp(ext, "--") == 0)
@@ -74,7 +74,7 @@ static int	specific(t_shell *shell, char *ext, char **array)
 
 void	use_exit(t_shell *shell, char **line_arraid)
 {
-	char *aux;
+	char	*aux;
 
 	printf("exit\n");
 	aux = NULL;
