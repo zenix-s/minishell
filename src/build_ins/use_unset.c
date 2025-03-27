@@ -68,7 +68,7 @@ void	use_unset(t_shell *shell, char **line_arraid)
 			free(list_aux->value);
 			free(list_aux);
 		}
-		free(aux);
+		free (aux);
 		list_aux = shell->env;
 		count++;
 	}
