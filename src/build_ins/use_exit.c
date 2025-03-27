@@ -45,29 +45,34 @@ static void	err_to_many_args(void)
 	g_exit_status = 1;
 }
 
-static int	specific(t_shell *shell, char *ext, char **array)
+static void	exit_free(t_shell *shell, char *aux, char **array)
 {
-	int	number;
+	if (aux != NULL)
+		free(aux);
+	ft_free(array);
+	exit_state(shell);
+}
 
-	number = 0;
+static int	specific(t_shell *shell, char *ext, char **array, int number)
+{
 	if (ext && newcmp(ext, "--") == 0)
 	{
 		if (get_array_string_size(array) == 3)
 		{
 			number = ft_atoi(array[2]);
 			shell->exit_status = number;
-			return (exit_state(shell), 0);
+			return (exit_free(shell, ext, array), 0);
 		}
 		else if (get_array_string_size(array) > 3)
-			return (err_to_many_args(), 0);
+			return (err_to_many_args(), 3);
 		shell->exit_status = 0;
-		exit_state(shell);
+		exit_free(shell, ext, array);
 	}
 	if (ext && !exit_atoi(ext, &number) && get_array_string_size(array) >= 2)
 	{
 		printf("minishell: exit: numeric argument required\n");
 		shell->exit_status = 2;
-		exit_state(shell);
+		exit_free(shell, ext, array);
 	}
 	return (0);
 }
@@ -80,17 +85,21 @@ void	use_exit(t_shell *shell, char **line_arraid)
 	aux = NULL;
 	if (get_array_string_size(line_arraid) >= 2)
 		aux = remove_outer_quotes(line_arraid[1]);
-	specific(shell, aux, line_arraid);
+	if (specific(shell, aux, line_arraid, 0) == 3)
+	{
+		free(aux);
+		return ;
+	}
 	if (get_array_string_size(line_arraid) >= 3 && newcmp(aux, "--") != 0)
 		err_to_many_args();
 	else if (get_array_string_size(line_arraid) == 2)
 	{
 		shell->exit_status = ft_atoi(aux);
-		exit_state(shell);
+		exit_free(shell, aux, line_arraid);
 	}
 	else
 	{
 		shell->exit_status = 0;
-		exit_state(shell);
+		exit_free(shell, aux, line_arraid);
 	}
 }

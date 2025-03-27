@@ -36,22 +36,6 @@ static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 	return (TRUE);
 }
 
-static t_bool	add_quotes(char *value, char **new_value)
-{
-	char	*aux;
-
-	aux = (char *)malloc(sizeof(char) * (ft_strlen(value) + 3));
-	if (!aux)
-		return (FALSE);
-	aux[0] = '"';
-	ft_strcpy(aux + 1, value);
-	aux[ft_strlen(value) + 1] = '"';
-	aux[ft_strlen(value) + 2] = '\0';
-	free(*new_value);
-	*new_value = aux;
-	return (TRUE);
-}
-
 static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 		t_token *token)
 {

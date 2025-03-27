@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../../../include/parser.h"
-#include <stdio.h>
 
 char	*get_var_name(const char *content, uint64_t *start)
 {

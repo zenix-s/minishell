@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <dirent.h>
 
 static int	is_directory(const char *path)
 {
