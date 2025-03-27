@@ -39,3 +39,25 @@ void	change_content(t_env_token *list_env, char *key, char *newcont)
 		l_aux = l_aux->next;
 	}
 }
+
+int	create_new_rute(char *rute, char *step)
+{
+	char	*aux;
+
+	if (newcmp(step, "..") == 0)
+		rute = ft_substr(rute, 0, ft_strrint(rute, '/'));
+	else
+	{
+		aux = ft_strjoin(rute, "/");
+		rute = ft_strjoin(aux, step);
+		free(aux);
+	}
+	if (chdir(rute) == -1)
+	{
+		printf("cd: no such file or directory\n");
+		free(rute);
+		return (-1);
+	}
+	free(rute);
+	return (1);
+}

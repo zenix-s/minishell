@@ -1,3 +1,14 @@
+DEF_COLOR =		\033[0;39m
+GREEN =			\033[1;32m
+BLUE =			\033[0;94m
+YELLOW =		\033[0;93m
+
+NAME = libft.a
+
+CC = cc
+
+CFLAGS = -Wall -Wextra -Werror
+
 # # DIRECTORIES
 SRC =	./ft_isalnum.c \
 		./ft_isalpha.c \
@@ -31,25 +42,27 @@ SRC =	./ft_isalnum.c \
 		./string_is_null_or_whitespace.c \
 		./ft_calloc.c \
 
-OBJ = $(SRC:.c=.o)
-
-# VARIABLES
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-AR = ar rcs
-NAME = libft.a
-RM = rm -f
 
 # RULES
 %.o: %.c
-	@echo "Compiling $<"
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "${BLUE} ◎ $(YELLOW)Compiling   ${RED}→   $(GREEN)$< $(DEF_COLOR)"
+	@ ${CC} ${CFLAGS} -c $< -o $@
+
+OBJ = $(SRC:.c=.o)
+
+# VARIABLES
+AR = ar rcs
+RM = rm -f
+
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	@$(AR) $(NAME) $(OBJ)
-	@echo "libft.a created"
-
-all: $(NAME)
+	@echo "\n$(GREEN) "libft.a created" ✓$(DEF_COLOR)\n"
+	@echo "$(GREEN)       .___,   $(DEF_COLOR)"
+	@echo "$(GREEN)    ___('v')___$(DEF_COLOR)"
+	@echo "$(GREEN)    \`\"-\\._./-'$(DEF_COLOR)"
+	@echo "$(GREEN)        ^ ^  $(DEF_COLOR)"
 
 clean:
 	@$(RM) $(OBJ)

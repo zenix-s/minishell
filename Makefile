@@ -11,7 +11,7 @@ HEADERS	= -I ./include
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 CCLANG = -lreadline
 
 SOURCE = ./src/build_ins/use_export.c \

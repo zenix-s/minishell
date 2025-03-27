@@ -78,7 +78,6 @@ void	use_export(t_shell **shell, char **line_arraid, int count)
 	char	*real_value;
 	int		exit_status;
 
-
 	exit_status = 0;
 	while (line_arraid[++count])
 	{

@@ -11,30 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdlib.h>
-#include <unistd.h>
-
-static int	create_new_rute(char *rute, char *step)
-{
-	char	*aux;
-
-	if (newcmp(step, "..") == 0)
-		rute = ft_substr(rute, 0, ft_strrint(rute, '/'));
-	else
-	{
-		aux = ft_strjoin(rute, "/");
-		rute = ft_strjoin(aux, step);
-		free(aux);
-	}
-	if (chdir(rute) == -1)
-	{
-		printf("cd: no such file or directory\n");
-		free(rute);
-		return (-1);
-	}
-	free(rute);
-	return (1);
-}
 
 static int	search_rute(char **big_arraid, char *line_arraid, int count)
 {
@@ -109,12 +85,24 @@ static void	go_home(t_env_token *list_env, t_shell *shell)
 	}
 }
 
+static void	clean_on_cd(t_env_token *l_aux, char *pwd)
+{
+	char		*new_pwd;
+	char		cwd[1024];
+
+	new_pwd = getcwd(cwd, sizeof(cwd));
+	if (new_pwd != NULL)
+	{
+		pwd = ft_strdup(new_pwd);
+		change_content(l_aux, "PWD", pwd);
+		free(pwd);
+	}
+}
+
 void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 {
 	char		*pwd;
 	t_env_token	*l_aux;
-	char		cwd[1024];
-	char		*new_pwd;
 	char		*aux;
 
 	aux = NULL;
@@ -131,13 +119,7 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 		else
 		{
 			obtain_new_oldpwd(l_aux, shell);
-			new_pwd = getcwd(cwd, sizeof(cwd));
-			if (new_pwd != NULL)
-			{
-				pwd = ft_strdup(new_pwd);
-				change_content(l_aux, "PWD", pwd);
-				free(pwd);
-			}
+			clean_on_cd(l_aux, pwd);
 		}
 	}
 	if (aux != NULL)
