@@ -12,13 +12,11 @@
 
 #include "../../include/minishell.h"
 
-// Custom implementation of the atoi command only 1 - or + is allowed at the beginning
-// return false for numeric arguemnt required
-static t_bool exit_atoi(char *aux, int *number)
+static t_bool	exit_atoi(char *aux, int *number)
 {
-	int i;
-	int sign;
-	int64_t result;
+	int		i;
+	int		sign;
+	int64_t	result;
 
 	i = 0;
 	sign = 1;
@@ -41,9 +39,16 @@ static t_bool exit_atoi(char *aux, int *number)
 	return (TRUE);
 }
 
-static void	specific(t_shell *shell, char *ext, char **array)
+static void	err_to_many_args(void)
 {
-	int number;
+	printf("minishell: exit: too many arguments\n");
+	g_exit_status = 1;
+}
+
+static int	specific(t_shell *shell, char *ext, char **array)
+{
+	int	number;
+
 	number = 0;
 	if (ext && newcmp(ext, "--") == 0)
 	{
@@ -51,44 +56,33 @@ static void	specific(t_shell *shell, char *ext, char **array)
 		{
 			number = ft_atoi(array[2]);
 			shell->exit_status = number;
-			exit_state(shell);
-			return ;
+			return (exit_state(shell), 0);
 		}
+		else if (get_array_string_size(array) > 3)
+			return (err_to_many_args(), 0);
 		shell->exit_status = 0;
 		exit_state(shell);
 	}
-	if (ext && !exit_atoi(ext, &number))
+	if (ext && !exit_atoi(ext, &number) && get_array_string_size(array) >= 2)
 	{
 		printf("minishell: exit: numeric argument required\n");
 		shell->exit_status = 2;
 		exit_state(shell);
 	}
-	shell->exit_status = number;
-	exit_state(shell);
+	return (0);
 }
 
 void	use_exit(t_shell *shell, char **line_arraid)
 {
-	char *aux;
+	char	*aux;
 
 	printf("exit\n");
 	aux = NULL;
 	if (get_array_string_size(line_arraid) >= 2)
 		aux = remove_outer_quotes(line_arraid[1]);
 	specific(shell, aux, line_arraid);
-	if (get_array_string_size(line_arraid) >= 2
-		&& !is_string_numeric(line_arraid[1]))
-	{
-		printf("minishell: exit: numeric argument required\n");
-		shell->exit_status = 2;
-		exit_state(shell);
-	}
-	if (get_array_string_size(line_arraid) >= 3)
-	{
-		printf("minishell: exit: too many arguments\n");
-		g_exit_status = 1;
-		return ;
-	}
+	if (get_array_string_size(line_arraid) >= 3 && newcmp(aux, "--") != 0)
+		err_to_many_args();
 	else if (get_array_string_size(line_arraid) == 2)
 	{
 		shell->exit_status = ft_atoi(aux);

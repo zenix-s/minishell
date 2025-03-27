@@ -36,7 +36,7 @@ static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 	return (TRUE);
 }
 
-static t_bool add_quotes(char *value, char **new_value)
+static t_bool	add_quotes(char *value, char **new_value)
 {
 	*new_value = (char *)malloc(sizeof(char) * (ft_strlen(value) + 3));
 	if (!*new_value)
@@ -59,7 +59,8 @@ static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
 		&& !st->idiot && !process_value_for_export(st, token))
 		return (NULL);
-	else if (st->quote == NONE && st->value && st->value[0] != '\0' && !add_quotes(st->value, &st->value))
+	else if (st->quote == NONE && st->value && st->value[0] != '\0'
+		&& !add_quotes(st->value, &st->value))
 		return (NULL);
 	return (st->value);
 }

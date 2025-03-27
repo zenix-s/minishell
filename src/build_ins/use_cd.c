@@ -115,7 +115,7 @@ void	use_cd(t_env_token *l_env, char **line_arraid, t_shell *shell)
 	t_env_token	*l_aux;
 	char		cwd[1024];
 	char		*new_pwd;
-	char *aux;
+	char		*aux;
 
 	aux = NULL;
 	if (line_arraid[1] != NULL)

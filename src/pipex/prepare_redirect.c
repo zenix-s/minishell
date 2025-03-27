@@ -14,7 +14,7 @@
 
 int	ft_read_open(t_token *aux_token, t_shell *shell)
 {
-	int		file;
+	int	file;
 
 	if (newcmp(aux_token->content, "<") == 0)
 	{
@@ -68,9 +68,9 @@ static void	before_prepare(t_shell *shell)
 
 int	prepare(t_shell *shell, t_token *x)
 {
-	int	mode;
-	int	aux;
-	t_token *aux_tok;
+	int		mode;
+	int		aux;
+	t_token	*aux_tok;
 
 	mode = 0;
 	aux_tok = x;
@@ -79,10 +79,11 @@ int	prepare(t_shell *shell, t_token *x)
 	{
 		if (aux_tok->type == REDIRECT)
 		{
-			if (newcmp(aux_tok->content, ">") == 0 || newcmp(aux_tok->content, ">>") == 0)
+			if (newcmp(aux_tok->content, ">") == 0 || newcmp(aux_tok->content,
+					">>") == 0)
 				aux = ft_write_open(x, shell, aux_tok->next->content);
-			else if (newcmp(aux_tok->content, "<") == 0 || newcmp(aux_tok->content,
-					"<<") == 0)
+			else if (newcmp(aux_tok->content, "<") == 0
+				|| newcmp(aux_tok->content, "<<") == 0)
 				aux = ft_read_open(x, shell);
 			if (aux == -1)
 				return (aux);
