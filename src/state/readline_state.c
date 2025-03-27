@@ -13,6 +13,7 @@
 #include "../../include/minishell.h"
 #include "../../include/parser.h"
 #include <readline/chardefs.h>
+#include <stdio.h>
 
 int	has_unclosed_quotes(const char *line)
 {
@@ -109,6 +110,19 @@ t_bool	handle_input(t_shell *shell)
 	return (FALSE);
 }
 
+t_bool is_valid_input(t_shell *shell)
+{
+	if (ft_strlen(shell->input) == 0)
+		return (FALSE);
+	if (ft_strlen(shell->input) > MAX_INPUT_LENGTH)
+	{
+		printf("minishell: line so long.\n");
+		shell->execute = clean_end_state;
+		return (FALSE);
+	}
+	return (TRUE);
+}
+
 void	readline_state(t_shell *shell)
 {
 	init_sigaction();
@@ -121,6 +135,8 @@ void	readline_state(t_shell *shell)
 		free_shell(shell);
 		exit(EXIT_SUCCESS);
 	}
+	if (!is_valid_input(shell))
+		return ;
 	while (has_unclosed_quotes(shell->input))
 	{
 		if (!manage_unclosed_quotes(&shell->input))
