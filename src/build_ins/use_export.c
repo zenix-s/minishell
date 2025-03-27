@@ -64,35 +64,6 @@ static void	create_var(t_env_token **list_env, char *line)
 	}
 }
 
-// static char	*prepared(char *line)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		length;
-// 	char	*result;
-
-// 	i = 0;
-// 	j = 0;
-// 	length = ft_strlen(line);
-// 	result = malloc(length + 1);
-// 	if (result == NULL)
-// 	{
-// 		return (NULL);
-// 	}
-// 	while (i < length)
-// 	{
-// 		if (line[i] == '\"')
-// 		{
-// 			i++;
-// 		}
-// 		result[j] = line[i];
-// 		i++;
-// 		j++;
-// 	}
-// 	result[j] = '\0';
-// 	return (result);
-// }
-
 static t_bool	is_valid_export(char *content, int *status)
 {
 	if (is_valid_env_key(content))
@@ -107,12 +78,13 @@ void	use_export(t_shell **shell, char **line_arraid, int count)
 	char	*real_value;
 	int		exit_status;
 
+
 	exit_status = 0;
 	while (line_arraid[++count])
 	{
-		if (!is_valid_export(line_arraid[count], &exit_status))
-			continue ;
 		real_value = remove_outer_quotes(line_arraid[count]);
+		if (!is_valid_export(real_value, &exit_status))
+			continue ;
 		if (real_value != NULL)
 		{
 			if (remplace(&(*shell)->env, real_value) == 1)
