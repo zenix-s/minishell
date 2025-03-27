@@ -1,18 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_valid_init_char.c                               :+:      :+:    :+:   */
+/*   is_string_numeric.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
-/*   Updated: 2025/02/25 20:11:11 by serferna         ###   ########.fr       */
+/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../include/parser.h"
+#include "../include/libft.h"
 
-t_bool	is_valid_init_char(char c)
+t_bool	ft_isdigit(int c)
 {
-	return (ft_isalpha(c) || c == '_' || c == '?' || c == '"' || c == '\'');
+	return (c >= '0' && c <= '9');
+}
+
+t_bool	is_string_numeric(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
 }

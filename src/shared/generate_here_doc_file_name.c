@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_state.c                                       :+:      :+:    :+:   */
+/*   generate_here_doc_file_name.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serferna <serferna@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/27 21:22:37 by serferna          #+#    #+#             */
-/*   Updated: 2025/02/27 21:24:30 by serferna         ###   ########.fr       */
+/*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
+/*   Updated: 2025/01/26 11:13:15 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/**
- * @param shell point to struct shell
- * last ite, free the memory to tokens and input
- */
-
-void	exit_state(t_shell *shell)
+char	*generate_here_doc_file_name(int64_t n_pipe)
 {
-	int	exit_status;
+	char	*file_name;
+	char	*n_pipestr;
 
-	exit_status = shell->exit_status;
-	free_shell(shell);
-	exit(exit_status);
+	file_name = ft_strdup("hdocfilesave000");
+	n_pipestr = ft_itoa(n_pipe);
+	ft_super_strcat(&file_name, n_pipestr);
+	ft_super_strcat(&file_name, ".log");
+	free(n_pipestr);
+	return (file_name);
 }

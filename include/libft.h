@@ -27,7 +27,6 @@ size_t		ft_strlen(const char *s);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 char		**ft_split(char const *s, char c);
 char		*ft_substr(char const *s, unsigned int start, size_t len);
-void		ft_lstdelone(t_token *lst, void (*del)(void *));
 int			ft_lstsize(t_env_token *lst);
 char		*ft_strtrim(char const *s1, char const *set);
 char		*ft_strjoin(char const *s1, char const *s2);
@@ -48,5 +47,8 @@ char		**delete_string_on_array(char *arr[], int pos);
 char		**insert_string_on_array(char *arr[], char *str, int pos);
 t_bool		string_is_null_or_whitespace(const char *str);
 t_bool		is_space(char c);
+uint64_t	get_array_string_size(char **array);
+t_bool		ft_isdigit(int c);
+t_bool		is_string_numeric(const char *str);
 
 #endif

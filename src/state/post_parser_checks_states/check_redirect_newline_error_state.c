@@ -41,7 +41,7 @@ static void	check_pipe_error_state(t_shell *shell, t_token *current)
 		shell->execute = fail_state;
 	}
 	else if (is_special_token(current->prev->content)
-		|| is_special_token(current->next->content))
+		|| is_string_pipe(current->next->content))
 	{
 		shell->error_message = ERR_UNEXPECTED_TOKEN;
 		shell->unexpected_token = current->content;

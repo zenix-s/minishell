@@ -12,23 +12,33 @@
 
 #include "../../include/minishell.h"
 
-void	reset_term(void)
+static int	is_directory(const char *path)
 {
-	struct termios	t;
+	DIR	*dir;
 
-	tcgetattr(0, &t);
-	t.c_lflag |= ECHOCTL;
-	tcsetattr(0, TCSANOW, &t);
+	dir = opendir(path);
+	if (dir)
+	{
+		closedir(dir);
+		return (1);
+	}
+	else
+		return (0);
 }
 
-void set_sigaction_for_child(void)
+void	remove_outer_quotes_params(char **params)
 {
-	struct sigaction	act;
+	int64_t	i;
+	char	*aux;
 
-	act.sa_handler = SIG_IGN;
-	act.sa_flags = 0;
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
+	i = 0;
+	while (params[i])
+	{
+		aux = remove_outer_quotes(params[i]);
+		free(params[i]);
+		params[i] = aux;
+		i++;
+	}
 }
 
 void	execute_cmd(char **l_arraid, t_env_token *list_env)
@@ -37,9 +47,7 @@ void	execute_cmd(char **l_arraid, t_env_token *list_env)
 	int		status;
 
 	status = 0;
-	// signal(SIGINT, SIG_IGN);
 	set_sigaction_for_child();
-	// reset_term();
 	pid = fork();
 	if (pid < 0)
 	{
@@ -47,10 +55,15 @@ void	execute_cmd(char **l_arraid, t_env_token *list_env)
 		return ;
 	}
 	if (pid == 0)
+	{
+		if (is_directory(l_arraid[0]) == 1)
+		{
+			printf("minishell: %s: Is a directory\n", l_arraid[0]);
+			exit(126);
+		}
+		remove_outer_quotes_params(l_arraid);
 		exe_all(l_arraid, list_env);
+	}
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-		g_exit_status = WTERMSIG(status) + 128;
+	ft_status(status);
 }

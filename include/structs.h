@@ -73,11 +73,13 @@ typedef struct s_shell
 	t_token				*tokens;
 	t_env_token			*env;
 	char				**pending_inputs;
-	// redirect
+	t_bool				is_here_doc;
+	int					exit_status;
 	char				*read;
 	char				*write;
 	int					mode;
-	// Error handling
+	int					n_pipex;
+	char				**heredoc_files;
 	char				*error_message;
 	char				*unexpected_token;
 	t_bool				exit_of_failure;
@@ -89,7 +91,6 @@ typedef struct s_splitter
 	uint64_t			result_idx;
 	int64_t				start;
 	t_quote				q_state;
-
 	int64_t				i;
 }						t_splitter;
 

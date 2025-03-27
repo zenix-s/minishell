@@ -12,11 +12,11 @@
 
 #include "../../include/minishell.h"
 
-int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
+int	ft_read_open(t_token *aux_token, t_shell *shell)
 {
 	int	file;
 
-	if (newcmp(aux_token->content, s) == 0)
+	if (newcmp(aux_token->content, "<") == 0)
 	{
 		file = open(aux_token->next->content, O_RDONLY);
 		if (file == -1)
@@ -24,15 +24,23 @@ int	ft_read_open(t_token *aux_token, t_shell *shell, char *s)
 			redirect_error(aux_token->next, 1);
 			return (-1);
 		}
-		shell->read = aux_token->next->content;
-		close (file);
+		if (shell->read != NULL)
+			free(shell->read);
+		shell->read = ft_strdup(aux_token->next->content);
+		close(file);
+	}
+	if (newcmp(aux_token->content, "<<") == 0)
+	{
+		if (shell->read != NULL)
+			free(shell->read);
+		shell->read = generate_here_doc_file_name(shell->n_pipex);
 	}
 	return (0);
 }
 
 int	ft_write_open(t_token *aux_token, t_shell *shell, char *name)
 {
-	int		file;
+	int	file;
 
 	file = 0;
 	if (newcmp(aux_token->content, ">") == 0)
@@ -45,7 +53,7 @@ int	ft_write_open(t_token *aux_token, t_shell *shell, char *name)
 		return (-1);
 	}
 	shell->write = name;
-	close (file);
+	close(file);
 	return (0);
 }
 
@@ -53,6 +61,8 @@ static void	before_prepare(t_shell *shell)
 {
 	shell->mode = 0;
 	shell->write = NULL;
+	if (shell->read != NULL)
+		free(shell->read);
 	shell->read = NULL;
 }
 
@@ -67,10 +77,12 @@ int	prepare(t_shell *shell, t_token *x)
 	{
 		if (x->type == REDIRECT)
 		{
-			if (newcmp(x->content, ">") == 0 || newcmp(x->content, ">>") == 0)
+			if (newcmp(x->content, ">") == 0 || newcmp(x->content,
+					">>") == 0)
 				aux = ft_write_open(x, shell, x->next->content);
-			else if (newcmp(x->content, "<") == 0)
-				aux = ft_read_open(x, shell, "<");
+			else if (newcmp(x->content, "<") == 0
+				|| newcmp(x->content, "<<") == 0)
+				aux = ft_read_open(x, shell);
 			if (aux == -1)
 				return (aux);
 			mode++;
@@ -91,6 +103,9 @@ void	prepare_in_loop(t_shell *shell)
 		while (token_aux && token_aux->type != PIPE)
 			token_aux = token_aux->next;
 		if (token_aux && token_aux->type == PIPE)
+		{
+			shell->n_pipex++;
 			token_aux = token_aux->next;
+		}
 	}
 }

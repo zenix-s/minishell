@@ -12,7 +12,6 @@
 
 #include "../../../../include/minishell.h"
 #include "../../../../include/parser.h"
-#include <stdlib.h>
 
 static t_bool	process_value_for_export(t_expand_env_state *st, t_token *token)
 {
@@ -42,9 +41,14 @@ static char	*get_env_final_value(const t_env_token *env, t_expand_env_state *st,
 {
 	if (newcmp(st->var_name, "?") == 0)
 		return (ft_itoa(g_exit_status));
+	if (st->var_name[0] == '\"' || st->var_name[0] == '\'')
+		return (ft_strdup(st->var_name));
 	st->value = ft_strdup(get_env_value(env, st->var_name));
 	if (token->type == BUILT_IN && token->built_in == EXPORT && st->value
 		&& !st->idiot && !process_value_for_export(st, token))
+		return (NULL);
+	else if (st->quote == NONE && st->value && st->value[0] != '\0'
+		&& !add_quotes(st->value, &st->value))
 		return (NULL);
 	return (st->value);
 }

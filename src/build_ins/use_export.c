@@ -23,7 +23,7 @@ static int	remplace(t_env_token **list_env, char *line)
 	l_aux = *list_env;
 	while (l_aux)
 	{
-		if (newcmp(l_aux->key, aux_line_k) == 0 )
+		if (newcmp(l_aux->key, aux_line_k) == 0)
 		{
 			free(l_aux->key);
 			free(l_aux->value);
@@ -64,69 +64,36 @@ static void	create_var(t_env_token **list_env, char *line)
 	}
 }
 
-static char	*prepared(char *line)
-{
-	int		i;
-	int		j;
-	int		length;
-	char	*result;
-
-	i = 0;
-	j = 0;
-	length = ft_strlen(line);
-	result = malloc(length + 1);
-	if (result == NULL)
-	{
-		return (NULL);
-	}
-	while (i < length)
-	{
-		if (line[i] == '\"')
-		{
-			i++;
-		}
-		result[j] = line[i];
-		i++;
-		j++;
-	}
-	result[j] = '\0';
-	return (result);
-}
-
 static t_bool	is_valid_export(char *content, int *status)
 {
 	if (is_valid_env_key(content))
 		return (TRUE);
-	printf("minishell: export: `%s': not a valid identifier\n", content);
+	printf("minishell: export: %s: not a valid identifier\n", content);
 	*status = 1;
 	return (FALSE);
 }
 
-void	use_export(t_shell **shell, char **line_arraid)
+void	use_export(t_shell **shell, char **line_arraid, int count)
 {
-	int		count;
-	t_shell	*t_aux;
 	char	*real_value;
-	int exit_status;
+	int		exit_status;
 
 	exit_status = 0;
-	t_aux = *shell;
-	count = 0;
 	while (line_arraid[++count])
 	{
-		if (!is_valid_export(line_arraid[count], &exit_status))
+		real_value = remove_outer_quotes(line_arraid[count]);
+		if (!is_valid_export(real_value, &exit_status))
 			continue ;
-		real_value = prepared(line_arraid[count]);
 		if (real_value != NULL)
 		{
-			if (remplace(&t_aux->env, real_value) == 1)
-				create_var(&t_aux->env, real_value);
+			if (remplace(&(*shell)->env, real_value) == 1)
+				create_var(&(*shell)->env, real_value);
 			free(real_value);
 		}
 		else
 		{
-			if (remplace(&t_aux->env, line_arraid[count]) == 1)
-				create_var(&t_aux->env, line_arraid[count]);
+			if (remplace(&(*shell)->env, line_arraid[count]) == 1)
+				create_var(&(*shell)->env, line_arraid[count]);
 		}
 	}
 	g_exit_status = exit_status;

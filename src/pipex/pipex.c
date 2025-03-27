@@ -112,10 +112,6 @@ void	f_child(int *fd, int pid1, char **l_arraid, t_shell *shell)
 	shell->execute = clean_end_state;
 }
 
-/*
- @ fd[2] ->contiene dos enteros ( READ_END and WRITE_END)
- @ pidx  ->almacena identificadores de proceso PID
-*/
 void	pipex(t_shell *shell)
 {
 	int		fd[2];
@@ -141,4 +137,5 @@ void	pipex(t_shell *shell)
 	close(fd[WRITE_END]);
 	waitpid(pid1, &status, 0);
 	waitpid(pid2, &status, 0);
+	ft_status(status);
 }

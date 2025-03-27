@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_valid_init_char.c                               :+:      :+:    :+:   */
+/*   valid_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: serferna <serferna@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: serferna <serferna@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 11:13:15 by serferna          #+#    #+#             */
-/*   Updated: 2025/02/25 20:11:11 by serferna         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:43:21 by serferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../../include/parser.h"
+#include "../../../include/minishell.h"
 
-t_bool	is_valid_init_char(char c)
+t_bool	is_valid_input(t_shell *shell)
 {
-	return (ft_isalpha(c) || c == '_' || c == '?' || c == '"' || c == '\'');
+	if (ft_strlen(shell->input) == 0)
+		return (FALSE);
+	if (ft_strlen(shell->input) > MAX_INPUT_LENGTH)
+	{
+		printf("minishell: line exceeds the maximum length\n");
+		shell->execute = clean_end_state;
+		return (FALSE);
+	}
+	return (TRUE);
 }

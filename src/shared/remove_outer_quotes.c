@@ -67,3 +67,19 @@ char	*remove_outer_quotes(char *str)
 	new_str[j] = '\0';
 	return (new_str);
 }
+
+t_bool	add_quotes(char *value, char **new_value)
+{
+	char	*aux;
+
+	aux = (char *)malloc(sizeof(char) * (ft_strlen(value) + 3));
+	if (!aux)
+		return (FALSE);
+	aux[0] = '"';
+	ft_strcpy(aux + 1, value);
+	aux[ft_strlen(value) + 1] = '"';
+	aux[ft_strlen(value) + 2] = '\0';
+	free(*new_value);
+	*new_value = aux;
+	return (TRUE);
+}
