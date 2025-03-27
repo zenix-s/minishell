@@ -44,6 +44,7 @@ void	m_child(int use_fd[4], t_token *t_aux, t_shell *shell, pid_t child_pids)
 {
 	char		**l_arraid;
 
+	shell->n_pipex++;
 	l_arraid = ft_split(t_aux->content, ' ');
 	child_pids = fork();
 	if (child_pids < 0)
