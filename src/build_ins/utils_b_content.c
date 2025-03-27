@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-/*
-*busca por la clave y da la clave con el contenido
-*/
 char	*obtain_content(char *search, t_env_token *list_env)
 {
 	while (list_env)

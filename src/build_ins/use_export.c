@@ -97,7 +97,7 @@ static t_bool	is_valid_export(char *content, int *status)
 {
 	if (is_valid_env_key(content))
 		return (TRUE);
-	printf("minishell: export: `%s': not a valid identifier\n", content);
+	printf("minishell: export: %s: not a valid identifier\n", content);
 	*status = 1;
 	return (FALSE);
 }
