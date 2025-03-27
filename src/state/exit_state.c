@@ -13,9 +13,8 @@
 #include "../../include/minishell.h"
 
 /**
- * @param shell Puntero a la estructura shell
- * Ultimo estado de la iteracion, libera la memoria de los tokens y el input
- * para permitir la salida del programa.
+ * @param shell point to struct shell
+ * last ite, free the memory to tokens and input
  */
 
 void	exit_state(t_shell *shell)

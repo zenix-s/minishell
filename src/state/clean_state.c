@@ -31,9 +31,8 @@ void	clean_heredoc_files(t_shell *shell)
 }
 
 /**
- * @param shell Puntero a la estructura shell
- * Ultimo estado de la iteracion, libera la memoria de los tokens y el input
- * para permitir la siguiente iteracion.
+ * @param shell point to struct shell
+ * last ite, free the memory to tokens and input
  */
 void	clean_end_state(t_shell *shell)
 {

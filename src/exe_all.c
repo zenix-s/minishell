@@ -62,13 +62,6 @@ char	**obtain_env(t_env_token *list_env)
 	return (env_now);
 }
 
-/*
-* si execve no ejecuta el comando, hay que salir del hijo, por eso la igualacion
- * @path -> En esta funcion es un (char *) con todas las rutas
- * @command -> Es un (char **) con los comandos ingresados
- * @env_now es un (char **) sacado con el contenido de las listas
-
-*/
 void	exe_all(char **command, t_env_token *list_env)
 {
 	char	*path;
